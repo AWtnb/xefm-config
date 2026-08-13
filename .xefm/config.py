@@ -231,34 +231,30 @@ class Config:
         "help": ["?"],  # Show help dialog with all key bindings
         "redraw": ["F5"],  # Additional redraw trigger (Ctrl-L is always hardcoded)
         # === Navigation ===
-        "cursor_up": ["UP"],  # Move cursor up one item
-        "cursor_down": ["DOWN"],  # Move cursor down one item
+        "cursor_up": ["UP", "K"],  # Move cursor up one item
+        "cursor_down": ["DOWN", "J"],  # Move cursor down one item
         "page_up": ["PAGE_UP"],  # Move cursor up one page
         "page_down": ["PAGE_DOWN"],  # Move cursor down one page
-        "open_item": ["ENTER"],  # Open file/directory or enter directory
-        "open_with_os": ["Command-ENTER"],  # Open file(s) with OS default application
-        "reveal_in_os": ["Alt-ENTER"],  # Reveal focused file in OS file manager
-        "go_parent": ["BACKSPACE"],  # Go to parent directory
+        "open_item": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
+        "open_with_os": ["Ctrl-ENTER"],  # Open file(s) with OS default application
+        "reveal_in_os": ["Ctrl-Shift-E"],  # Reveal focused file in OS file manager
+        "go_parent": ["BACKSPACE", "H", "LEFT"],  # Go to parent directory
         "switch_pane": ["TAB"],  # Switch between left and right panes
-        "nav_left": [
-            "LEFT"
-        ],  # Left pane: go to parent, Right pane: switch to left pane
-        "nav_right": [
-            "RIGHT"
-        ],  # Right pane: go to parent, Left pane: switch to right pane
+        "nav_left": [],  # Left pane: go to parent, Right pane: switch to left pane
+        "nav_right": [],  # Right pane: go to parent, Left pane: switch to right pane
         # === File Selection ===
         "select_file": ["SPACE"],  # Toggle selection of current file
         "select_file_up": ["Shift-SPACE"],  # Toggle selection and move up
-        "select_all": ["HOME"],  # Select all items (Home key)
-        "unselect_all": ["END"],  # Unselect all items (End key)
-        "select_all_files": ["A"],  # Toggle selection of all files in current pane
-        "select_all_items": ["Shift-A"],  # Toggle selection of all items (files + dirs)
+        "select_all": ["Ctrl-A"],  # Select all items
+        "unselect_all": ["U"],  # Unselect all items
+        "select_all_files": ["Alt-F"],  # Toggle selection of all files in current pane
+        "select_all_items": [],  # Toggle selection of all items (files + dirs)
         # === Clipboard (copy names/paths to the system clipboard) ===
         "copy_names": [
-            "Command-Shift-C"
+            "Ctrl-Shift-C"
         ],  # Copy selected/focused file name(s) to clipboard
         "copy_paths": [
-            "Command-Shift-P"
+            "Ctrl-Shift-P"
         ],  # Copy selected/focused full path(s) to clipboard
         # === File Operations ===
         "copy_files": {
@@ -270,18 +266,18 @@ class Config:
             "selection": "required",
         },  # Move selected files to other pane
         "delete_files": {
-            "keys": ["K", "DELETE"],
+            "keys": ["Ctrl-D"],
             "selection": "required",
         },  # Delete selected files/directories
-        "rename_file": ["R"],  # Rename selected file/directory
-        "create_file": ["Shift-E"],  # Create new file (prompts for filename)
+        "rename_file": ["N"],  # Rename selected file/directory
+        "create_file": ["T"],  # Create new file (prompts for filename)
         "create_directory": {
-            "keys": ["M"],
+            "keys": ["Ctrl-Shift-N"],
             "selection": "none",
         },  # Create new directory (only when no files selected)
         # === File Viewing & Editing ===
-        "view_file": ["V"],  # View file using configured viewer
-        "edit_file": ["E"],  # Edit selected file with configured text editor
+        "view_file": ["Shift-Enter"],  # View file using configured viewer
+        "edit_file": [],  # Edit selected file with configured text editor
         "file_details": ["I"],  # Show detailed file information dialog
         # === File Comparison ===
         "diff_files": ["EQUAL"],  # Compare two selected files side-by-side
@@ -291,7 +287,7 @@ class Config:
             "keys": ["P"],
             "selection": "required",
         },  # Create archive from selected files
-        "extract_archive": ["U"],  # Extract selected archive file
+        "extract_archive": [],  # Extract selected archive file
         # === Search & Filter ===
         "search": ["F"],  # Enter incremental search mode (isearch)
         "search_dialog": ["Shift-F"],  # Show filename search dialog
@@ -305,19 +301,19 @@ class Config:
         "quick_sort_size": ["3"],  # Quick sort by file size
         "quick_sort_date": ["4"],  # Quick sort by modification date
         # === Directory Navigation ===
-        "favorites": ["J"],  # Show favorite directories dialog
+        "favorites": ["Shift-B"],  # Show favorite directories dialog
         "jump_to_path": ["Shift-J"],  # Jump to path
-        "history": ["H"],  # Show history for current pane
+        "history": ["Ctrl-Z"],  # Show history for current pane
         "drives_dialog": ["D"],  # Show drives/volumes dialog
         # === Pane Management ===
         "sync_current_to_other": ["O"],  # Sync current pane directory to other pane
         "sync_other_to_current": [
             "Shift-O"
         ],  # Sync other pane directory to current pane
-        "compare_selection": ["W"],  # Show file and directory comparison options
+        "compare_selection": [],  # Show file and directory comparison options
         "adjust_pane_left": ["["],  # Make left pane smaller (move boundary left)
         "adjust_pane_right": ["]"],  # Make left pane larger (move boundary right)
-        "reset_pane_boundary": ["-"],  # Reset pane split to 50% | 50%
+        "reset_pane_boundary": ["-", "|"],  # Reset pane split to 50% | 50%
         # === Log Pane Control ===
         "adjust_log_up": ["{"],  # Make log pane larger (Shift+[)
         "adjust_log_down": ["}"],  # Make log pane smaller (Shift+])
@@ -369,25 +365,8 @@ class Config:
         # Unbound by default (reachable via the Tools menu). Assign a key here to
         # open/reload this file without leaving XeFM, e.g. 'edit_config': ['Y'].
         "edit_config": [],  # Edit this config.py in TEXT_EDITOR, then reload
-        "reload_config": [],  # Re-read this config.py and apply live
+        "reload_config": ["Ctrl-R"],  # Re-read this config.py and apply live
     }
-
-    # Windows has no Command key, and Alt-Enter is the platform fullscreen-toggle
-    # convention — so the Mac-centric defaults above are unreachable there. Remap
-    # them to Ctrl equivalents on Windows.
-    if sys.platform == "win32":
-        KEY_BINDINGS["open_with_os"] = [
-            "Ctrl-ENTER"
-        ]  # Open file(s) with OS default application
-        KEY_BINDINGS["reveal_in_os"] = [
-            "Ctrl-Shift-E"
-        ]  # Reveal focused file in Explorer
-        KEY_BINDINGS["copy_names"] = [
-            "Ctrl-Shift-C"
-        ]  # Copy selected/focused file name(s) to clipboard
-        KEY_BINDINGS["copy_paths"] = [
-            "Ctrl-Shift-P"
-        ]  # Copy selected/focused full path(s) to clipboard
 
     # Favorite directories - customize your frequently used directories
     # Each entry should have 'name' and 'path' keys
