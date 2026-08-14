@@ -594,6 +594,10 @@ class Config:
         # {'name': 'My Script (direct path)', 'command': [xefm_python, '/path/to/script.py']},
         # {'name': 'Quick Command', 'command': ['ls', '-la']},
         # Full-screen / interactive programs need the terminal handed over:
-        # {'name': 'View with less', 'command': ['less'], 'options': {'terminal': True}},
+        {
+            "name": "View with bat",
+            "command": ["bat", "--paging=always"],
+            "options": {"terminal": True},
+        },
         # {'name': 'Python REPL', 'command': ['python3'], 'options': {'terminal': True}},
     ]
