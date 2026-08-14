@@ -493,7 +493,7 @@ class Config:
         # PDF files
         {
             "pattern": "*.pdf",
-            "open|view": ["open", "-a", "Preview"],
+            "open|view": ["cmd.exe", "/c", "start"],
             "edit": None,
         },
         # Image files. 'view' is deliberately None so V opens XeFM's own image
