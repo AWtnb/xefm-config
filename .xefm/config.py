@@ -302,7 +302,7 @@ class Config:
         "quick_sort_date": ["4"],  # Quick sort by modification date
         # === Directory Navigation ===
         "favorites": ["Shift-B"],  # Show favorite directories dialog
-        "jump_to_path": ["Shift-J"],  # Jump to path
+        "jump_to_path": ["Ctrl-O"],  # Jump to path
         "history": ["Ctrl-Z"],  # Show history for current pane
         "drives_dialog": ["D"],  # Show drives/volumes dialog
         # === Pane Management ===
@@ -318,14 +318,10 @@ class Config:
         "adjust_log_up": ["{"],  # Make log pane larger (Shift+[)
         "adjust_log_down": ["}"],  # Make log pane smaller (Shift+])
         "reset_log_height": ["_"],  # Reset log pane height to default (Shift+-)
-        "scroll_log_up": ["Shift-UP"],  # Scroll log pane up one line
-        "scroll_log_down": ["Shift-DOWN"],  # Scroll log pane down one line
-        "scroll_log_page_up": [
-            "Shift-LEFT"
-        ],  # Scroll log pane up one page (to older messages)
-        "scroll_log_page_down": [
-            "Shift-RIGHT"
-        ],  # Scroll log pane down one page (to newer messages)
+        "scroll_log_up": ["Shift-K"],  # Scroll log pane up one line
+        "scroll_log_down": ["Shift-J"],  # Scroll log pane down one line
+        "scroll_log_page_up": [],  # Scroll log pane up one page (to older messages)
+        "scroll_log_page_down": [],  # Scroll log pane down one page (to newer messages)
         # === Text / Diff Viewer ===
         # Viewer-only actions. 'search' (F, above) opens incremental search inside
         # the viewers too. 'toggle_wrap' intentionally shares 'W' with
