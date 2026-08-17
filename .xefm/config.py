@@ -287,7 +287,7 @@ class Config:
             "keys": ["P"],
             "selection": "required",
         },  # Create archive from selected files
-        "extract_archive": [],  # Extract selected archive file
+        "extract_archive": ["Ctrl-X"],  # Extract selected archive file
         # === Search & Filter ===
         "search": ["F"],  # Enter incremental search mode (isearch)
         "search_dialog": ["Shift-F"],  # Show filename search dialog
