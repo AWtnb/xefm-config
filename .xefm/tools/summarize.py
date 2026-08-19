@@ -24,11 +24,16 @@ def summarize(root: Path, targets: list[str]) -> tuple[str, int]:
         else:
             paths.append(path)
 
-    codeblock = "```"
-    lines: list[str] = ["## dir tree\n", codeblock]
-    lines.extend(str(Path(p).relative_to(root)) for p in paths)
-    lines.append(codeblock)
-    lines.append("\n## file contents\n")
+    border = "```"
+    lines: list[str] = ["# SUMMARY\n"]
+
+    if 1 < len(targets):
+        lines.append("## dir tree\n")
+        lines.append(border)
+        lines.extend(str(Path(p).relative_to(root)) for p in paths)
+        lines.append(f"{border}\n")
+
+    lines.append("## file contents\n")
 
     counter = 0
     for path in paths:
@@ -38,10 +43,9 @@ def summarize(root: Path, targets: list[str]) -> tuple[str, int]:
             counter += 1
         except Exception:  # noqa: BLE001, S112
             continue
-        lines.append(f"### {p.relative_to(root)}\n")
-        lines.append(f"{codeblock}{p.name}")
+        lines.append(f"{border}{p.relative_to(root)}")
         lines.append(content)
-        lines.append(f"{codeblock}\n")
+        lines.append(f"{border}\n")
 
     return "\n".join(lines), counter
 
@@ -56,7 +60,6 @@ def main():
     root = Path(os.environ.get("XEFM_THIS_DIR", os.getcwd()))
     selected_names = shlex.split(os.environ.get("XEFM_THIS_SELECTED", ""))
     if len(selected_names) < 1:
-        print("[CANCELED] Select at least 1 item.")
         return
 
     targets = [
