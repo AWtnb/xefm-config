@@ -18,8 +18,10 @@ def traverse_file(root: str) -> Iterator[str]:
 
 def summarize(root: Path, targets: list[str]) -> tuple[str, int]:
     paths = []
+    tree_flag = False
     for path in targets:
         if Path(path).is_dir():
+            tree_flag = True
             paths.extend(traverse_file(path))
         else:
             paths.append(path)
@@ -27,13 +29,13 @@ def summarize(root: Path, targets: list[str]) -> tuple[str, int]:
     border = "```"
     lines: list[str] = ["# SUMMARY\n"]
 
-    if 1 < len(targets):
-        lines.append("## dir tree\n")
+    if traverse_file:
+        lines.append("## DIRECTORIES\n")
         lines.append(border)
         lines.extend(str(Path(p).relative_to(root)) for p in paths)
         lines.append(f"{border}\n")
 
-    lines.append("## file contents\n")
+    lines.append("## FILE CONTENTS\n")
 
     counter = 0
     for path in paths:
