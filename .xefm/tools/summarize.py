@@ -56,9 +56,8 @@ def main():
     root = Path(os.environ.get("XEFM_THIS_DIR", os.getcwd()))
     selected_names = shlex.split(os.environ.get("XEFM_THIS_SELECTED", ""))
     if len(selected_names) < 1:
-        for p in root.iterdir():
-            if p.is_dir():
-                selected_names.append(str(p))
+        print("[CANCELED] Select at least 1 item.")
+        return
 
     targets = [
         (name if os.path.isabs(name) else os.path.join(root, name))
@@ -70,7 +69,7 @@ def main():
     out_path = Path(os.environ.get("XEFM_OTHER_DIR", os.getcwd())) / out_name
     out_path.write_text(md, encoding="utf-8")
 
-    print(f"[FINISH]Summarized {count} files.")
+    print(f"[FINISHED] Summarized {count} files.")
 
 
 if __name__ == "__main__":
