@@ -308,7 +308,8 @@ class Config:
         # === Pane Management ===
         "sync_current_to_other": ["O"],  # Sync current pane directory to other pane
         "sync_other_to_current": [
-            "Shift-O"
+            "Shift-O",
+            "D",
         ],  # Sync other pane directory to current pane
         "compare_selection": [],  # Show file and directory comparison options
         "adjust_pane_left": ["["],  # Make left pane smaller (move boundary left)
