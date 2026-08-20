@@ -309,7 +309,7 @@ class Config:
         "sync_current_to_other": ["O"],  # Sync current pane directory to other pane
         "sync_other_to_current": [
             "Shift-O",
-            "D",
+            "W",
         ],  # Sync other pane directory to current pane
         "compare_selection": [],  # Show file and directory comparison options
         "adjust_pane_left": ["["],  # Make left pane smaller (move boundary left)
@@ -329,7 +329,7 @@ class Config:
         # 'compare_selection': they never apply in the same context (file list vs.
         # open viewer), and each context matches its own action by name via
         # KeyBindings.is_action_for_event, so the shared key is unambiguous.
-        "toggle_wrap": ["W"],  # Text viewer: toggle line wrapping
+        "toggle_wrap": ["Alt-Z"],  # Text viewer: toggle line wrapping
         # 'M' likewise shares with 'move_files' / 'create_directory' (file list
         # only); in an open viewer it toggles the raw text view and the file
         # type's rich renderer (Markdown for *.md), matched by name in-context.
