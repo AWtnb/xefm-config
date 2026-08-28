@@ -42,7 +42,16 @@ class Config:
         UI_FONT_NAME = "Segoe UI"
         MONO_FONT_NAME = "Consolas"
 
-    FONT_SIZE = 12  # point size for both faces (8-72)
+    FONT_SIZE = 14  # point size for both faces (8-72)
+
+    # Text viewer: the encodings offered by the viewer's encoding picker (the
+    # 'change_encoding' action, Shift-E). Automatic detection — UTF-8 with or without
+    # BOM, UTF-16/32 by BOM, Shift-JIS, EUC-JP, ISO-2022-JP, CP1252 — is built
+    # in and always the default; this list only feeds the manual picker, for
+    # when detection gets a file wrong. Any Python codec name works here
+    # (e.g. 'koi8-r', 'gb2312', 'utf-16-le'):
+    # https://docs.python.org/3/library/codecs.html#standard-encodings
+    TEXT_ENCODINGS = ["utf-8", "cp932", "euc-jp", "iso-2022-jp", "latin-1"]  # noqa: RUF012
 
     # Display settings
     SHOW_HIDDEN_FILES = False
@@ -230,6 +239,7 @@ class Config:
         "quit": ["Q"],  # Exit XeFM application
         "help": ["?"],  # Show help dialog with all key bindings
         "redraw": ["F5"],  # Additional redraw trigger (Ctrl-L is always hardcoded)
+        #
         # === Navigation ===
         "cursor_up": ["UP", "K"],  # Move cursor up one item
         "cursor_down": ["DOWN", "J"],  # Move cursor down one item
@@ -242,6 +252,7 @@ class Config:
         "switch_pane": ["TAB"],  # Switch between left and right panes
         "nav_left": [],  # Left pane: go to parent, Right pane: switch to left pane
         "nav_right": [],  # Right pane: go to parent, Left pane: switch to right pane
+        #
         # === File Selection ===
         "select_file": ["SPACE"],  # Toggle selection of current file
         "select_file_up": ["Shift-SPACE"],  # Toggle selection and move up
@@ -249,6 +260,7 @@ class Config:
         "unselect_all": ["U"],  # Unselect all items
         "select_all_files": ["Alt-F"],  # Toggle selection of all files in current pane
         "select_all_items": [],  # Toggle selection of all items (files + dirs)
+        #
         # === Clipboard (copy names/paths to the system clipboard) ===
         "copy_names": [
             "Ctrl-Shift-C"
@@ -256,6 +268,7 @@ class Config:
         "copy_paths": [
             "Ctrl-Shift-P"
         ],  # Copy selected/focused full path(s) to clipboard
+        #
         # === File Operations ===
         "copy_files": {
             "keys": ["C"],
@@ -275,36 +288,43 @@ class Config:
             "keys": ["Ctrl-Shift-N"],
             "selection": "none",
         },  # Create new directory (only when no files selected)
+        #
         # === File Viewing & Editing ===
         "view_file": ["Shift-Enter"],  # View file using configured viewer
         "edit_file": [],  # Edit selected file with configured text editor
         "file_details": ["I"],  # Show detailed file information dialog
+        #
         # === File Comparison ===
         "diff_files": ["EQUAL"],  # Compare two selected files side-by-side
         "diff_directories": ["Shift-EQUAL"],  # Compare directories recursively
+        #
         # === Archive Operations ===
         "create_archive": {
             "keys": ["P"],
             "selection": "required",
         },  # Create archive from selected files
         "extract_archive": ["Ctrl-X"],  # Extract selected archive file
+        #
         # === Search & Filter ===
         "search": ["F"],  # Enter incremental search mode (isearch)
         "search_dialog": ["Shift-F"],  # Show filename search dialog
         "search_content": ["Shift-G"],  # Show content search dialog (grep)
         "filter": [";"],  # Enter filter mode to show only matching files
         "clear_filter": [":"],  # Clear current file filter
+        #
         # === Sorting ===
         "sort_menu": ["S"],  # Open the sort dialog (key + order)
         "quick_sort_name": ["1"],  # Quick sort by filename
         "quick_sort_ext": ["2"],  # Quick sort by file extension
         "quick_sort_size": ["3"],  # Quick sort by file size
         "quick_sort_date": ["4"],  # Quick sort by modification date
+        #
         # === Directory Navigation ===
         "favorites": ["Shift-B"],  # Show favorite directories dialog
         "jump_to_path": ["Ctrl-O"],  # Jump to path
         "history": ["Ctrl-Z"],  # Show history for current pane
         "drives_dialog": ["D"],  # Show drives/volumes dialog
+        #
         # === Pane Management ===
         "sync_current_to_other": ["O"],  # Sync current pane directory to other pane
         "sync_other_to_current": [
@@ -315,6 +335,7 @@ class Config:
         "adjust_pane_left": ["["],  # Make left pane smaller (move boundary left)
         "adjust_pane_right": ["]"],  # Make left pane larger (move boundary right)
         "reset_pane_boundary": ["-", "|"],  # Reset pane split to 50% | 50%
+        #
         # === Log Pane Control ===
         "adjust_log_up": ["{"],  # Make log pane larger (Shift+[)
         "adjust_log_down": ["}"],  # Make log pane smaller (Shift+])
@@ -323,31 +344,44 @@ class Config:
         "scroll_log_down": ["Shift-J"],  # Scroll log pane down one line
         "scroll_log_page_up": [],  # Scroll log pane up one page (to older messages)
         "scroll_log_page_down": [],  # Scroll log pane down one page (to newer messages)
-        # === Text / Diff Viewer ===
-        # Viewer-only actions. 'search' (F, above) opens incremental search inside
-        # the viewers too. 'toggle_wrap' intentionally shares 'W' with
-        # 'compare_selection': they never apply in the same context (file list vs.
-        # open viewer), and each context matches its own action by name via
-        # KeyBindings.is_action_for_event, so the shared key is unambiguous.
-        "toggle_wrap": ["Alt-Z"],  # Text viewer: toggle line wrapping
-        # 'M' likewise shares with 'move_files' / 'create_directory' (file list
-        # only); in an open viewer it toggles the raw text view and the file
-        # type's rich renderer (Markdown for *.md), matched by name in-context.
-        "toggle_view_mode": ["M"],  # Text viewer: toggle rendered (Markdown) / raw text
+        #
+        # === Text Viewer ===
+        # Text-viewer-only actions. 'isearch' (F, above) opens incremental search
+        # inside the viewers too. These deliberately share keys with file-list
+        # actions -- 'W' with 'compare_selection', 'M' with 'move_files' /
+        # 'create_directory', 'Shift-E' with 'create_file'. The two surfaces never
+        # apply at once, and each only ever looks at its own context's actions, so
+        # a shared key is never ambiguous. Plain 'E' (edit_file, under File
+        # Operations) works inside the text viewer too, editing the viewed file.
+        "toggle_wrap": ["W"],  # Toggle line wrapping
+        "toggle_view_mode": ["M"],  # Toggle rendered (Markdown) / raw text
+        "change_encoding": ["Shift-E"],  # Choose the text encoding (auto / explicit)
+        #
         # === Image Viewer ===
-        # Image-viewer-only actions, matched by name in-context like the text
-        # viewer's above. '-' and '_' intentionally share with
-        # 'reset_pane_boundary' / 'reset_log_height': those apply to the file
-        # list only, never to an open viewer, and each context matches its own
-        # action by name via KeyBindings.is_action_for_event, so the shared keys
-        # are unambiguous. Arrow keys pan and Home/End jump to the first/last
-        # image; those stay viewer-local (not rebindable), like the text viewer's
-        # scroll keys.
-        "image_zoom_in": ["+", "="],  # Image viewer: zoom in ('=' is unshifted '+')
-        "image_zoom_out": ["-", "_"],  # Image viewer: zoom out
-        "image_zoom_reset": ["0"],  # Image viewer: fit the whole image to the window
-        "image_next": ["n"],  # Image viewer: next image in the file list
-        "image_prev": ["p"],  # Image viewer: previous image in the file list
+        # Image-viewer-only actions, scoped like the text viewer's above. '-' and
+        # '_' intentionally share with
+        # 'reset_pane_boundary' / 'reset_log_height', and the arrow /
+        # Shift-arrow keys with the file list's cursor and log-scroll actions:
+        # all of those apply to the file list only, never to an open viewer,
+        # and each context matches its own action by name via
+        # KeyBindings.is_action_for_event, so the shared keys are unambiguous.
+        # Home/End jump to the first/last image and stay viewer-local (not
+        # rebindable), like the text viewer's scroll keys.
+        "image_viewer.zoom_in": [
+            "+",
+            "=",
+        ],  # Image viewer: zoom in ('=' is unshifted '+')
+        "image_viewer.zoom_out": ["-", "_"],  # Image viewer: zoom out
+        "image_viewer.zoom_reset": [
+            "0"
+        ],  # Image viewer: fit the whole image to the window
+        "image_viewer.next": ["DOWN"],  # Image viewer: next image in the file list
+        "image_viewer.prev": ["UP"],  # Image viewer: previous image in the file list
+        "image_viewer.pan_up": ["Shift-UP"],  # Image viewer: pan up (while zoomed in)
+        "image_viewer.pan_down": ["Shift-DOWN"],  # Image viewer: pan down
+        "image_viewer.pan_left": ["Shift-LEFT"],  # Image viewer: pan left
+        "image_viewer.pan_right": ["Shift-RIGHT"],  # Image viewer: pan right
+        #
         # === Display & Appearance ===
         "toggle_hidden": ["."],  # Toggle visibility of hidden files (dotfiles)
         # Unbound by default (use View → Theme in the menu bar). Assign a key
@@ -355,15 +389,159 @@ class Config:
         "toggle_color_scheme": [],  # Cycle to the next color theme
         "view_options": ["Z"],  # Show view options menu
         "settings_menu": ["Shift-Z"],  # Show settings and configuration menu
+        #
         # === External Programs ===
         "programs": ["X"],  # Show external programs menu
         "subshell": ["Shift-X"],  # Enter subshell (command line) mode
+        #
         # === Configuration ===
         # Unbound by default (reachable via the Tools menu). Assign a key here to
         # open/reload this file without leaving XeFM, e.g. 'edit_config': ['Y'].
         "edit_config": [],  # Edit this config.py in TEXT_EDITOR, then reload
         "reload_config": ["Ctrl-R"],  # Re-read this config.py and apply live
+        #
+        # === Viewer-local actions (rebindable, not listed above) ==============
+        # Every key the modal viewers use is a named action too, and every one of
+        # them can be rebound here. They are *not* listed as entries above,
+        # because they already work without one: an action XeFM does not find in
+        # this dictionary falls back to the default it declares in xefm/actions.py
+        # (which is also what keeps a config written before an action existed
+        # working). Add an entry only for the ones you want to change.
+        #
+        # The names are prefixed with the viewer they belong to, so they never
+        # collide with the file list's own actions — and because each surface only
+        # ever looks at its own names, a viewer action may share a key with a file
+        # list action with no ambiguity at all. Their defaults:
+        #
+        #   Text viewer                        File diff
+        #     'text_viewer.scroll_up':  UP       'file_diff.scroll_up':      UP
+        #     'text_viewer.scroll_down': DOWN    'file_diff.scroll_down':    DOWN
+        #     'text_viewer.page_up':    PAGE_UP  'file_diff.page_up':        PAGE_UP
+        #     'text_viewer.page_down':  PAGE_DOWN 'file_diff.page_down':     PAGE_DOWN
+        #     'text_viewer.scroll_top': HOME     'file_diff.scroll_top':     HOME
+        #     'text_viewer.scroll_bottom': END   'file_diff.scroll_bottom':  END
+        #     'text_viewer.scroll_left': LEFT    'file_diff.scroll_left':    LEFT
+        #     'text_viewer.scroll_right': RIGHT  'file_diff.scroll_right':   RIGHT
+        #                                        'file_diff.next_block':     n
+        #   Image viewer                         'file_diff.prev_block':     Shift-N
+        #     'image_viewer.first':     HOME
+        #     'image_viewer.last':      END
+        #
+        #   Directory diff
+        #     'dir_diff.cursor_up':   UP        'dir_diff.expand':      RIGHT
+        #     'dir_diff.cursor_down': DOWN      'dir_diff.collapse':    LEFT
+        #     'dir_diff.page_up':     PAGE_UP   'dir_diff.activate':    ENTER
+        #     'dir_diff.page_down':   PAGE_DOWN 'dir_diff.switch_side': TAB
+        #     'dir_diff.cursor_top':  HOME      'dir_diff.next_change': n
+        #     'dir_diff.cursor_bottom': END     'dir_diff.prev_change': Shift-N
+        #     'dir_diff.rescan':      r         'dir_diff.split_left':  [
+        #                                       'dir_diff.split_right': ]
+        #
+        # Example -- page with space and b inside the text viewer only:
+        # 'text_viewer.page_down': ['SPACE'],
+        # 'text_viewer.page_up': ['B'],
+        #
+        # The same prefix also scopes a *shared* action to one viewer. 'quit',
+        # 'help', 'isearch' and 'edit_file' are understood everywhere, so rebinding
+        # 'quit' above changes it in the file list and in every viewer; writing
+        # 'file_diff.quit' changes it in the file diff viewer alone:
+        # 'file_diff.quit': ['X'],
     }
+
+    # -----------------------------------------------------------------------
+    # In-process customization -- PREVIEW
+    # -----------------------------------------------------------------------
+    # This config file is executed Python, so it can define functions as well as
+    # settings. ACTIONS binds your own functions to action names (which
+    # KEY_BINDINGS above then binds to keys, exactly like a built-in action), and
+    # EVENT_HOOKS runs them at set moments in XeFM's life.
+    #
+    # PREVIEW: this is not a stable API yet. The objects passed to your functions
+    # and the shape of these two variables may change in any release until
+    # xefm.user_api.API_VERSION reaches 1. XeFM logs one line saying so when a
+    # config uses either variable. Everything else in this file is unaffected.
+    #
+    # Both reload with the rest of the config ('reload_config'), so iterating on
+    # an action is edit-then-reload -- no restart.
+    #
+    # --- ACTIONS ----------------------------------------------------------
+    # A function takes one argument, the context object, and is run on the UI
+    # thread while XeFM waits -- so keep it quick. Anything it raises is logged
+    # with a traceback and dropped; it never takes XeFM down.
+    #
+    # Define the functions ABOVE `class Config:` (module level), then:
+    #
+    # def select_documents(ctx):
+    #     """Select every Word/PDF document in the active pane."""
+    #     n = ctx.pane.select(lambda e: e.suffix.lower() in ('.docx', '.pdf'))
+    #     ctx.message(f"Selected {n} document(s)")
+    #
+    # def go_to_sibling(ctx):
+    #     """Point the other pane at this pane's directory."""
+    #     ctx.other.cd(ctx.pane.path)
+    #
+    # ACTIONS = {
+    #     'select-documents': select_documents,
+    #     'go-to-sibling': go_to_sibling,
+    # }
+    # ...and bind them in KEY_BINDINGS above, like any built-in action:
+    #     'select-documents': ['Shift-D'],
+    #
+    # An action name that already exists is ignored unless you say you meant it,
+    # which also keeps the built-in reachable so you can wrap it:
+    #
+    # def confirm_then_quit(ctx):
+    #     ctx.message("see you")
+    #     ctx.invoke('quit')          # runs the built-in 'quit'
+    #
+    # ACTIONS = {'quit': {'func': confirm_then_quit, 'override': True}}
+    #
+    # What the context object offers:
+    #   ctx.pane / ctx.other / ctx.left / ctx.right   the panes
+    #   ctx.invoke(name)                              run another action
+    #   ctx.message(text)                             one line in the log pane
+    #   ctx.input(prompt, default, on_accept=fn)      ask for text
+    #   ctx.choose(title, items, on_result=fn)        pick from a list
+    #   ctx.confirm(prompt, on_result=fn)             yes / no
+    # ...and on each pane:
+    #   pane.path, pane.entries, pane.cursor, pane.focused, pane.selected()
+    #   pane.select(predicate) / pane.unselect(predicate) / pane.refresh()
+    #   pane.cd(path, focus_name=None)
+    # Each entry has .name, .path, .suffix, .stem, .is_dir, .is_file, .is_link,
+    # .size and .mtime.
+    #
+    # XeFM never blocks on a dialog, so input/choose/confirm hand their answer to
+    # a callback instead of returning it -- put the rest of the action in there.
+    ACTIONS = {}  # noqa: RUF012
+
+    # --- EVENT_HOOKS ------------------------------------------------------
+    # Functions run at set moments. Each event maps to a list, run in order.
+    #
+    #   'startup'           fn(ctx)            once the app is up
+    #   'quit'              fn(ctx)            before XeFM shuts down
+    #   'directory_changed' fn(ctx, pane, old_path, new_path)
+    #   'file_open'         fn(ctx, path)      return True to claim the open
+    #
+    # 'file_open' fires before XeFM decides what to do with a file, so returning
+    # True is how you route one file type somewhere of your own without touching
+    # FILE_ASSOCIATIONS. It does not fire for directories -- entering one is
+    # navigation, not opening.
+    #
+    # def log_visit(ctx, pane, old_path, new_path):
+    #     with open(Path.home() / '.xefm' / 'visited.log', 'a') as f:
+    #         f.write(f"{new_path}\n")
+    #
+    # def open_psd_in_gimp(ctx, path):
+    #     if path.suffix.lower() != '.psd':
+    #         return False
+    #     subprocess.Popen(['gimp', str(path)])
+    #     return True                 # claimed -- XeFM does nothing further
+    #
+    # EVENT_HOOKS = {
+    #     'directory_changed': [log_visit],
+    #     'file_open': [open_psd_in_gimp],
+    # }
+    EVENT_HOOKS = {}  # noqa: RUF012
 
     # Favorite directories - customize your frequently used directories
     # Each entry should have 'name' and 'path' keys
@@ -404,6 +582,21 @@ class Config:
     # File display settings
     SEPARATE_EXTENSIONS = True  # Show file extensions separately from basenames
     MAX_EXTENSION_LENGTH = 5  # Maximum extension length to show separately
+
+    # Incremental search settings
+    # Migemo expands romaji into the Japanese it could spell, so incremental
+    # search (the file panes, the text/diff viewers, and the filter-list
+    # dialogs — favorites, history, drives …) finds Japanese names without an
+    # IME: typing "kensaku" also matches 検索. Plain matching always still
+    # applies — Migemo only ever adds matches. Patterns with glob characters
+    # (* ? [) keep exact fnmatch behavior, and patterns shorter than
+    # MIGEMO_MIN_LENGTH skip Migemo (1-2 character queries are slow to expand
+    # and barely one kana anyway). Needs the pymigemo package (installed with
+    # XeFM); without it searches quietly stay plain.
+    MIGEMO_SEARCH = (
+        False  # Add Migemo (romaji -> Japanese) matches to incremental search
+    )
+    MIGEMO_MIN_LENGTH = 3  # Shortest pattern handed to Migemo
 
     # Text editor settings
     # Supports both string and list formats:
