@@ -1,6 +1,8 @@
 import datetime
 import os
 import shlex
+import shutil
+import subprocess
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -58,6 +60,29 @@ def get_timestamp() -> str:
     return datetime.datetime.now(tz=tz_jst).strftime("%Y%m%d-%H%M%S")
 
 
+def md2docx(md_path: Path) -> None:
+    if not shutil.which("pandoc"):
+        print("pandoc not found in PATH")
+        return
+
+    out_docx = md_path.with_suffix(".docx")
+    try:
+        subprocess.run(
+            [
+                "pandoc",
+                "--from=markdown",
+                "--to=docx",
+                "--standalone",
+                f"--out={out_docx}",
+                str(md_path),
+            ],
+            check=True,
+        )
+        print(f"[FINISHED] Converted Markdown to docx: {out_docx}")
+    except Exception as e:  # noqa: BLE001
+        print(f"[ERROR] pandoc conversion failed: {e}")
+
+
 def main():
 
     root = Path(os.environ.get("XEFM_THIS_DIR", os.getcwd()))
@@ -66,10 +91,13 @@ def main():
         print("Nothing selected.")
         return
 
-    targets = [
-        (name if os.path.isabs(name) else os.path.join(root, name))
-        for name in selected_names
-    ]
+    targets = []
+    for name in selected_names:
+        path = name if os.path.isabs(name) else os.path.join(root, name)
+        p = Path(path)
+        if p.is_dir() and is_skippable(p.name):
+            continue
+        targets.append(path)
 
     out_name = f"{root.name}_summary_{get_timestamp()}.md"
     md, count = summarize(root, targets)
@@ -77,6 +105,8 @@ def main():
     out_path.write_text(md, encoding="utf-8")
 
     print(f"[FINISHED] Summarized {count} files.")
+
+    md2docx(out_path)
 
 
 if __name__ == "__main__":

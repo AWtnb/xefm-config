@@ -254,12 +254,12 @@ class Config:
         "nav_right": [],  # Right pane: go to parent, Left pane: switch to right pane
         #
         # === File Selection ===
-        "select_file": ["SPACE"],  # Toggle selection of current file
-        "select_file_up": ["Shift-SPACE"],  # Toggle selection and move up
-        "select_all": ["Ctrl-A"],  # Select all items
+        "toggle_select_down": ["SPACE"],  # Toggle selection of current file
+        "toggle_select_up": ["Shift-SPACE"],  # Toggle selection and move up
+        "toggle_select_files": ["Ctrl-A"],  # Select all items
         "unselect_all": ["U"],  # Unselect all items
         "select_all_files": ["Alt-F"],  # Toggle selection of all files in current pane
-        "select_all_items": [],  # Toggle selection of all items (files + dirs)
+        "toggle_select_items": [],  # Toggle selection of all items (files + dirs)
         #
         # === Clipboard (copy names/paths to the system clipboard) ===
         "copy_names": [
@@ -282,7 +282,7 @@ class Config:
             "keys": ["Ctrl-D"],
             "selection": "required",
         },  # Delete selected files/directories
-        "rename_file": ["N"],  # Rename selected file/directory
+        "rename": ["N"],  # Rename selected file/directory
         "create_file": ["T"],  # Create new file (prompts for filename)
         "create_directory": {
             "keys": ["Ctrl-Shift-N"],
@@ -306,14 +306,14 @@ class Config:
         "extract_archive": ["Ctrl-X"],  # Extract selected archive file
         #
         # === Search & Filter ===
-        "search": ["F"],  # Enter incremental search mode (isearch)
-        "search_dialog": ["Shift-F"],  # Show filename search dialog
-        "search_content": ["Shift-G"],  # Show content search dialog (grep)
+        "isearch": ["F"],  # Enter incremental search mode (isearch)
+        "find_files": ["Shift-F"],  # Show filename search dialog
+        "find_in_files": ["Shift-G"],  # Show content search dialog (grep)
         "filter": [";"],  # Enter filter mode to show only matching files
         "clear_filter": [":"],  # Clear current file filter
         #
         # === Sorting ===
-        "sort_menu": ["S"],  # Open the sort dialog (key + order)
+        "sort": ["S"],  # Open the sort dialog (key + order)
         "quick_sort_name": ["1"],  # Quick sort by filename
         "quick_sort_ext": ["2"],  # Quick sort by file extension
         "quick_sort_size": ["3"],  # Quick sort by file size
@@ -323,7 +323,7 @@ class Config:
         "favorites": ["Shift-B"],  # Show favorite directories dialog
         "jump_to_path": ["Ctrl-O"],  # Jump to path
         "history": ["Ctrl-Z"],  # Show history for current pane
-        "drives_dialog": ["D"],  # Show drives/volumes dialog
+        "drives": ["D"],  # Show drives/volumes dialog
         #
         # === Pane Management ===
         "sync_current_to_other": ["O"],  # Sync current pane directory to other pane
