@@ -62,6 +62,7 @@ def main():
     root = Path(os.environ.get("XEFM_THIS_DIR", os.getcwd()))
     selected_names = shlex.split(os.environ.get("XEFM_THIS_SELECTED", ""))
     if len(selected_names) < 1:
+        print("Nothing selected.")
         return
 
     targets = [
