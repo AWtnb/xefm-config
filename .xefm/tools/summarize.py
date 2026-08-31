@@ -45,7 +45,8 @@ def summarize(root: Path, targets: list[str]) -> tuple[str, int]:
             counter += 1
         except Exception:  # noqa: BLE001, S112
             continue
-        lines.append(f"{border}{p.relative_to(root)}")
+        lines.append(f"### Content of `{p.relative_to(root)}`\n")
+        lines.append(border)
         lines.append(content)
         lines.append(f"{border}\n")
 
