@@ -71,7 +71,7 @@ def main():
         for name in selected_names
     ]
 
-    out_name = f"{root.name}_summary_{get_timestamp()}.txt"
+    out_name = f"{root.name}_summary_{get_timestamp()}.md"
     md, count = summarize(root, targets)
     out_path = Path(os.environ.get("XEFM_OTHER_DIR", os.getcwd())) / out_name
     out_path.write_text(md, encoding="utf-8")
