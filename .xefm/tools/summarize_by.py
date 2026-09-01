@@ -4,37 +4,32 @@ import shutil
 import subprocess
 from pathlib import Path
 
-from lib.tree import is_skippable, traverse_file
 from lib.util import get_timestamp
 
 
-def summarize(root: Path, targets: list[str]) -> tuple[str, int]:
-    paths = []
-    tree_flag = False
-    for path in targets:
-        if Path(path).is_dir():
-            tree_flag = True
-            paths.extend(traverse_file(path))
-        else:
-            paths.append(path)
+def summarize(root: Path, rel_paths: list[str]) -> str | None:
+
+    target = []
+    for rel in rel_paths:
+        p = root / rel
+        if p.exists():
+            target.append(p)
+
+    if len(target) < 1:
+        return None
 
     border = "```"
     lines: list[str] = ["# SUMMARY\n"]
-
-    if tree_flag:
-        lines.append("## DIRECTORIES\n")
-        lines.append(border)
-        lines.extend(str(Path(p).relative_to(root)) for p in paths)
-        lines.append(f"{border}\n")
+    lines.append("## DIRECTORIES (excerpt)\n")
+    lines.append(border)
+    lines.extend(rel_paths)
+    lines.append(f"{border}\n")
 
     lines.append("## FILE CONTENTS\n")
 
-    counter = 0
-    for path in paths:
-        p = Path(path)
+    for path in target:
         try:
-            content = p.read_text(encoding="utf-8")
-            counter += 1
+            content = path.read_text(encoding="utf-8")
         except Exception:  # noqa: BLE001, S112
             continue
         lines.append(f"### Content of `{p.relative_to(root)}`\n")
@@ -42,7 +37,7 @@ def summarize(root: Path, targets: list[str]) -> tuple[str, int]:
         lines.append(content)
         lines.append(f"{border}\n")
 
-    return "\n".join(lines), counter
+    return "\n".join(lines)
 
 
 def md2docx(md_path: Path) -> None:
@@ -70,26 +65,29 @@ def md2docx(md_path: Path) -> None:
 
 def main():
 
-    root = Path(os.environ.get("XEFM_THIS_DIR", os.getcwd()))
     selected_names = shlex.split(os.environ.get("XEFM_THIS_SELECTED", ""))
-    if len(selected_names) < 1:
-        print("Nothing selected.")
+    if len(selected_names) != 1:
+        print("Select just 1 source file.")
         return
 
-    targets = []
-    for name in selected_names:
-        path = name if os.path.isabs(name) else os.path.join(root, name)
-        p = Path(path)
-        if p.is_dir() and is_skippable(p.name):
-            continue
-        targets.append(path)
+    source_file = selected_names[0]
+    source_path = Path(os.environ.get("XEFM_THIS_DIR", os.getcwd())) / source_file
+
+    other_path = os.environ.get("XEFM_OTHER_DIR", None)
+    if other_path is None:
+        return
+
+    rel_paths = source_path.read_text(encoding="utf-8").splitlines()
+
+    root = Path(other_path)
+    md = summarize(root=root, rel_paths=rel_paths)
+    if md is None:
+        print("[ERROR] Nothing to summarize...")
+        return
 
     out_name = f"{root.name}_summary_{get_timestamp()}.md"
-    md, count = summarize(root, targets)
-    out_path = Path(os.environ.get("XEFM_OTHER_DIR", os.getcwd())) / out_name
+    out_path = Path(os.environ.get("XEFM_THIS_DIR", os.getcwd())) / out_name
     out_path.write_text(md, encoding="utf-8")
-
-    print(f"[FINISHED] Summarized {count} files.")
 
     md2docx(out_path)
 

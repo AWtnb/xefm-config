@@ -773,11 +773,15 @@ class Config:
     #     hand over and refuses the launch with an error in the log pane.
     #   - auto_return: deprecated and ignored — launches never block XeFM.
     PROGRAMS = [  # noqa: RUF012
-        {"name": "Open in VSCode", "command": [xefm_python, xefm_tool("vscode.py")]},
+        {
+            "name": "Make Tree",
+            "command": [xefm_python, xefm_tool("make_tree.py")],
+        },
         {
             "name": "Summarize for LLM",
             "command": [xefm_python, xefm_tool("summarize.py")],
         },
+        {"name": "Open in VSCode", "command": [xefm_python, xefm_tool("vscode.py")]},
         # Add your own programs here:
         # {'name': 'My Custom Tool', 'command': [xefm_python, xefm_tool('my_custom_tool.py')]},
         # {'name': 'My Script (direct path)', 'command': [xefm_python, '/path/to/script.py']},
