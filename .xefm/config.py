@@ -781,6 +781,10 @@ class Config:
             "name": "Summarize for LLM",
             "command": [xefm_python, xefm_tool("summarize.py")],
         },
+        {
+            "name": "Summarize by source",
+            "command": [xefm_python, xefm_tool("summarize_by.py")],
+        },
         {"name": "Open in VSCode", "command": [xefm_python, xefm_tool("vscode.py")]},
         # Add your own programs here:
         # {'name': 'My Custom Tool', 'command': [xefm_python, xefm_tool('my_custom_tool.py')]},
