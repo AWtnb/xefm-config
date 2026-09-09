@@ -30,7 +30,7 @@ def summarize(root: Path, rel_paths: list[str]) -> str | None:
             content = path.read_text(encoding="utf-8")
         except Exception:  # noqa: BLE001, S112
             continue
-        lines.append(f"### Content of `{p.relative_to(root)}`\n")
+        lines.append(f"### Content of `{path.relative_to(root)}`\n")
         lines.append(border)
         lines.append(content)
         lines.append(f"{border}\n")
