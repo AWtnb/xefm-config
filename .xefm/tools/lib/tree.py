@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 def is_skippable(dir_name: str) -> bool:
-    return dir_name == "node_modules" or dir_name.startswith((".", "__"))
+    return dir_name in ("node_modules", ".git") or dir_name.startswith("__")
 
 
 def traverse_file(root: str | Path) -> Iterator[str]:
