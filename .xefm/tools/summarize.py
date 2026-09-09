@@ -1,7 +1,5 @@
 import os
 import shlex
-import shutil
-import subprocess
 from pathlib import Path
 
 from lib.tree import is_skippable, traverse_file
@@ -45,29 +43,6 @@ def summarize(root: Path, targets: list[str]) -> tuple[str, int]:
     return "\n".join(lines), counter
 
 
-def md2docx(md_path: Path) -> None:
-    if not shutil.which("pandoc"):
-        print("pandoc not found in PATH")
-        return
-
-    out_docx = md_path.with_suffix(".docx")
-    try:
-        subprocess.run(
-            [
-                "pandoc",
-                "--from=markdown",
-                "--to=docx",
-                "--standalone",
-                f"--out={out_docx}",
-                str(md_path),
-            ],
-            check=True,
-        )
-        print(f"[FINISHED] Converted Markdown to docx: {out_docx}")
-    except Exception as e:  # noqa: BLE001
-        print(f"[ERROR] pandoc conversion failed: {e}")
-
-
 def main():
 
     root = Path(os.environ.get("XEFM_THIS_DIR", os.getcwd()))
@@ -90,8 +65,6 @@ def main():
     out_path.write_text(md, encoding="utf-8")
 
     print(f"[FINISHED] Summarized {count} files.")
-
-    md2docx(out_path)
 
 
 if __name__ == "__main__":

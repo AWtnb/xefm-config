@@ -1,7 +1,5 @@
 import os
 import shlex
-import shutil
-import subprocess
 from pathlib import Path
 
 from lib.util import get_timestamp
@@ -40,29 +38,6 @@ def summarize(root: Path, rel_paths: list[str]) -> str | None:
     return "\n".join(lines)
 
 
-def md2docx(md_path: Path) -> None:
-    if not shutil.which("pandoc"):
-        print("pandoc not found in PATH")
-        return
-
-    out_docx = md_path.with_suffix(".docx")
-    try:
-        subprocess.run(
-            [
-                "pandoc",
-                "--from=markdown",
-                "--to=docx",
-                "--standalone",
-                f"--out={out_docx}",
-                str(md_path),
-            ],
-            check=True,
-        )
-        print(f"[FINISHED] Converted Markdown to docx: {out_docx}")
-    except Exception as e:  # noqa: BLE001
-        print(f"[ERROR] pandoc conversion failed: {e}")
-
-
 def main():
 
     selected_names = shlex.split(os.environ.get("XEFM_THIS_SELECTED", ""))
@@ -88,8 +63,6 @@ def main():
     out_name = f"{root.name}_summary_{get_timestamp()}.md"
     out_path = Path(os.environ.get("XEFM_THIS_DIR", os.getcwd())) / out_name
     out_path.write_text(md, encoding="utf-8")
-
-    md2docx(out_path)
 
 
 if __name__ == "__main__":
