@@ -3,7 +3,6 @@ import shlex
 from pathlib import Path
 
 from lib.tree import traverse_file
-from lib.util import get_timestamp
 
 
 def main():
@@ -14,7 +13,7 @@ def main():
     if selected_names:
         lines = [l for l in lines if (l.split(os.sep)[0] in selected_names)]
 
-    out_name = f"tree_{root.name}_{get_timestamp()}.txt"
+    out_name = f"tree_{root.name}.txt"
     out_path = Path(os.environ.get("XEFM_OTHER_DIR", os.getcwd())) / out_name
     out_path.write_text("\n".join(lines), encoding="utf-8")
 
