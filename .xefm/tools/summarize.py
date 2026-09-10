@@ -58,7 +58,7 @@ def main():
             continue
         targets.append(path)
 
-    out_name = f"{root.name}_summary.md"
+    out_name = f"resume_{root.name}.md"
     md, count = summarize(root, targets)
     out_path = Path(os.environ.get("XEFM_OTHER_DIR", os.getcwd())) / out_name
     out_path.write_text(md, encoding="utf-8")

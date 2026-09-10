@@ -58,7 +58,7 @@ def main():
         print("[ERROR] Nothing to summarize...")
         return
 
-    out_name = f"{root.name}_summary.md"
+    out_name = f"resume_{root.name}.md"
     out_path = Path(os.environ.get("XEFM_THIS_DIR", os.getcwd())) / out_name
     out_path.write_text(md, encoding="utf-8")
 
