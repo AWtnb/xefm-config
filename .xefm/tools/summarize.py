@@ -3,7 +3,6 @@ import shlex
 from pathlib import Path
 
 from lib.tree import is_skippable, traverse_file
-from lib.util import get_timestamp
 
 
 def summarize(root: Path, targets: list[str]) -> tuple[str, int]:
@@ -59,7 +58,7 @@ def main():
             continue
         targets.append(path)
 
-    out_name = f"{root.name}_summary_{get_timestamp()}.md"
+    out_name = f"{root.name}_summary.md"
     md, count = summarize(root, targets)
     out_path = Path(os.environ.get("XEFM_OTHER_DIR", os.getcwd())) / out_name
     out_path.write_text(md, encoding="utf-8")
