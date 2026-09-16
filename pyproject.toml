@@ -9,3 +9,6 @@ python-preference = "only-managed"
 # https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#configuration-via-a-file
 [tool.black]
 line-length = 100
+
+[tool.ty.environment]
+root = [".xefm"]
