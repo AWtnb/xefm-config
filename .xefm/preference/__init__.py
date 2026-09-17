@@ -1,3 +1,7 @@
-from .theme import phosphor_theme
+from . import favorite, keybind, theme
 
-THEMES = {"Phosphor": phosphor_theme}
+THEMES = {"Phosphor": theme.phosphor_theme}
+
+KEY_BINDINGS = keybind.bindings
+
+FAVORITE_DIRECTORIES = favorite.favs
