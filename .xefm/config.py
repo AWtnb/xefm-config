@@ -372,7 +372,7 @@ class Config:
     # Automatically set based on actual running backend mode:
     # - Terminal mode (curses): vim
     # - Desktop mode (coregraphics): code (VS Code)
-    TEXT_EDITOR = "code" if is_desktop_mode() else "vim"
+    TEXT_EDITOR = "code"
 
     # Text diff tool settings
     # Tool invoked when pressing 'E' (edit_file) key in DiffViewer or DirectoryDiffViewer
@@ -391,7 +391,7 @@ class Config:
     # Supports both string and list formats:
     # - String format: 'zsh' (single command, no arguments)
     # - List format: ['powershell', '-NoLogo'] (command with arguments)
-    SUBSHELL = None
+    SUBSHELL = ["powershell", "-nop"]  # noqa: RUF012
 
     # S3 settings
     S3_CACHE_TTL = 60  # S3 cache TTL in seconds (default: 60 seconds)

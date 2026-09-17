@@ -1,13 +1,13 @@
-favs = [
-    {"name": "Home", "path": "~"},
-    {"name": "Documents", "path": "~/Documents"},
-    {"name": "Downloads", "path": "~/Downloads"},
-    {"name": "Desktop", "path": "~/Desktop"},
-    {"name": "Projects", "path": "~/Projects"},
-    {"name": "Root", "path": "/"},
-    {"name": "Temp", "path": "/tmp"},
-    {"name": "Config", "path": "~/.config"},
-    # Add your own favorites here:
-    # {'name': 'Work', 'path': '/path/to/work'},
-    # {'name': 'Scripts', 'path': '~/bin'},
-]
+import json
+import os
+
+from ._utils import smart_check_path
+
+
+def get_okini_bookmarks() -> list[dict[str, str]] | None:
+    bookmark_json = os.path.expandvars(r"${APPDATA}\okini\bookmarks.json")
+    if not smart_check_path(bookmark_json):
+        return None
+
+    with open(bookmark_json, "r", encoding="utf-8") as f:
+        return json.load(f)
