@@ -40,6 +40,9 @@ def import_config(config_module_name: str) -> ModuleType:
     return importlib.import_module(config_module_name)
 
 
+PREFERENCE = import_config("preference")
+
+
 class Config:
     """User configuration for XeFM"""
 
@@ -87,8 +90,7 @@ class Config:
     DEFAULT_SORT_MODE = "name"  # 'name', 'size', 'date'
     DEFAULT_SORT_REVERSE = False
 
-    theme_config = import_config("theme")
-    THEMES = {"Phosphor": theme_config.PHOSPHOR_THEME}  # noqa: RUF012
+    THEMES = PREFERENCE.THEMES
 
     # Behavior settings
     CONFIRM_DELETE = True  # Show confirmation dialog before deleting files/directories

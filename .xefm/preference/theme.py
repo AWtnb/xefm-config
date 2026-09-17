@@ -101,7 +101,8 @@
 # shade of green on a near-black screen. A ready-made example of a full
 # custom theme; select it from View > Theme or with the T key. On the GUI
 # backend the 'post_effect' below adds a real CRT glow over the green.
-PHOSPHOR_THEME = {
+
+phosphor_theme = {
     "post_effect": "crt",  # CRT glow/bloom/scanlines (GUI backend)
     "animation": "rain",  # falling phosphor streaks (GUI backend)
     "opacity": 0.6,  # chrome opacity; < 1 lets the rain show through
