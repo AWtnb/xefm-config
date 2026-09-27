@@ -1,7 +1,7 @@
 import json
 import os
 
-from ._utils import smart_check_path
+from libs.utils import smart_check_path
 
 
 def get_okini_bookmarks() -> list[dict[str, str]] | None:

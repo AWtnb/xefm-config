@@ -5,11 +5,17 @@ This file contains your personal XeFM configuration.
 You can modify any of these settings to customize XeFM behavior.
 """
 
-import importlib
-import os
 import platform  # noqa: F401
 import sys
-from types import ModuleType
+
+import actions  # ty: ignore[unresolved-import]
+import assoc  # ty: ignore[unresolved-import]
+import event_hooks  # ty: ignore[unresolved-import]
+import favorites  # ty: ignore[unresolved-import]
+import filters  # ty: ignore[unresolved-import]
+import keybindings  # ty: ignore[unresolved-import]
+import sort_keys  # ty: ignore[unresolved-import]
+import themes  # ty: ignore[unresolved-import]
 
 # Import backend detector for runtime backend detection
 from xefm.backend_detector import is_desktop_mode  # ty: ignore[unresolved-import]
@@ -19,28 +25,6 @@ from xefm.external_programs import (  # ty: ignore[unresolved-import]
     xefm_python,
     xefm_tool,
 )
-
-
-def register_config_path(dir_name: str) -> None:
-    user_profile = os.environ.get("USERPROFILE")
-    assert user_profile is not None
-    config_dir = os.path.join(user_profile, dir_name)
-    if config_dir not in sys.path:
-        sys.path.insert(0, config_dir)
-
-
-register_config_path(".xefm")
-
-
-def import_config(config_module_name: str) -> ModuleType:
-    for name in list(sys.modules):
-        if name == config_module_name or name.startswith(config_module_name + "."):
-            del sys.modules[name]
-
-    return importlib.import_module(config_module_name)
-
-
-PREFERENCE = import_config("preference")
 
 
 class Config:
@@ -90,7 +74,7 @@ class Config:
     DEFAULT_SORT_MODE = "name"  # 'name', 'size', 'date'
     DEFAULT_SORT_REVERSE = False
 
-    THEMES = PREFERENCE.THEMES
+    THEMES = {"Phosphor": themes.phosphor_theme}  # noqa: RUF012
 
     # Behavior settings
     CONFIRM_DELETE = True  # Show confirmation dialog before deleting files/directories
@@ -109,17 +93,19 @@ class Config:
         8  # Copy/move worker threads when S3 is involved (ssh is always 1)
     )
 
-    KEY_BINDINGS = PREFERENCE.KEY_BINDINGS
+    KEY_BINDINGS = keybindings.bindings
 
-    ACTIONS = PREFERENCE.ACTIONS
+    ACTIONS = actions.actions
 
-    EVENT_HOOKS = PREFERENCE.EVENT_HOOKS
+    EVENT_HOOKS = event_hooks.event_hooks
 
-    SORT_KEYS = PREFERENCE.SORT_KEYS
+    SORT_KEYS = sort_keys.sort_keys
 
-    FILTERS = PREFERENCE.FILTERS
+    FILTERS = filters.filters
 
-    FAVORITE_DIRECTORIES = PREFERENCE.FAVORITE_DIRECTORIES
+    OKINI_BOOKMARKS = favorites.get_okini_bookmarks() or []
+
+    FAVORITE_DIRECTORIES = OKINI_BOOKMARKS
 
     # Drives dialog (D) - the fixed locations listed above everything the picker
     # discovers on its own (Windows drive letters, /Volumes, /media, /mnt, the
@@ -234,7 +220,7 @@ class Config:
         5  # Polling interval for fallback mode (seconds)
     )
 
-    FILE_ASSOCIATIONS = PREFERENCE.FILE_ASSOCIATIONS
+    FILE_ASSOCIATIONS = assoc.file_associations
 
     # External programs - each item has "name", "command", and optional "options" fields
     # The "command" field is a list for safe subprocess execution
