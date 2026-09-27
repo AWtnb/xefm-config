@@ -13,7 +13,9 @@ import assoc  # ty: ignore[unresolved-import]
 import event_hooks  # ty: ignore[unresolved-import]
 import favorites  # ty: ignore[unresolved-import]
 import filters  # ty: ignore[unresolved-import]
+import image_decoders  # ty: ignore[unresolved-import]
 import keybindings  # ty: ignore[unresolved-import]
+import path_schemes  # ty: ignore[unresolved-import]
 import sort_keys  # ty: ignore[unresolved-import]
 import themes  # ty: ignore[unresolved-import]
 
@@ -88,6 +90,17 @@ class Config:
         True  # Show confirmation dialog before extracting archives
     )
     CONFIRM_ARCHIVE_CREATE = True  # Show confirmation dialog before creating archives
+
+    # How many files a copy, move or extraction may have in flight. "auto"
+    # takes the number from the storage at each end — a local disk or mounted
+    # volume four, S3 eight, ssh and archives one — "none" runs everything
+    # sequentially, and an integer overrides the lot (an endpoint that allows
+    # only one transfer still caps it at one). Closing a file is serialised
+    # whatever this says: where the destination defers a file's transfer to its
+    # close, that is the transfer, and one at a time is what a server was seen
+    # to require.
+    TRANSFER_CONCURRENCY = "auto"
+
     FILE_OP_WORKERS_LOCAL = 4  # Copy/move worker threads, local disk (1 = sequential)
     FILE_OP_WORKERS_S3 = (
         8  # Copy/move worker threads when S3 is involved (ssh is always 1)
@@ -102,6 +115,10 @@ class Config:
     SORT_KEYS = sort_keys.sort_keys
 
     FILTERS = filters.filters
+
+    IMAGE_DECODERS = image_decoders.image_decoders
+
+    PATH_SCHEMES = path_schemes.path_schemes
 
     OKINI_BOOKMARKS = favorites.get_okini_bookmarks() or []
 
@@ -126,6 +143,27 @@ class Config:
     #     {'name': 'NAS', 'path': 'ssh://nas/'},
     # ]
     DRIVE_LOCATIONS = None
+
+    # Connect to Server (Shift-D) - network servers you connect to often.
+    # macOS and Windows only; on Linux the dialog is not offered.
+    #
+    # These are listed above the servers you save from the dialog itself, and
+    # cannot be removed with Shift-Delete (this file is where they live, so
+    # delete them here). Nothing is contacted until you pick a row.
+    #
+    # Each entry needs 'url'; 'name' labels the row (the URL is used when it is
+    # missing) and 'user' prefills the account.
+    #
+    # NEVER put a password here. There is no field for one, and XeFM will not
+    # read one. Tick "Save password" in the connection form instead - it goes
+    # into the login keychain (macOS) or Credential Manager (Windows).
+    #
+    # NETWORK_SERVERS = [
+    #     {'name': 'NAS Photo',  'url': 'smb://nas/photo', 'user': 'me'},
+    #     {'name': 'NAS Backup', 'url': 'smb://nas/backup'},
+    #     {'name': 'Docs',       'url': 'https://dav.example.com/files'},
+    # ]
+    NETWORK_SERVERS = []  # noqa: RUF012
 
     # Performance settings
     MAX_LOG_MESSAGES = 1000
@@ -194,6 +232,18 @@ class Config:
     # - String format: 'zsh' (single command, no arguments)
     # - List format: ['powershell', '-NoLogo'] (command with arguments)
     SUBSHELL = ["powershell", "-nop"]  # noqa: RUF012
+
+    # Terminal application (desktop mode only)
+    # Desktop mode has no terminal of its own to hand over, so the subshell and
+    # PROGRAMS entries with {'terminal': True} open in this application instead.
+    # TERMINAL decides the window; SUBSHELL decides the shell inside it. The
+    # command to run is appended as trailing arguments.
+    # None: the platform default -- Terminal.app on macOS; Windows Terminal
+    # (wt.exe) on Windows if installed, otherwise a new console window.
+    # Supports both string and list formats:
+    # - ['open', '-a', 'iTerm']      (macOS: any app that runs a script it opens)
+    # - ['wezterm', 'start', '--']   (a terminal that takes the command as args)
+    TERMINAL = None
 
     # S3 settings
     S3_CACHE_TTL = 60  # S3 cache TTL in seconds (default: 60 seconds)
