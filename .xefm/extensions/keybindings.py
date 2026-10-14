@@ -1,4 +1,10 @@
-# Key bindings - customize your shortcuts
+# Key bindings - your changes to the keymap preset above
+#
+# Every action already has its keys from the preset in force. An entry
+# here replaces that action's keys under every preset; an action you do
+# not list keeps the preset's. Help (F1) lists every action with its keys,
+# and doc/KEY_BINDINGS_FEATURE.md names them all.
+#
 # Each action can have multiple keys assigned to it
 #
 # Supported formats:
@@ -11,12 +17,40 @@
 #    - 'required': only works when at least one item is explicitly selected
 #    - 'none': only works when no items are explicitly selected
 #
-# Special key names (use these strings in the keys list):
-#   'HOME', 'END', 'PPAGE', 'NPAGE', 'UP', 'DOWN',
-#   'LEFT', 'RIGHT', 'BACKSPACE', 'DELETE', 'INSERT',
-#   'F1' through 'F12'
+# Every key name XeFM accepts, and what a modifier prefix does, is listed in
+# doc/KEY_BINDINGS_FEATURE.md under "Key Expression Format". One of each,
+# so the shape is visible here:
+#
+#   'Q'  '?'                    a character (a capital letter is not Shift)
+#   'Shift-F'                   ...which is why Shift is written out
+#   'ENTER'  'PAGE_UP'  'F10'   a named key
+#   'BACKQUOTE'  'SEMICOLON'    a punctuation key by name
+#   'Ctrl-O'  'Command-ENTER'   a chord
+#
+# A name XeFM does not know is not silently ignored: it logs
+# "Unknown key in expression: ..." and that binding never fires.
+
 
 bindings = {
+    # Examples that combine with every preset -- remove the '#' to use one.
+    #
+    # A key no preset uses, for an action that has none:
+    # 'reload_config': ['F12'],
+    #
+    # Take a key away: an empty list unbinds the action.
+    # 'quit': [],
+    #
+    # Run only with a selection (the extended format):
+    # 'delete_permanently': {'keys': ['Shift-DELETE'], 'selection': 'required'},
+    #
+    # Inside one viewer only, with the viewer's name as a prefix:
+    # 'text_viewer.page_down': ['SPACE'],
+    # 'file_diff.quit': ['X'],
+    #
+    # The search bar's own keys (it takes typed text, so modified keys):
+    # 'search.toggle_case': ['Ctrl-T'],
+    #
+    #
     # === Application Control ===
     "quit": ["Q"],  # Exit XeFM application
     "help": ["?"],  # Show help dialog with all key bindings
@@ -99,6 +133,7 @@ bindings = {
     #
     # === Directory Navigation ===
     "favorites": ["Shift-B"],  # Show favorite directories dialog
+    "flat_view": [],
     "jump_to_path": ["Ctrl-O"],  # Jump to path
     "history": ["Ctrl-Z"],  # Show history for current pane
     "drives": ["D"],  # Show drives/volumes dialog

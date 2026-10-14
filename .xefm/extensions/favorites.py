@@ -11,3 +11,6 @@ def get_okini_bookmarks() -> list[dict[str, str]] | None:
 
     with open(bookmark_json, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+favorites = get_okini_bookmarks() or []

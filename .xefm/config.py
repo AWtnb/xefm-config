@@ -15,6 +15,7 @@ import favorites  # ty: ignore[unresolved-import]
 import filters  # ty: ignore[unresolved-import]
 import image_decoders  # ty: ignore[unresolved-import]
 import keybindings  # ty: ignore[unresolved-import]
+import lexers  # ty: ignore[unresolved-import]
 import path_schemes  # ty: ignore[unresolved-import]
 import sort_keys  # ty: ignore[unresolved-import]
 import themes  # ty: ignore[unresolved-import]
@@ -79,7 +80,16 @@ class Config:
     THEMES = {"Phosphor": themes.phosphor_theme}  # noqa: RUF012
 
     # Behavior settings
+    CONFIRM_TRASH = True
     CONFIRM_DELETE = True  # Show confirmation dialog before deleting files/directories
+
+    # Delete key (delete_files): True sends local files to the system's Trash
+    # (Recycle Bin on Windows) where their drive has one, and deletes for good
+    # only where there is none (remote, archives, USB/network drives on
+    # Windows) -- saying so first. False makes it delete permanently, as
+    # delete_permanently always does.
+    DELETE_TO_TRASH = True
+
     CONFIRM_QUIT = True  # Show confirmation dialog before quitting XeFM
     CONFIRM_COPY = True  # Show confirmation dialog before copying files/directories
     CONFIRM_MOVE = True  # Show confirmation dialog before moving files/directories
@@ -101,6 +111,19 @@ class Config:
     # to require.
     TRANSFER_CONCURRENCY = "auto"
 
+    # Keymap preset: the whole keymap, chosen at first launch and changed from
+    # Tools > Keymap. The presets are peers; neither is the default.
+    #   None        -- whatever you chose at first launch or in Tools > Keymap
+    #   'afx'       -- letters: C copy, K delete, M move ... The single-key
+    #                  style of the X68000 filers and AFX (あふ). 'default' is
+    #                  accepted as an old name for it.
+    #   'orthodox'  -- function keys: F3 view, F4 edit, F5 copy, F6 move,
+    #                  F7 new folder, F8 delete. No bare letter runs anything;
+    #                  typing a letter starts incremental search.
+    # Setting this wins over the Tools > Keymap menu. KEY_BINDINGS below is
+    # laid over whichever preset is in force. See doc/KEYMAP_PRESETS_FEATURE.md.
+    KEY_PRESET = "afx"
+
     FILE_OP_WORKERS_LOCAL = 4  # Copy/move worker threads, local disk (1 = sequential)
     FILE_OP_WORKERS_S3 = (
         8  # Copy/move worker threads when S3 is involved (ssh is always 1)
@@ -120,9 +143,9 @@ class Config:
 
     PATH_SCHEMES = path_schemes.path_schemes
 
-    OKINI_BOOKMARKS = favorites.get_okini_bookmarks() or []
+    LEXERS = lexers.lexers
 
-    FAVORITE_DIRECTORIES = OKINI_BOOKMARKS
+    FAVORITES = favorites.favorites
 
     # Drives dialog (D) - the fixed locations listed above everything the picker
     # discovers on its own (Windows drive letters, /Volumes, /media, /mnt, the
