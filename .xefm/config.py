@@ -122,7 +122,7 @@ class Config:
     #                  typing a letter starts incremental search.
     # Setting this wins over the Tools > Keymap menu. KEY_BINDINGS below is
     # laid over whichever preset is in force. See doc/KEYMAP_PRESETS_FEATURE.md.
-    KEY_PRESET = "afx"
+    KEY_PRESET = None
 
     FILE_OP_WORKERS_LOCAL = 4  # Copy/move worker threads, local disk (1 = sequential)
     FILE_OP_WORKERS_S3 = (
