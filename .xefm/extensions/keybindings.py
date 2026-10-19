@@ -60,11 +60,13 @@ bindings = {
     # === Custom actions ===
     "open-in-vscode": ["V"],
     #
-    # === Navigation ===
+    # === Tabs in Pane ===
     "open_in_new_tab": [],
     "next_tab": [],
     "prev_tab": [],
     "close_tab": ["Shift-W"],
+    #
+    # === Navigation ===
     "cursor_up": ["UP", "K"],  # Move cursor up one item
     "cursor_down": ["DOWN", "J"],  # Move cursor down one item
     "page_up": ["PAGE_UP"],  # Move cursor up one page
