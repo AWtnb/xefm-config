@@ -5,13 +5,13 @@ This file contains your personal XeFM configuration.
 You can modify any of these settings to customize XeFM behavior.
 """
 
+import os
 import platform  # noqa: F401
 import sys
 
 import actions  # ty: ignore[unresolved-import]
 import assoc  # ty: ignore[unresolved-import]
 import event_hooks  # ty: ignore[unresolved-import]
-import favorites  # ty: ignore[unresolved-import]
 import filters  # ty: ignore[unresolved-import]
 import image_decoders  # ty: ignore[unresolved-import]
 import keybindings  # ty: ignore[unresolved-import]
@@ -159,7 +159,7 @@ class Config:
     PATH_SCHEMES = path_schemes.path_schemes
     LEXERS = lexers.lexers
 
-    FAVORITES = favorites.favorites
+    FAVORITES = [{"name": "desktop", "path": os.path.expanduser(r"~/Desktop")}]  # noqa: RUF012
 
     # Drives dialog (D) - the fixed locations listed above everything the picker
     # discovers on its own (Windows drive letters, /Volumes, /media, /mnt, the

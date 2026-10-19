@@ -138,7 +138,8 @@ bindings = {
     "quick_sort_date": ["4"],  # Quick sort by modification date
     #
     # === Directory Navigation ===
-    "favorites": ["Shift-B"],  # Show favorite directories dialog
+    "add_favorite": ["Ctrl-B"],  # Show favorite directories dialog
+    "favorites": ["B"],  # Show favorite directories dialog
     "flat_view": [],
     "jump_to_path": ["Ctrl-O"],  # Jump to path
     "history": ["Ctrl-Z"],  # Show history for current pane
