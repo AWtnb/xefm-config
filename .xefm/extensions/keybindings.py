@@ -61,9 +61,9 @@ bindings = {
     "open-in-vscode": ["V"],
     #
     # === Navigation ===
-    "open_in_new_tab": ["Shift-T"],
-    "next_tab": ["Shift-Period"],
-    "prev_tab": ["Shift-Comma"],
+    "open_in_new_tab": [],
+    "next_tab": [],
+    "prev_tab": [],
     "close_tab": ["Shift-W"],
     "cursor_up": ["UP", "K"],  # Move cursor up one item
     "cursor_down": ["DOWN", "J"],  # Move cursor down one item
@@ -156,8 +156,8 @@ bindings = {
     "reset_pane_boundary": ["-", "|"],  # Reset pane split to 50% | 50%
     #
     # === Log Pane Control ===
-    "adjust_log_up": ["{"],  # Make log pane larger (Shift+[)
-    "adjust_log_down": ["}"],  # Make log pane smaller (Shift+])
+    "adjust_log_up": ["{", "Alt-Up"],  # Make log pane larger (Shift+[)
+    "adjust_log_down": ["}", "Alt-Down"],  # Make log pane smaller (Shift+])
     "reset_log_height": ["_"],  # Reset log pane height to default (Shift+-)
     "scroll_log_up": ["Shift-K"],  # Scroll log pane up one line
     "scroll_log_down": ["Shift-J"],  # Scroll log pane down one line
@@ -203,7 +203,7 @@ bindings = {
     "toggle_hidden": [".", "Shift-H"],  # Toggle visibility of hidden files (dotfiles)
     # Unbound by default (use View → Theme in the menu bar). Assign a key
     # here to cycle themes from the keyboard, e.g. ['T'].
-    "toggle_color_scheme": ["Ctrl-Y"],  # Cycle to the next color theme
+    "toggle_color_scheme": ["Shift-T"],  # Cycle to the next color theme
     "view_options": ["Z"],  # Show view options menu
     "settings_menu": ["Shift-Z"],  # Show settings and configuration menu
     #
