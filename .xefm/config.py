@@ -131,18 +131,32 @@ class Config:
 
     KEY_BINDINGS = keybindings.bindings
 
+    # -----------------------------------------------------------------------
+    # In-process customization -- PREVIEW
+    # -----------------------------------------------------------------------
+    # This config file is executed Python, so it can define functions as well as
+    # settings. ACTIONS binds your own functions to action names (which
+    # KEY_BINDINGS above then binds to keys, exactly like a built-in action),
+    # EVENT_HOOKS runs them at set moments in XeFM's life, SORT_KEYS lets you
+    # write the order the file list is sorted in, FILTERS lets you write what
+    # it shows, IMAGE_DECODERS lets you add picture formats the image viewer
+    # does not read yet, PATH_SCHEMES lets you add a browsable folder that
+    # is not a folder, and LEXERS lets you color a language the text viewer
+    # does not know.
+    #
+    # PREVIEW: this is not a stable API yet. The objects passed to your functions
+    # and the shape of these seven variables may change in any release until
+    # xefm.user_api.API_VERSION reaches 1. XeFM logs one line saying so when a
+    # config uses either variable. Everything else in this file is unaffected.
+    #
+    # Both reload with the rest of the config ('reload_config'), so iterating on
+    # an action is edit-then-reload -- no restart.
     ACTIONS = actions.actions
-
     EVENT_HOOKS = event_hooks.event_hooks
-
     SORT_KEYS = sort_keys.sort_keys
-
     FILTERS = filters.filters
-
     IMAGE_DECODERS = image_decoders.image_decoders
-
     PATH_SCHEMES = path_schemes.path_schemes
-
     LEXERS = lexers.lexers
 
     FAVORITES = favorites.favorites

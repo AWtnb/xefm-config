@@ -55,8 +55,16 @@ bindings = {
     "quit": ["Q"],  # Exit XeFM application
     "help": ["?"],  # Show help dialog with all key bindings
     "redraw": ["F5"],  # Additional redraw trigger (Ctrl-L is always hardcoded)
+    "command_palette": ["P"],
+    #
+    # === Custom actions ===
+    "open-in-vscode": ["V"],
     #
     # === Navigation ===
+    "open_in_new_tab": ["Shift-T"],
+    "next_tab": ["Shift-Period"],
+    "prev_tab": ["Shift-Comma"],
+    "close_tab": ["Shift-W"],
     "cursor_up": ["UP", "K"],  # Move cursor up one item
     "cursor_down": ["DOWN", "J"],  # Move cursor down one item
     "page_up": ["PAGE_UP"],  # Move cursor up one page
@@ -74,8 +82,6 @@ bindings = {
     "toggle_select_up": ["Shift-SPACE"],  # Toggle selection and move up
     "toggle_select_files": ["Ctrl-A"],  # Select all items
     "unselect_all": ["U"],  # Unselect all items
-    "select_all_files": ["Alt-F"],  # Toggle selection of all files in current pane
-    "toggle_select_items": [],  # Toggle selection of all items (files + dirs)
     #
     # === Clipboard (copy names/paths to the system clipboard) ===
     "copy_names": ["Ctrl-Shift-C"],  # Copy selected/focused file name(s) to clipboard
@@ -197,7 +203,7 @@ bindings = {
     "toggle_hidden": [".", "Shift-H"],  # Toggle visibility of hidden files (dotfiles)
     # Unbound by default (use View → Theme in the menu bar). Assign a key
     # here to cycle themes from the keyboard, e.g. ['T'].
-    "toggle_color_scheme": ["Shift-T"],  # Cycle to the next color theme
+    "toggle_color_scheme": ["Ctrl-Y"],  # Cycle to the next color theme
     "view_options": ["Z"],  # Show view options menu
     "settings_menu": ["Shift-Z"],  # Show settings and configuration menu
     #

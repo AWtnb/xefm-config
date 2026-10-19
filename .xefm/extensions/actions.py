@@ -1,19 +1,3 @@
-# -----------------------------------------------------------------------
-# In-process customization -- PREVIEW
-# -----------------------------------------------------------------------
-# This config file is executed Python, so it can define functions as well as
-# settings. ACTIONS binds your own functions to action names (which
-# KEY_BINDINGS above then binds to keys, exactly like a built-in action), and
-# EVENT_HOOKS runs them at set moments in XeFM's life.
-#
-# PREVIEW: this is not a stable API yet. The objects passed to your functions
-# and the shape of these two variables may change in any release until
-# xefm.user_api.API_VERSION reaches 1. XeFM logs one line saying so when a
-# config uses either variable. Everything else in this file is unaffected.
-#
-# Both reload with the rest of the config ('reload_config'), so iterating on
-# an action is edit-then-reload -- no restart.
-#
 # --- ACTIONS ----------------------------------------------------------
 # A function takes one argument, the context object, and is run on the UI
 # thread while XeFM waits -- so keep it quick. Anything it raises is logged
@@ -35,7 +19,24 @@
 #     'go-to-sibling': go_to_sibling,
 # }
 # ...and bind them in KEY_BINDINGS above, like any built-in action:
-#     'select-documents': ['Shift-D'],
+#     'select-documents': ['Shift-Y'],
+#
+# Every action of yours is in the command palette (Ctrl-T), key or no
+# key. The docstring is how it is described there: its first line is the
+# one-line description (also the Help dialog's row), and the paragraphs
+# after a blank line are the page F1 opens in the palette (Markdown):
+#
+# def open_in_vscode(ctx):
+#     """Open the item under the cursor in VS Code.
+#
+#     Works on directories too -- VS Code opens them as a workspace.
+#     """
+#     ctx.run_program(['code', str(ctx.pane.focused.path)])
+#
+# Without a docstring the palette has only the name to show. (The dict
+# form below also takes a 'description', written and split the same way,
+# which replaces the docstring -- for a function that cannot carry one,
+# such as a lambda.)
 #
 # An action name that already exists is ignored unless you say you meant it,
 # which also keeps the built-in reachable so you can wrap it:
@@ -53,6 +54,9 @@
 #   ctx.input(prompt, default, on_accept=fn)      ask for text
 #   ctx.choose(title, items, on_result=fn)        pick from a list
 #   ctx.confirm(prompt, on_result=fn)             yes / no
+#   ctx.run_program(['cmd', ...], terminal=False) run an external program;
+#       terminal=True lends it the terminal (vim, massren...) and waits.
+#       Don't subprocess.run() one yourself -- the screen breaks.
 # ...and on each pane:
 #   pane.path, pane.entries, pane.cursor, pane.focused, pane.selected()
 #   pane.select(predicate) / pane.unselect(predicate) / pane.refresh()
@@ -63,4 +67,10 @@
 # XeFM never blocks on a dialog, so input/choose/confirm hand their answer to
 # a callback instead of returning it -- put the rest of the action in there.
 
-actions = {}
+
+def open_in_vscode(ctx):
+    """Open current dir in VS Code."""
+    ctx.run_program(["code", str(ctx.pane.path)])
+
+
+actions = {"open-in-vscode": open_in_vscode}
