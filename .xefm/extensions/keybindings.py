@@ -111,7 +111,7 @@ bindings = {
     },  # Create new directory (only when no files selected)
     #
     # === File Viewing & Editing ===
-    "view_file": ["Shift-Enter"],  # View file using configured viewer
+    "view_file": ["Shift-Enter", "Shift-L"],  # View file using configured viewer
     "edit_file": [],  # Edit selected file with configured text editor
     "file_details": ["I"],  # Show detailed file information dialog
     #

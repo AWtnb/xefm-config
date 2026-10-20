@@ -77,10 +77,17 @@ def open_in_vscode(ctx) -> None:
 
 
 def smart_enter(ctx) -> None:
+
     item = ctx.pane.focused
-    if item and item.path.suffix.lower() == ".pdf":
+    if not item:
+        return
+
+    supported_extensions = [".pdf", ".docx", ".xlsx"]
+    ext = item.path.suffix.lower()
+    if ext in supported_extensions:
         os.startfile(item.path)
         return
+
     ctx.invoke("open_item")
 
 
