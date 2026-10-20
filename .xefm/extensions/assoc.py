@@ -41,24 +41,18 @@
 # }
 
 file_associations = [
-    # PDF files
-    {
-        "pattern": "*.pdf",
-        "open|view": ["cmd.exe", "/c", "start"],
-        "edit": None,
-    },
     # Image files. 'view' is deliberately None so V opens XeFM's own image
     # viewer (zoom / pan / prev-next, staying inside XeFM) rather than handing
     # the file to Preview; 'open' still hands it to the OS app for editing or
     # a full-fidelity look. Set 'open|view' back to Preview if you would
     # rather V left XeFM. Formats beyond these four still reach the built-in
     # viewer by falling through with no rule at all.
-    {
-        "pattern": ["*.jpg", "*.jpeg", "*.png", "*.gif"],
-        "open": ["open", "-a", "Preview"],
-        "view": None,
-        "edit": ["open", "-a", "GIMP"],
-    },
+    # {
+    #     "pattern": ["*.jpg", "*.jpeg", "*.png", "*.gif"],
+    #     "open": ["open", "-a", "Preview"],
+    #     "view": None,
+    #     "edit": ["open", "-a", "GIMP"],
+    # },
     # Video files
     {
         "pattern": ["*.mp4", "*.mov"],
@@ -108,8 +102,8 @@ file_associations = [
     # },
     # Terminal programs need no special marking -- in terminal mode XeFM
     # hands the display over and waits:
-    # {
-    #     'pattern': '*.log',
-    #     'view': ['less'],
-    # },
+    {
+        "pattern": ["*.txt", "*.md"],
+        "view": ["bat"],
+    },
 ]

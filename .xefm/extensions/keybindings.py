@@ -58,7 +58,7 @@ bindings = {
     "command_palette": ["P"],
     #
     # === Custom actions ===
-    "open-in-vscode": ["V"],
+    "open_in_vscode": ["V"],
     #
     # === Tabs in Pane ===
     "open_in_new_tab": [],
@@ -71,7 +71,8 @@ bindings = {
     "cursor_down": ["DOWN", "J"],  # Move cursor down one item
     "page_up": ["PAGE_UP"],  # Move cursor up one page
     "page_down": ["PAGE_DOWN"],  # Move cursor down one page
-    "open_item": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
+    "open_item": [],  # Open file/directory or enter directory
+    "smart_enter": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
     "open_with_os": ["Ctrl-ENTER"],  # Open file(s) with OS default application
     "reveal_in_os": ["Ctrl-Shift-E"],  # Reveal focused file in OS file manager
     "go_parent": ["BACKSPACE", "H", "LEFT"],  # Go to parent directory

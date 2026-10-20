@@ -68,9 +68,23 @@
 # a callback instead of returning it -- put the rest of the action in there.
 
 
-def open_in_vscode(ctx):
+import os
+
+
+def open_in_vscode(ctx) -> None:
     """Open current dir in VS Code."""
     ctx.run_program(["code", str(ctx.pane.path)])
 
 
-actions = {"open-in-vscode": open_in_vscode}
+def smart_enter(ctx) -> None:
+    item = ctx.pane.focused
+    if item and item.path.suffix.lower() == ".pdf":
+        os.startfile(item.path)
+        return
+    ctx.invoke("open_item")
+
+
+actions = {
+    "open_in_vscode": open_in_vscode,
+    "smart_enter": smart_enter,
+}
