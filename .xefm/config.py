@@ -329,28 +329,11 @@ class Config:
     #     hand over and refuses the launch with an error in the log pane.
     #   - auto_return: deprecated and ignored — launches never block XeFM.
     PROGRAMS = [  # noqa: RUF012
-        {
-            "name": "Make Tree",
-            "command": [xefm_python, xefm_tool("make_tree.py")],
-        },
-        {
-            "name": "Summarize for LLM",
-            "command": [xefm_python, xefm_tool("summarize.py")],
-        },
-        {
-            "name": "Summarize by source",
-            "command": [xefm_python, xefm_tool("summarize_by.py")],
-        },
         {"name": "Open in VSCode", "command": [xefm_python, xefm_tool("vscode.py")]},
         # Add your own programs here:
         # {'name': 'My Custom Tool', 'command': [xefm_python, xefm_tool('my_custom_tool.py')]},
         # {'name': 'My Script (direct path)', 'command': [xefm_python, '/path/to/script.py']},
         # {'name': 'Quick Command', 'command': ['ls', '-la']},
         # Full-screen / interactive programs need the terminal handed over:
-        {
-            "name": "View with bat",
-            "command": ["bat", "--paging=always"],
-            "options": {"terminal": True},
-        },
         # {'name': 'Python REPL', 'command': ['python3'], 'options': {'terminal': True}},
     ]

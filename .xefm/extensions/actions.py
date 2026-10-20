@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import NamedTuple
 
 from libs.cursor_jump import focus_newest_item, jump_down, jump_up
+from libs.tree import make_tree, summarize_by
 
 # --- ACTIONS ----------------------------------------------------------
 # A function takes one argument, the context object, and is run on the UI
@@ -86,7 +87,7 @@ def smart_enter(ctx) -> None:
     if not item:
         return
 
-    supported_extensions = [".pdf", ".docx", ".xlsx"]
+    supported_extensions = [".pdf", ".docx", ".xlsx", ".tbx", ".cmx"]
     ext = item.path.suffix.lower()
     if ext in supported_extensions:
         os.startfile(item.path)
@@ -165,4 +166,6 @@ actions = {
     "focus_newest_item": focus_newest_item,
     "jump_down": jump_down,
     "jump_up": jump_up,
+    "make_tree": make_tree,
+    "summarize_by": summarize_by,
 }

@@ -55,7 +55,7 @@ bindings = {
     "quit": ["Q"],  # Exit XeFM application
     "help": ["?"],  # Show help dialog with all key bindings
     "redraw": ["F5"],  # Additional redraw trigger (Ctrl-L is always hardcoded)
-    "command_palette": ["P"],
+    "command_palette": ["X"],
     #
     # === Custom actions ===
     "open_in_vscode": ["V"],
@@ -221,7 +221,7 @@ bindings = {
     "settings_menu": ["Shift-Z"],  # Show settings and configuration menu
     #
     # === External Programs ===
-    "programs": ["X"],  # Show external programs menu
+    "programs": ["Alt-X"],  # Show external programs menu
     "subshell": ["Shift-X"],  # Enter subshell (command line) mode
     #
     # === Configuration ===
