@@ -160,7 +160,8 @@ class Config:
     LEXERS = lexers.lexers
 
     FAVORITES = [  # noqa: RUF012
-        {"name": "desktop", "path": os.path.expanduser(r"~/Desktop")},
+        {"name": "Desktop", "path": os.path.expanduser(r"~/Desktop")},
+        {"name": "Dropbox", "path": os.path.expanduser(r"~/Dropbox")},
         {"name": "AppData", "path": os.path.expanduser(r"~/AppData")},
     ]
 

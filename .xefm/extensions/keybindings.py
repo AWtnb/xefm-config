@@ -142,6 +142,7 @@ bindings = {
     # === Directory Navigation ===
     "add_favorite": ["Ctrl-B"],  # Show favorite directories dialog
     "favorites": ["B"],  # Show favorite directories dialog
+    "find_by_tag": ["Shift-T"],  # Show favorite directories dialog
     "flat_view": [],
     "jump_to_path": ["Ctrl-O"],  # Jump to path
     "history": ["Ctrl-Z"],  # Show history for current pane
@@ -206,7 +207,7 @@ bindings = {
     "toggle_hidden": [".", "Shift-H"],  # Toggle visibility of hidden files (dotfiles)
     # Unbound by default (use View → Theme in the menu bar). Assign a key
     # here to cycle themes from the keyboard, e.g. ['T'].
-    "toggle_color_scheme": ["Shift-T"],  # Cycle to the next color theme
+    "toggle_color_scheme": [],  # Cycle to the next color theme
     "view_options": ["Z"],  # Show view options menu
     "settings_menu": ["Shift-Z"],  # Show settings and configuration menu
     #
