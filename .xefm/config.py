@@ -159,7 +159,10 @@ class Config:
     PATH_SCHEMES = path_schemes.path_schemes
     LEXERS = lexers.lexers
 
-    FAVORITES = [{"name": "desktop", "path": os.path.expanduser(r"~/Desktop")}]  # noqa: RUF012
+    FAVORITES = [  # noqa: RUF012
+        {"name": "desktop", "path": os.path.expanduser(r"~/Desktop")},
+        {"name": "AppData", "path": os.path.expanduser(r"~/AppData")},
+    ]
 
     # Drives dialog (D) - the fixed locations listed above everything the picker
     # discovers on its own (Windows drive letters, /Volumes, /media, /mnt, the
