@@ -188,6 +188,12 @@ bindings = {
     "toggle_wrap": ["W"],  # Toggle line wrapping
     "toggle_view_mode": ["M"],  # Toggle rendered (Markdown) / raw text
     "change_encoding": ["Shift-E"],  # Choose the text encoding (auto / explicit)
+    "text_viewer.scroll_down": ["J", "DOWN"],
+    "text_viewer.scroll_up": ["K", "UP"],
+    "text_viewer.page_down": ["L", "Right"],
+    "text_viewer.page_up": ["H", "Left"],
+    "text_viewer.scroll_top": ["A", "HOME"],
+    "text_viewer.scroll_bottom": ["E", "END"],
     #
     # === Image Viewer ===
     # Image-viewer-only actions, scoped like the text viewer's above. '-' and
