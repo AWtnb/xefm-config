@@ -59,6 +59,7 @@ bindings = {
     #
     # === Custom actions ===
     "open_in_vscode": ["V"],
+    "open_desktop": ["0"],
     #
     # === Tabs in Pane ===
     "open_in_new_tab": [],

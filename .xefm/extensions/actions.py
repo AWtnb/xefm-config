@@ -77,7 +77,6 @@ def open_in_vscode(ctx) -> None:
 
 
 def smart_enter(ctx) -> None:
-
     item = ctx.pane.focused
     if not item:
         return
@@ -91,7 +90,15 @@ def smart_enter(ctx) -> None:
     ctx.invoke("open_item")
 
 
+DESKTOP_PATH = os.path.expanduser(r"~/Desktop")
+
+
+def open_desktop(ctx) -> None:
+    ctx.pane.cd(DESKTOP_PATH)
+
+
 actions = {
     "open_in_vscode": open_in_vscode,
     "smart_enter": smart_enter,
+    "open_desktop": open_desktop,
 }
