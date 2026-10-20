@@ -63,6 +63,7 @@ bindings = {
     "open_desktop_both": ["BACKSLASH"],
     "go_root": [],
     "open_ghq_repo": ["G"],
+    "focus_newest_item": ["Alt-N"],
     #
     # === Tabs in Pane ===
     "open_in_new_tab": [],

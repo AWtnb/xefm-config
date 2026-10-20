@@ -66,13 +66,13 @@
 #
 # XeFM never blocks on a dialog, so input/choose/confirm hand their answer to
 # a callback instead of returning it -- put the rest of the action in there.
-
-
 import os
 import shutil
 import subprocess
 from pathlib import Path
 from typing import NamedTuple
+
+from xefm import name_key  # ty: ignore[unresolved-import]
 
 
 def open_in_vscode(ctx) -> None:
@@ -155,10 +155,43 @@ def open_ghq_repo(ctx) -> None:
     )
 
 
+def focus_newest_item(ctx):
+    pane = ctx.pane._pane
+    items = pane.get("files")
+    if not items:
+        return
+
+    file_info = pane.get("file_info")
+    if not file_info:
+        return
+
+    best_index = None
+    best_rank = None
+
+    for i, item in enumerate(items):
+        meta = file_info.get(str(item))
+        if not meta:
+            continue
+        date_str = meta.get("date_str")
+        if not date_str:
+            continue
+
+        name = meta.get("cmp_name") or name_key.compare_name(item)
+
+        rank = (date_str, name_key.nfc(name))
+        if best_rank is None or best_rank < rank:
+            best_rank = rank
+            best_index = i
+
+    if best_index is not None:
+        ctx.pane.cursor = best_index
+
+
 actions = {
     "open_in_vscode": open_in_vscode,
     "smart_enter": smart_enter,
     "open_desktop": open_desktop,
     "open_desktop_both": open_desktop_both,
     "open_ghq_repo": open_ghq_repo,
+    "focus_newest_item": focus_newest_item,
 }
