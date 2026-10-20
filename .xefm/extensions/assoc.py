@@ -104,6 +104,6 @@ file_associations = [
     # hands the display over and waits:
     {
         "pattern": ["*.txt", "*.md"],
-        "view": ["bat"],
+        "view": ["bat", "--paging=always"],
     },
 ]

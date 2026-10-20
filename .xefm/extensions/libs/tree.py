@@ -23,7 +23,8 @@ def make_tree(ctx) -> None:
     out_name = f"tree_{root.name}.txt"
     out_path = Path(ctx.other.path) / out_name
     out_path.write_text("\n".join(lines), encoding="utf-8")
-    ctx.other.refresh()
+    ctx.other.cd(ctx.other.path, out_name)
+    ctx.other.activate()
 
 
 def summarize_by(ctx) -> None:
