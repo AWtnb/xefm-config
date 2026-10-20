@@ -78,8 +78,8 @@ bindings = {
     "cursor_down": ["DOWN", "J"],  # Move cursor down one item
     "page_up": ["PAGE_UP"],  # Move cursor up one page
     "page_down": ["PAGE_DOWN"],  # Move cursor down one page
-    "open_item": [],  # Open file/directory or enter directory
-    "smart_enter": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
+    "open_item": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
+    # "smart_enter": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
     "open_with_os": ["Ctrl-ENTER"],  # Open file(s) with OS default application
     "reveal_in_os": ["Ctrl-Shift-E"],  # Reveal focused file in OS file manager
     "go_parent": ["BACKSPACE", "H", "LEFT"],  # Go to parent directory
@@ -194,6 +194,7 @@ bindings = {
     "text_viewer.page_up": ["H", "Left"],
     "text_viewer.scroll_top": ["A", "HOME"],
     "text_viewer.scroll_bottom": ["E", "END"],
+    "text_viewer.edit_file": ["Ctrl-E"],
     #
     # === Image Viewer ===
     # Image-viewer-only actions, scoped like the text viewer's above. '-' and

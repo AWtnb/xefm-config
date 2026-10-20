@@ -53,32 +53,17 @@ file_associations = [
     #     "view": None,
     #     "edit": ["open", "-a", "GIMP"],
     # },
-    # Video files
+    # Microsoft Office and PDF
     {
-        "pattern": ["*.mp4", "*.mov"],
-        "open|view": ["open", "-a", "QuickTime Player"],
-        "edit": None,
+        "pattern": ["*.doc", "*.docx", "*.xls", "*.xlsx", "*.ppt", "*.pptx", "*.pdf"],
+        "enter": "viewer",
+        "open|edit": ["cmd", "/c", "start"],
     },
     # Audio files
     {
         "pattern": ["*.mp3", "*.wav"],
         "open": ["open", "-a", "Music"],
         "edit": None,
-    },
-    # Microsoft Word documents
-    {
-        "pattern": ["*.doc", "*.docx"],
-        "open|view|edit": ["open", "-a", "Microsoft Word"],
-    },
-    # Microsoft Excel spreadsheets
-    {
-        "pattern": ["*.xls", "*.xlsx"],
-        "open|view|edit": ["open", "-a", "Microsoft Excel"],
-    },
-    # Microsoft PowerPoint presentations
-    {
-        "pattern": ["*.ppt", "*.pptx"],
-        "open|view|edit": ["open", "-a", "Microsoft PowerPoint"],
     },
     # Note there is deliberately no entry listing text/code extensions.
     # Enter and V already fall through to the built-in viewer when no rule
@@ -100,10 +85,4 @@ file_associations = [
     #     'open|view': ['command', 'args'],   # external programs
     #     'edit': ['command', 'args'],
     # },
-    # Terminal programs need no special marking -- in terminal mode XeFM
-    # hands the display over and waits:
-    {
-        "pattern": ["*.txt", "*.md"],
-        "view": ["bat", "--paging=always"],
-    },
 ]
