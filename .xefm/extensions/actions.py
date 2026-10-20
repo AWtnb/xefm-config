@@ -69,6 +69,10 @@
 
 
 import os
+import shutil
+import subprocess
+from pathlib import Path
+from typing import NamedTuple
 
 
 def open_in_vscode(ctx) -> None:
@@ -102,9 +106,59 @@ def open_desktop_both(ctx) -> None:
     ctx.other.cd(DESKTOP_PATH)
 
 
+def open_ghq_repo(ctx) -> None:
+    ghq_root = Path(os.path.expanduser(r"~/ghq"))
+    if not ghq_root.is_dir():
+        ctx.message(f"ghq root not found: {ghq_root}")
+        return
+
+    ghq_cmd = shutil.which("ghq")
+    if ghq_cmd is None:
+        ctx.message("ghq is not installed or not in PATH.")
+        return
+    try:
+        out = subprocess.check_output(
+            [ghq_cmd, "list", "--full-path"],
+            text=True,
+            stderr=subprocess.STDOUT,
+        )
+    except Exception as exc:  # noqa: BLE001
+        ctx.message(f"ghq failed: {exc}")
+        return
+
+    class RepoPath(NamedTuple):
+        rel: str
+        full: str
+
+        @classmethod
+        def from_path(cls, path: str):
+            rel = Path(path).relative_to(ghq_root)
+            return cls(str(rel), path)
+
+    repo_paths = [
+        RepoPath.from_path(line.strip()) for line in out.splitlines() if line.strip()
+    ]
+    if not repo_paths:
+        ctx.message("No repositories found under ~/ghq.")
+        return
+
+    def _on_select(index):
+        if index is None:
+            return
+        ctx.pane.cd(repo_paths[index].full)
+
+    ctx.choose(
+        "Select ghq repository",
+        [r.rel for r in repo_paths],
+        type="filter",
+        on_result=_on_select,
+    )
+
+
 actions = {
     "open_in_vscode": open_in_vscode,
     "smart_enter": smart_enter,
     "open_desktop": open_desktop,
     "open_desktop_both": open_desktop_both,
+    "open_ghq_repo": open_ghq_repo,
 }

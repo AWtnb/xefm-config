@@ -62,6 +62,7 @@ bindings = {
     "open_desktop": ["0"],
     "open_desktop_both": ["BACKSLASH"],
     "go_root": [],
+    "open_ghq_repo": ["G"],
     #
     # === Tabs in Pane ===
     "open_in_new_tab": [],
@@ -92,6 +93,7 @@ bindings = {
     # === Clipboard (copy names/paths to the system clipboard) ===
     "copy_names": ["Ctrl-Shift-C"],  # Copy selected/focused file name(s) to clipboard
     "copy_paths": ["Ctrl-Shift-P"],  # Copy selected/focused full path(s) to clipboard
+    "clipboard_paste": ["Ctrl-V"],  # Copy selected/focused full path(s) to clipboard
     #
     # === File Operations ===
     "copy_files": {
