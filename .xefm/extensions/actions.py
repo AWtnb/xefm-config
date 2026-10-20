@@ -1,3 +1,11 @@
+import os
+import shutil
+import subprocess
+from pathlib import Path
+from typing import NamedTuple
+
+from libs.cursor_jump import focus_newest_item, jump_down, jump_up
+
 # --- ACTIONS ----------------------------------------------------------
 # A function takes one argument, the context object, and is run on the UI
 # thread while XeFM waits -- so keep it quick. Anything it raises is logged
@@ -66,13 +74,6 @@
 #
 # XeFM never blocks on a dialog, so input/choose/confirm hand their answer to
 # a callback instead of returning it -- put the rest of the action in there.
-import os
-import shutil
-import subprocess
-from pathlib import Path
-from typing import NamedTuple
-
-from libs.cursor_jump import focus_newest_item
 
 
 def open_in_vscode(ctx) -> None:
@@ -162,4 +163,6 @@ actions = {
     "open_desktop_both": open_desktop_both,
     "open_ghq_repo": open_ghq_repo,
     "focus_newest_item": focus_newest_item,
+    "jump_down": jump_down,
+    "jump_up": jump_up,
 }

@@ -64,6 +64,8 @@ bindings = {
     "go_root": [],
     "open_ghq_repo": ["G"],
     "focus_newest_item": ["Alt-N"],
+    "jump_down": ["Alt-J"],
+    "jump_up": ["Alt-K"],
     #
     # === Tabs in Pane ===
     "open_in_new_tab": [],
