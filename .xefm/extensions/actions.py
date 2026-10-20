@@ -97,8 +97,14 @@ def open_desktop(ctx) -> None:
     ctx.pane.cd(DESKTOP_PATH)
 
 
+def open_desktop_both(ctx) -> None:
+    ctx.pane.cd(DESKTOP_PATH)
+    ctx.other.cd(DESKTOP_PATH)
+
+
 actions = {
     "open_in_vscode": open_in_vscode,
     "smart_enter": smart_enter,
     "open_desktop": open_desktop,
+    "open_desktop_both": open_desktop_both,
 }
