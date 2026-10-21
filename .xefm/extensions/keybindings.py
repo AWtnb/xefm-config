@@ -194,7 +194,7 @@ bindings = {
     "text_viewer.page_up": ["H", "Left"],
     "text_viewer.scroll_top": ["A", "HOME"],
     "text_viewer.scroll_bottom": ["E", "END"],
-    "text_viewer.edit_file": ["Ctrl-E"],
+    "text_viewer.edit_file": ["Ctrl-E", "W"],
     #
     # === Image Viewer ===
     # Image-viewer-only actions, scoped like the text viewer's above. '-' and
