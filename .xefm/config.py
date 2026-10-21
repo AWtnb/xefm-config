@@ -10,7 +10,6 @@ import platform  # noqa: F401
 import sys
 
 import actions  # ty: ignore[unresolved-import]
-import assoc  # ty: ignore[unresolved-import]
 import event_hooks  # ty: ignore[unresolved-import]
 import filters  # ty: ignore[unresolved-import]
 import image_decoders  # ty: ignore[unresolved-import]
@@ -253,7 +252,7 @@ class Config:
     # Automatically set based on actual running backend mode:
     # - Terminal mode (curses): vim
     # - Desktop mode (coregraphics): code (VS Code)
-    TEXT_EDITOR = "code"
+    TEXT_EDITOR = "vim"
 
     # Text diff tool settings
     # Tool invoked when pressing 'E' (edit_file) key in DiffViewer or DirectoryDiffViewer
@@ -311,7 +310,30 @@ class Config:
         5  # Polling interval for fallback mode (seconds)
     )
 
-    FILE_ASSOCIATIONS = assoc.file_associations
+    FILE_ASSOCIATIONS = [  # noqa: RUF012
+        # Microsoft Office
+        {
+            "pattern": [
+                "*.doc",
+                "*.docx",
+                "*.xls",
+                "*.xlsx",
+                "*.ppt",
+                "*.pptx",
+                "*.pdf",
+            ],
+            "enter": "viewer",
+            "open|edit": ["cmd", "/c", "start"],
+        },
+        {
+            "pattern": ["*.md", "*.txt"],
+            "edit": ["cmd", "/c", "start"],
+        },
+        {
+            "pattern": ["*.jar", "*.whl", "*.egg"],
+            "enter": "navigate",
+        },
+    ]
 
     # External programs - each item has "name", "command", and optional "options" fields
     # The "command" field is a list for safe subprocess execution
