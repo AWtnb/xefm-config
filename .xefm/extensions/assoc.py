@@ -53,17 +53,11 @@ file_associations = [
     #     "view": None,
     #     "edit": ["open", "-a", "GIMP"],
     # },
-    # Microsoft Office and PDF
+    # Microsoft Office
     {
         "pattern": ["*.doc", "*.docx", "*.xls", "*.xlsx", "*.ppt", "*.pptx", "*.pdf"],
         "enter": "viewer",
         "open|edit": ["cmd", "/c", "start"],
-    },
-    # Audio files
-    {
-        "pattern": ["*.mp3", "*.wav"],
-        "open": ["open", "-a", "Music"],
-        "edit": None,
     },
     # Note there is deliberately no entry listing text/code extensions.
     # Enter and V already fall through to the built-in viewer when no rule

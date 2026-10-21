@@ -82,21 +82,17 @@ def open_in_vscode(ctx) -> None:
     ctx.run_program(["code", str(ctx.pane.path)])
 
 
-# def smart_enter(ctx) -> None:
-#     item = ctx.pane.focused
-#     if not item:
-#         return
+def smart_enter(ctx) -> None:
+    item = ctx.pane.focused
+    if not item:
+        return
 
-#     ext = item.path.suffix.lower()
-#     if ext in [".pdf", ".tbx", ".cmx"]:
-#         ctx.invoke("open_with_os")
-#         return
+    ext = item.path.suffix.lower()
+    if ext in [".pdf", ".tbx", ".cmx"]:
+        ctx.invoke("open_with_os")
+        return
 
-#     if Path(item.path).is_file():
-#         ctx.invoke("view_file")
-#         return
-
-#     ctx.invoke("open_item")
+    ctx.invoke("open_item")
 
 
 DESKTOP_PATH = os.path.expanduser(r"~/Desktop")
@@ -162,7 +158,7 @@ def open_ghq_repo(ctx) -> None:
 
 actions = {
     "open_in_vscode": open_in_vscode,
-    # "smart_enter": smart_enter,
+    "smart_enter": smart_enter,
     "open_desktop": open_desktop,
     "open_desktop_both": open_desktop_both,
     "open_ghq_repo": open_ghq_repo,
