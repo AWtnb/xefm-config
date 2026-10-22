@@ -73,6 +73,8 @@ bindings = {
     "close_tab": [],
     #
     # === Navigation ===
+    "cursor_top": ["HOME", "A"],
+    "cursor_bottom": ["END", "E"],
     "cursor_up": ["UP", "K"],  # Move cursor up one item
     "cursor_down": ["DOWN", "J"],  # Move cursor down one item
     "page_up": ["PAGE_UP"],  # Move cursor up one page
