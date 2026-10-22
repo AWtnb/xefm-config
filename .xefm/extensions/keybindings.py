@@ -81,7 +81,7 @@ bindings = {
     "smart_enter": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
     "open_with_os": [
         "Ctrl-ENTER",
-        "Shift-o",
+        "Ctrl-Alt-O",
     ],  # Open file(s) with OS default application
     "reveal_in_os": ["Ctrl-Shift-E"],  # Reveal focused file in OS file manager
     "go_parent": ["BACKSPACE", "H", "LEFT"],  # Go to parent directory
@@ -156,8 +156,8 @@ bindings = {
     "drives": ["D"],  # Show drives/volumes dialog
     #
     # === Pane Management ===
-    "sync_current_to_other": ["Shift-W"],  # Sync current pane directory to other pane
-    "sync_other_to_current": ["W"],  # Sync other pane directory to current pane
+    "sync_current_to_other": ["Shift-O"],  # Sync current pane directory to other pane
+    "sync_other_to_current": ["O"],  # Sync other pane directory to current pane
     "compare_selection": [],  # Show file and directory comparison options
     "adjust_pane_left": ["["],  # Make left pane smaller (move boundary left)
     "adjust_pane_right": ["]"],  # Make left pane larger (move boundary right)
