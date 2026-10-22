@@ -70,7 +70,7 @@ bindings = {
     # === Tabs in Pane ===
     "next_tab": [],
     "prev_tab": [],
-    "close_tab": ["Shift-W"],
+    "close_tab": [],
     #
     # === Navigation ===
     "cursor_up": ["UP", "K"],  # Move cursor up one item
@@ -81,7 +81,7 @@ bindings = {
     "smart_enter": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
     "open_with_os": [
         "Ctrl-ENTER",
-        "Ctrl-M",
+        "Shift-o",
     ],  # Open file(s) with OS default application
     "reveal_in_os": ["Ctrl-Shift-E"],  # Reveal focused file in OS file manager
     "go_parent": ["BACKSPACE", "H", "LEFT"],  # Go to parent directory
@@ -160,11 +160,8 @@ bindings = {
     "drives": ["D"],  # Show drives/volumes dialog
     #
     # === Pane Management ===
-    "sync_current_to_other": ["O"],  # Sync current pane directory to other pane
-    "sync_other_to_current": [
-        "Shift-O",
-        "W",
-    ],  # Sync other pane directory to current pane
+    "sync_current_to_other": ["Shift-W"],  # Sync current pane directory to other pane
+    "sync_other_to_current": ["W"],  # Sync other pane directory to current pane
     "compare_selection": [],  # Show file and directory comparison options
     "adjust_pane_left": ["["],  # Make left pane smaller (move boundary left)
     "adjust_pane_right": ["]"],  # Make left pane larger (move boundary right)
@@ -196,7 +193,7 @@ bindings = {
     "text_viewer.page_up": ["H", "Left"],
     "text_viewer.scroll_top": ["A", "HOME"],
     "text_viewer.scroll_bottom": ["E", "END"],
-    "text_viewer.edit_file": ["Ctrl-E", "W"],
+    "text_viewer.edit_file": ["Ctrl-E"],
     #
     # === Image Viewer ===
     # Image-viewer-only actions, scoped like the text viewer's above. '-' and
