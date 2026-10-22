@@ -156,8 +156,8 @@ bindings = {
     "drives": ["D"],  # Show drives/volumes dialog
     #
     # === Pane Management ===
-    "sync_current_to_other": ["Shift-O"],  # Sync current pane directory to other pane
-    "sync_other_to_current": ["O"],  # Sync other pane directory to current pane
+    "sync_current_to_other": ["O"],  # Sync current pane directory to other pane
+    "sync_other_to_current": ["Shift-O"],  # Sync other pane directory to current pane
     "compare_selection": [],  # Show file and directory comparison options
     "adjust_pane_left": ["["],  # Make left pane smaller (move boundary left)
     "adjust_pane_right": ["]"],  # Make left pane larger (move boundary right)
