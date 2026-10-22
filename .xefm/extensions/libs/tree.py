@@ -32,7 +32,7 @@ def make_tree(ctx) -> None:
     if selected:
         lines = [l for l in lines if any(l.startswith(s) for s in selected)]
     lines = [str(Path(l).relative_to(root)) for l in lines]
-    out_name = f"tree_{Path(root).name}.txt"
+    out_name = f"{Path(root).stem}.tree.txt"
     out_path = Path(ctx.other.path) / out_name
     out_path.write_text("\n".join(lines), encoding="utf-8")
     ctx.other.cd(ctx.other.path, out_name)
@@ -75,7 +75,7 @@ def summarize_by(ctx) -> None:
             lines.append(content)
             lines.append(f"{border}\n")
 
-        out_name = f"resume_{root_name}.md"
+        out_name = f"{root_name}.context.md"
         out_path = Path(ctx.pane.path) / out_name
         out_path.write_text("\n".join(lines), encoding="utf-8")
         ctx.pane.cd(ctx.pane.path, out_name)
