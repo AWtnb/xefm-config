@@ -1,3 +1,5 @@
+from itertools import groupby
+
 from xefm import (  # ty: ignore[unresolved-import]
     favorites,
     name_key,
@@ -37,24 +39,24 @@ def focus_newest_item(ctx):
 
 
 def _jump_focus(ctx, down: bool) -> None:
-    pane = ctx.pane._pane
-    items = pane.get("files")
+    pane_info = ctx.pane._pane
+    items = pane_info.get("files")
     if not items:
         return
 
-    file_info = pane.get("file_info")
+    file_info = pane_info.get("file_info")
     if not file_info:
         return
 
-    current = pane.get("focused_index", 0)
+    current = pane_info.get("focused_index", 0)
 
     candidates = set()
 
-    # 1) 最初 / 最後
+    # 1) top / end
     candidates.add(0)
     candidates.add(len(items) - 1)
 
-    # 2) ディレクトリ最後 / ファイル最初
+    # 2) end of dirs / top of files
     last_dir = None
     first_file = None
     for i, item in enumerate(items):
@@ -72,11 +74,21 @@ def _jump_focus(ctx, down: bool) -> None:
     if first_file is not None:
         candidates.add(first_file)
 
-    # 3) favorite を持つ項目
+    # 3) favorites
     fav_paths = {f.path for f in favorites.get_favorites()}
     for i, item in enumerate(items):
         if str(item) in fav_paths:
             candidates.add(i)
+
+    # 4) edge of selection
+    selected_names = {ent.name for ent in ctx.pane.selected()}
+    selected_indices = [
+        i for i, item in enumerate(items) if item.name in selected_names
+    ]
+    for _, group in groupby(enumerate(selected_indices), key=lambda p: p[1] - p[0]):
+        run = [idx for _, idx in group]
+        candidates.add(run[0])
+        candidates.add(run[-1])
 
     ordered = sorted(candidates)
     if down:
