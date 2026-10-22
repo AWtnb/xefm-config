@@ -98,6 +98,22 @@ def smart_enter(ctx) -> None:
 DESKTOP_PATH = os.path.expanduser(r"~/Desktop")
 
 
+def select_under_cursor(ctx) -> None:
+    ctx.pane.select(lambda ent: ent.path == ctx.pane.focused.path)
+
+
+def quick_copy(ctx) -> None:
+    if not ctx.pane.selected():
+        select_under_cursor(ctx)
+    ctx.invoke("copy_files")
+
+
+def quick_move(ctx) -> None:
+    if not ctx.pane.selected():
+        select_under_cursor(ctx)
+    ctx.invoke("move_files")
+
+
 def open_desktop(ctx) -> None:
     ctx.pane.cd(DESKTOP_PATH)
 
@@ -167,4 +183,6 @@ actions = {
     "jump_up": jump_up,
     "make_tree": make_tree,
     "summarize_by": summarize_by,
+    "quick_copy": quick_copy,
+    "quick_move": quick_move,
 }

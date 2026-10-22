@@ -92,6 +92,7 @@ bindings = {
     # === File Selection ===
     "toggle_select_down": ["SPACE"],  # Toggle selection of current file
     "toggle_select_up": ["Shift-SPACE"],  # Toggle selection and move up
+    "select_range": ["Ctrl-Alt-SPACE"],  # Toggle selection and move up
     "toggle_select_files": ["Ctrl-A"],  # Select all items
     "unselect_all": ["U"],  # Unselect all items
     #
@@ -101,14 +102,8 @@ bindings = {
     "clipboard_paste": ["Ctrl-V"],  # Copy selected/focused full path(s) to clipboard
     #
     # === File Operations ===
-    "copy_files": {
-        "keys": ["C"],
-        "selection": "required",
-    },  # Copy selected files to other pane
-    "move_files": {
-        "keys": ["M"],
-        "selection": "required",
-    },  # Move selected files to other pane
+    "quick_copy": ["C"],
+    "quick_move": ["M"],
     "delete_files": {
         "keys": ["Ctrl-D"],
         "selection": "required",
