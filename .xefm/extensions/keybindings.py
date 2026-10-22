@@ -58,9 +58,9 @@ bindings = {
     "command_palette": ["X"],
     #
     # === Custom actions ===
-    "open_in_vscode": ["V"],
+    "open_in_vscode": ["Ctrl-Shift-V"],
     "open_desktop": ["0"],
-    "open_desktop_both": ["BACKSLASH"],
+    "open_desktop_both": ["\\"],
     "go_root": [],
     "open_ghq_repo": ["G"],
     "focus_newest_item": ["Alt-N"],
@@ -68,7 +68,6 @@ bindings = {
     "jump_up": ["Alt-K"],
     #
     # === Tabs in Pane ===
-    "open_in_new_tab": [],
     "next_tab": [],
     "prev_tab": [],
     "close_tab": ["Shift-W"],
@@ -80,7 +79,10 @@ bindings = {
     "page_down": ["PAGE_DOWN"],  # Move cursor down one page
     "open_item": [],  # Open file/directory or enter directory
     "smart_enter": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
-    "open_with_os": ["Ctrl-ENTER"],  # Open file(s) with OS default application
+    "open_with_os": [
+        "Ctrl-ENTER",
+        "Ctrl-M",
+    ],  # Open file(s) with OS default application
     "reveal_in_os": ["Ctrl-Shift-E"],  # Reveal focused file in OS file manager
     "go_parent": ["BACKSPACE", "H", "LEFT"],  # Go to parent directory
     "switch_pane": ["TAB"],  # Switch between left and right panes
@@ -120,7 +122,7 @@ bindings = {
     #
     # === File Viewing & Editing ===
     "view_file": [],  # View file using configured viewer
-    "edit_file": [],  # Edit selected file with configured text editor
+    "edit_file": ["Ctrl-E"],  # Edit selected file with configured text editor
     "file_details": ["I"],  # Show detailed file information dialog
     #
     # === File Comparison ===

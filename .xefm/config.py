@@ -320,14 +320,13 @@ class Config:
                 "*.xlsx",
                 "*.ppt",
                 "*.pptx",
-                "*.pdf",
             ],
             "enter": "viewer",
             "open|edit": ["cmd", "/c", "start"],
         },
         {
             "pattern": ["*.md", "*.txt"],
-            "edit": ["cmd", "/c", "start"],
+            "edit": ["vim"],
         },
         {
             "pattern": ["*.jar", "*.whl", "*.egg"],
