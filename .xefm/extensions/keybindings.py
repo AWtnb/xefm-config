@@ -93,7 +93,8 @@ bindings = {
     "toggle_select_down": ["SPACE"],  # Toggle selection of current file
     "toggle_select_up": ["Shift-SPACE"],  # Toggle selection and move up
     "select_range": ["Ctrl-Alt-SPACE"],  # Toggle selection and move up
-    "toggle_select_files": ["Ctrl-A"],  # Select all items
+    "smart_select_all": ["Ctrl-A"],  # Select all items
+    "toggle_select_files": [],  # Select all items
     "unselect_all": ["U"],  # Unselect all items
     #
     # === Clipboard (copy names/paths to the system clipboard) ===

@@ -28,7 +28,7 @@ def _get_git_root(path: str) -> Path:
 def make_tree(ctx) -> None:
     root = _get_git_root(str(ctx.pane.path))
     lines = [p for p in traverse_file(root)]
-    selected = {str(ent) for ent in ctx.pane.selected()}
+    selected = {str(ent.path) for ent in ctx.pane.selected()}
     if selected:
         lines = [l for l in lines if any(l.startswith(s) for s in selected)]
     lines = [str(Path(l).relative_to(root)) for l in lines]
@@ -43,7 +43,7 @@ def summarize_by(ctx) -> None:
     selected = ctx.pane.selected()
     if not selected:
         return
-    rel_paths = Path(str(selected[0])).read_text(encoding="utf-8").splitlines()
+    rel_paths = Path(selected[0].path).read_text(encoding="utf-8").splitlines()
 
     def _summarize(root: str) -> None:
         _, root_name = os.path.split(root)

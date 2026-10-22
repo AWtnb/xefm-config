@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import NamedTuple
 
 from libs.cursor_jump import focus_newest_item, jump_down, jump_up
+from libs.item_selector import select_only_dirs, select_only_files, select_under_cursor
 from libs.tree import make_tree, summarize_by
 
 # --- ACTIONS ----------------------------------------------------------
@@ -82,6 +83,41 @@ def open_in_vscode(ctx) -> None:
     ctx.run_program(["code", str(ctx.pane.path)])
 
 
+def _select_by_focus(ctx) -> None:
+    focused = ctx.pane.focused
+    if focused.is_dir:
+        select_only_dirs(ctx)
+    else:
+        select_only_files(ctx)
+
+
+def smart_select_all(ctx) -> None:
+    selected = ctx.pane.selected()
+
+    if not selected:
+        _select_by_focus(ctx)
+        return
+
+    if len(selected) == len(ctx.pane.entries):
+        return
+
+    selected_paths = [ent.path for ent in selected]
+    dir_paths = [ent.path for ent in ctx.pane.entries if ent.is_dir]
+    file_paths = [ent.path for ent in ctx.pane.entries if not ent.is_dir]
+
+    is_all_dir_selected = len(dir_paths) != 0 and all(
+        ent in selected_paths for ent in dir_paths
+    )
+    is_all_file_selected = len(file_paths) != 0 and all(
+        ent in selected_paths for ent in file_paths
+    )
+    if is_all_dir_selected or is_all_file_selected:
+        ctx.invoke("select_all")
+        return
+
+    _select_by_focus(ctx)
+
+
 def smart_enter(ctx) -> None:
     item = ctx.pane.focused
     if not item:
@@ -96,10 +132,6 @@ def smart_enter(ctx) -> None:
 
 
 DESKTOP_PATH = os.path.expanduser(r"~/Desktop")
-
-
-def select_under_cursor(ctx) -> None:
-    ctx.pane.select(lambda ent: ent.path == ctx.pane.focused.path)
 
 
 def quick_copy(ctx) -> None:
@@ -121,6 +153,7 @@ def open_desktop(ctx) -> None:
 def open_desktop_both(ctx) -> None:
     ctx.pane.cd(DESKTOP_PATH)
     ctx.other.cd(DESKTOP_PATH)
+    ctx.invoke("reset_pane_boundary")
 
 
 def open_ghq_repo(ctx) -> None:
@@ -185,4 +218,5 @@ actions = {
     "summarize_by": summarize_by,
     "quick_copy": quick_copy,
     "quick_move": quick_move,
+    "smart_select_all": smart_select_all,
 }
