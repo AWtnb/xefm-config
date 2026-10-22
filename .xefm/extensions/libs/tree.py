@@ -56,8 +56,11 @@ def summarize_by(ctx) -> None:
             return
 
         border = "```"
-        lines: list[str] = ["# SUMMARY\n"]
+
+        lines: list[str] = [f"# CONTEXT of `{root_name}`\n"]
         lines.append("## DIRECTORIES (excerpt)\n")
+        lines.append(f"root: `{root_name}`\n")
+
         lines.append(border)
         lines.extend(rel_paths)
         lines.append(f"{border}\n")
@@ -69,7 +72,7 @@ def summarize_by(ctx) -> None:
                 content = path.read_text(encoding="utf-8")
             except Exception:  # noqa: BLE001, S112
                 continue
-            lines.append(f"### Content of `{rel_paths[i]}`\n")
+            lines.append(f"### `{rel_paths[i]}`:\n")
             lines.append(border)
             lines.append(content)
             lines.append(f"{border}\n")
