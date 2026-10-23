@@ -69,7 +69,11 @@ def summarize_by(ctx) -> None:
 
         for i, path in enumerate(targets):
             try:
-                content = path.read_text(encoding="utf-8")
+                content = (
+                    "(env file)"
+                    if ".env" in path.stem
+                    else path.read_text(encoding="utf-8")
+                )
             except Exception:  # noqa: BLE001, S112
                 continue
             lines.append(f"### `{rel_paths[i]}`:\n")
