@@ -6,24 +6,26 @@ from xefm import favorites  # ty: ignore[unresolved-import]
 # --- EVENT_HOOKS ------------------------------------------------------
 # Functions run at set moments. Each event maps to a list, run in order.
 #
-#   'startup'           fn(ctx)            once the app is up
-#   'quit'              fn(ctx)            before XeFM shuts down
-#   'directory_changed' fn(ctx, pane, old_path, new_path)
-#   'file_open'         fn(ctx, path)      return True to claim the open
+# Every hook is fn(ctx, event); what happened is on the event:
+#
+#   'startup'           (nothing more)     once the app is up
+#   'quit'              (nothing more)     before XeFM shuts down
+#   'directory_changed' event.pane, event.old_path, event.new_path
+#   'file_open'         event.path         return True to claim the open
 #
 # 'file_open' fires before XeFM decides what to do with a file, so returning
 # True is how you route one file type somewhere of your own without touching
 # FILE_ASSOCIATIONS. It does not fire for directories -- entering one is
 # navigation, not opening.
 #
-# def log_visit(ctx, pane, old_path, new_path):
+# def log_visit(ctx, event):
 #     with open(Path.home() / '.xefm' / 'visited.log', 'a') as f:
-#         f.write(f"{new_path}\n")
+#         f.write(f"{event.new_path}\n")
 #
-# def open_psd_in_gimp(ctx, path):
-#     if path.suffix.lower() != '.psd':
+# def open_psd_in_gimp(ctx, event):
+#     if event.path.suffix.lower() != '.psd':
 #         return False
-#     subprocess.Popen(['gimp', str(path)])
+#     subprocess.Popen(['gimp', str(event.path)])
 #     return True                 # claimed -- XeFM does nothing further
 #
 # EVENT_HOOKS = {
@@ -32,7 +34,14 @@ from xefm import favorites  # ty: ignore[unresolved-import]
 # }
 
 
-def _backup_favorites_on_quit(ctx):
+def _smart_enter(ctx, event) -> bool:
+    if event.path.suffix.lower() in [".pdf", ".tbx", ".cmx"]:
+        ctx.invoke("open_with_os")
+        return True
+    return False
+
+
+def _backup_favorites_on_quit(ctx, _) -> bool:
 
     favs = favorites.get_favorites()  # list[FavoriteEntry]
     rows = [
@@ -48,7 +57,10 @@ def _backup_favorites_on_quit(ctx):
     except Exception as e:  # noqa: BLE001
         ctx.message(f"Failed to backup favorites: {e}")
 
+    return False
+
 
 event_hooks = {
-    "quit": _backup_favorites_on_quit,
+    "quit": [_backup_favorites_on_quit],
+    "file_open": [_smart_enter],
 }

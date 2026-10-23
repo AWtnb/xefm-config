@@ -60,8 +60,7 @@ bindings = {
     # === Custom actions ===
     "open_in_vscode": ["Ctrl-Shift-V"],
     "open_desktop": ["0"],
-    "open_desktop_both": ["\\"],
-    "go_root": [],
+    "open_desktop_both": ["BACKSLASH"],
     "open_ghq_repo": ["G"],
     "focus_newest_item": ["Alt-N"],
     "jump_down": ["Alt-J"],
@@ -79,8 +78,8 @@ bindings = {
     "cursor_down": ["DOWN", "J"],  # Move cursor down one item
     "page_up": ["PAGE_UP"],  # Move cursor up one page
     "page_down": ["PAGE_DOWN"],  # Move cursor down one page
-    "open_item": [],  # Open file/directory or enter directory
-    "smart_enter": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
+    "open_item": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
+    # "smart_enter": ["ENTER", "L", "RIGHT"],  # Open file/directory or enter directory
     "open_with_os": [
         "Ctrl-ENTER",
         "Ctrl-Alt-O",

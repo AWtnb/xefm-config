@@ -11,12 +11,7 @@ import sys
 
 import actions  # ty: ignore[unresolved-import]
 import event_hooks  # ty: ignore[unresolved-import]
-import filters  # ty: ignore[unresolved-import]
-import image_decoders  # ty: ignore[unresolved-import]
 import keybindings  # ty: ignore[unresolved-import]
-import lexers  # ty: ignore[unresolved-import]
-import path_schemes  # ty: ignore[unresolved-import]
-import sort_keys  # ty: ignore[unresolved-import]
 import themes  # ty: ignore[unresolved-import]
 
 # Import backend detector for runtime backend detection
@@ -152,11 +147,275 @@ class Config:
     # an action is edit-then-reload -- no restart.
     ACTIONS = actions.actions
     EVENT_HOOKS = event_hooks.event_hooks
-    SORT_KEYS = sort_keys.sort_keys
-    FILTERS = filters.filters
-    IMAGE_DECODERS = image_decoders.image_decoders
-    PATH_SCHEMES = path_schemes.path_schemes
-    LEXERS = lexers.lexers
+
+    # --- SORT_KEYS --------------------------------------------------------
+    # Your own sort orders. Each one becomes a row in the sort dialog ('s') and
+    # in the Sort By menu, alongside Filename / Extension / Size / Timestamp.
+    #
+    # A sort key takes one entry and returns anything that can be compared --
+    # XeFM sorts by whatever comes back. Return a tuple for a multi-level order;
+    # tuples compare item by item, so (e.size, e.name) means "by size, and by
+    # name within the same size".
+    #
+    # def size_then_name(entry):
+    #     return (entry.size, entry.name)
+    #
+    # SORT_KEYS = {
+    #     'biggest': {'label': 'Size, then name', 'key': size_then_name},
+    # }
+    #
+    # Two things you do NOT have to handle: directories always come first, and
+    # ascending/descending is applied for you. Your key only decides the order
+    # inside one group. Reading entry.size or entry.mtime is free -- XeFM already
+    # collected them for the listing.
+    #
+    # Naming one of the four built-in sorts -- 'filename', 'extension', 'size',
+    # 'timestamp', the dialog's own rows in lower case -- replaces it, which
+    # needs 'override': True so a typo cannot quietly change what Filename means. XeFM orders names by character code, which is not how
+    # Explorer or Finder order a directory; this is where you change that:
+    #
+    # import locale, re                       # at the top of this file
+    # locale.setlocale(locale.LC_COLLATE, '')  # your system's own ordering
+    #
+    # def by_system_order(entry):
+    #     # digit runs as numbers, everything else through the system's ordering
+    #     parts = re.split(r'(\d+)', entry.name)
+    #     return [int(p) if i % 2 else locale.strxfrm(p) for i, p in enumerate(parts)]
+    #
+    # SORT_KEYS = {'filename': {'key': by_system_order, 'override': True}}
+    #
+    # That follows your locale, which is close to but not the same as the shell's
+    # own order. Matching Explorer or Finder exactly means their comparison
+    # functions -- StrCmpLogicalW and localizedStandardCompare: -- which compare
+    # two names rather than producing a key, so wrap one in
+    # functools.cmp_to_key(...) and expect it to cost more on a large directory.
+    #
+    # The rest of an entry: 'label' is the row text (defaults to the name),
+    # 'explain' is the example line the dialog shows under the order, and
+    # 'hotkey' is a letter that applies the sort straight from the dialog (a new
+    # row gets its label's initial when no other row has claimed it).
+    #
+    # A key runs on a background thread, so keep it to arithmetic and strings.
+    # One that fails, or returns things that cannot be compared with each other,
+    # loses the sort rather than the listing: the pane falls back to ordering by
+    # filename and says so once in the log pane.
+    def underscore_based_sortkey(entry) -> tuple:
+        name = entry.name  # ty: ignore[unresolved-attribute]
+        stem, ext = os.path.splitext(name)
+        underscore_count = len(name) - len(name.lstrip("_"))
+
+        return (
+            not name.startswith("."),
+            not name.startswith("_"),
+            (-1 * underscore_count),
+            stem.lower(),
+            ext.lower(),
+        )
+
+    SORT_KEYS = {  # noqa: RUF012
+        "filename": {"key": underscore_based_sortkey, "override": True}
+    }
+
+    # --- FILTERS ----------------------------------------------------------
+    # Your own filters. Each one becomes a fixed row in the Filter dialog (';'),
+    # under "clear filter" and above the patterns you have typed there before.
+    #
+    # The simple kind is one or more wildcard patterns:
+    #
+    # FILTERS = {
+    #     'images': ['*.jpg', '*.jpeg', '*.png', '*.gif'],   # any one matches
+    # }
+    #
+    # The other kind is a function, which is how you filter by something the
+    # name does not say -- size, date, whatever you can work out from the entry.
+    # It takes one entry and returns True to show it:
+    #
+    # import time                              # at the top of this file
+    #
+    # def modified_today(entry):
+    #     return entry.mtime >= time.time() - 24 * 3600
+    #
+    # FILTERS = {
+    #     'today': {'label': 'Modified today', 'match': modified_today},
+    #     'big': {'label': 'Over 100 MB', 'match': lambda e: e.size > 100 << 20},
+    # }
+    #
+    # 'label' is the row text and defaults to the name you gave it. An entry has
+    # the same fields a sort key sees -- .name, .path, .suffix, .stem, .is_dir,
+    # .is_file, .is_link, .size and .mtime -- and reading .size or .mtime is free.
+    #
+    # Directories are always shown, exactly as they are under a typed pattern: a
+    # filter that hid them would take away the folder you were about to open. So
+    # your function only decides which files are visible -- and "directories
+    # only" is written 'match': lambda e: False.
+    #
+    # A name may not contain * ? or [ -- XeFM remembers a filter by its name and
+    # a typed pattern as itself, and one that read as both could not be told
+    # apart. Put the wildcards in 'pattern' and give the filter a plain name.
+    #
+    # Like a sort key, a filter function runs on a background thread, so keep it
+    # to arithmetic and strings. One that fails loses the filter rather than the
+    # listing: the pane shows everything and says so once in the log pane --
+    # deliberately that way round, so a broken filter never hides files from an
+    # operation you are about to run.
+    FILTERS = {}  # noqa: RUF012
+
+    # --- IMAGE_DECODERS ---------------------------------------------------
+    # Picture formats the built-in image viewer does not read yet.
+    #
+    # It already reads a lot without help, and which formats depends on your
+    # machine rather than on XeFM: on macOS it draws HEIC, JPEG XL and camera
+    # RAW through the system's own decoder; on Windows through whichever WIC
+    # codecs are installed (the HEIF and AV1 extensions from the Store, if you
+    # have them); in a terminal through Pillow, including any Pillow plugin you
+    # installed. Installing pillow-heif is enough to add HEIC anywhere:
+    #
+    #     pip install pillow-heif
+    #
+    # What is left after all that is the formats only a library XeFM does not
+    # ship can read. Write a function that turns the file's bytes into a
+    # picture, and name the suffix it is for:
+    #
+    #     import io                             # at the top of this file
+    #
+    #     def open_svg(data):
+    #         import cairosvg
+    #         from PIL import Image
+    #         return Image.open(io.BytesIO(cairosvg.svg2png(bytestring=data)))
+    #
+    #     def open_raw(data):
+    #         import rawpy
+    #         from PIL import Image
+    #         with rawpy.imread(io.BytesIO(data)) as raw:
+    #             return Image.fromarray(raw.postprocess())
+    #
+    #     IMAGE_DECODERS = {
+    #         '.svg': open_svg,
+    #         '.dng': open_raw,
+    #         '.cr2': open_raw,
+    #     }
+    #
+    # Your function gets the file's bytes -- not a path -- so the same decoder
+    # works on a picture inside a zip or on an S3 bucket, with nothing copied to
+    # a temp file first. Return a PIL.Image (the usual answer), or None for "I
+    # cannot read this one".
+    #
+    # Registering a suffix is also what makes the viewer OFFER that format:
+    # Enter on a .dng opens the picture rather than the binary viewer. XeFM only
+    # ever claims formats something on the machine can actually decode, so it
+    # never opens onto an "I cannot show this" card.
+    #
+    # Registering a suffix XeFM already reads replaces its decoder with yours --
+    # that is how you override how a format is read, and it is the only way.
+    #
+    # Like a sort key or a filter, a decoder may run on a background thread, so
+    # it must not touch the UI. One that fails costs that picture and nothing
+    # else: the viewer shows the reason on its card and the log pane gets the
+    # traceback.
+    IMAGE_DECODERS = {}  # noqa: RUF012
+    # --- PATH_SCHEMES -----------------------------------------------------
+    # Your own browsable locations. A scheme like 'reg' makes 'reg://...' a
+    # place XeFM can open in a pane, jump to (Shift-J), and keep in FAVORITE_
+    # DIRECTORIES -- listed by your class rather than read off a disk.
+    #
+    # Inherit ReadOnlyPathImpl and write five methods. Everything else -- the
+    # path arithmetic, refusing writes, what the pane and the status bar show --
+    # comes with it.
+    #
+    # Define the class ABOVE `class Config:` (module level), with anything it
+    # reads. Inside the class body it would *load* fine and then fail on every
+    # call: a class body is not a scope the methods defined in it can see, so
+    # NOTES and io below would come back as NameError the first time XeFM asked
+    # the folder a question.
+    #
+    #     import io
+    #     from xefm.path_base import ReadOnlyPathImpl, UriStatResult
+    #
+    #     NOTES = {'': ['todo', 'ideas'], 'todo': [], 'ideas': []}
+    #
+    #     class NotesPathImpl(ReadOnlyPathImpl):
+    #         def exists(self):   return self._key in NOTES
+    #         def is_dir(self):   return self._key in NOTES
+    #         def iterdir(self):
+    #             for name in NOTES.get(self._key, []):
+    #                 yield self._child(name)
+    #         def stat(self):     return UriStatResult(is_dir=self.is_dir())
+    #         def open(self, mode='r', buffering=-1, encoding=None,
+    #                  errors=None, newline=None):
+    #             return io.StringIO('')
+    #
+    #     class Config:
+    #         ...
+    #
+    # Then name it here -- this line, in the class, is the only part that
+    # belongs at this indentation:
+    #
+    #     PATH_SCHEMES = {'notes': NotesPathImpl}
+    #
+    # self._key is the part after 'notes://', with no leading or trailing
+    # slash -- '' at the root, 'todo/monday' further in. self._child(name)
+    # builds a child; XeFM works out parents, names and suffixes itself.
+    #
+    # Writing is refused for you, with a clear message. Say why in your own
+    # words with READ_ONLY_MESSAGE = 'edit these in the Notes app'.
+    #
+    # A class that is missing one of the five methods, or whose scheme name is
+    # not a valid one, is skipped with a line in the log pane -- the rest of
+    # your config still loads. A method that *raises* is reported the same way,
+    # with its traceback, when something asks the folder a question.
+    # See doc/VIRTUAL_FOLDERS_FEATURE.md.
+    PATH_SCHEMES = {}  # noqa: RUF012
+
+    # --- MENU_ITEMS -------------------------------------------------------
+    # Put an action in a menu: the File menu ('file') and/or the menu a row
+    # opens with a right-click or the Menu key ('context'). The key is the
+    # action's name -- one of your ACTIONS, or a built-in one:
+    #
+    #     MENU_ITEMS = {
+    #         'select-docs': {
+    #             'menus': ['context'],
+    #             'label': 'Select Documents',
+    #             'when': 'entry',      # optional
+    #         },
+    #     }
+    #
+    # 'when' greys the item out unless it applies: 'entry' needs an entry under
+    # the cursor, 'selection' needs at least one selected; the default is
+    # 'always'. Your items gather in a group of their own near the foot of
+    # each menu, in the order written here.
+    MENU_ITEMS = {}  # noqa: RUF012
+
+    # --- LEXERS -----------------------------------------------------------
+    # Syntax highlighting for files the text viewer shows as plain text, or
+    # colors as the wrong language. The coloring comes from Pygments, which
+    # knows hundreds of languages; this names the lexer for a file name.
+    #
+    # The key is a file-name pattern ('*.mnl', or just '.mnl'; 'Jenkinsfile'
+    # for a name with no suffix). The value is either the name of a lexer
+    # Pygments already has -- `pygmentize -L lexers` lists them -- or a lexer
+    # class of your own:
+    #
+    #     from autocad_lexers import DclLexer   # at the top of this file
+    #
+    #     LEXERS = {
+    #         '*.dcl': DclLexer,      # your own lexer
+    #         '*.mnl': 'newlisp',     # an existing one, for another suffix
+    #     }
+    #
+    # Your own lexer is an ordinary Pygments lexer -- a RegexLexer subclass,
+    # written the way https://pygments.org/docs/lexerdevelopment/ describes,
+    # with nothing from XeFM in it. Keep it in its own file in
+    # ~/.xefm/extensions/ (autocad_lexers.py above) and import it here. Its
+    # own `filenames` attribute is not used: the key here alone decides which
+    # files it colors. Its `aliases` are -- once registered, its alias can be
+    # a value here too ('*.dclx': 'dcl').
+    #
+    # An entry here wins over Pygments' own choice for the same files, which
+    # is how you recolor a suffix Pygments gives to another language. An
+    # entry naming a lexer that does not exist is skipped with a line in the
+    # log pane.
+
+    LEXERS = {}  # noqa: RUF012
 
     FAVORITES = [  # noqa: RUF012
         {"name": "Desktop", "path": os.path.expanduser(r"~/Desktop")},
