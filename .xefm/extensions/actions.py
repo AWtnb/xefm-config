@@ -7,6 +7,7 @@ from typing import NamedTuple
 from libs.cursor_jump import focus_newest_item, jump_down, jump_up
 from libs.item_selector import select_only_dirs, select_only_files, select_under_cursor
 from libs.tree import make_tree, summarize_by
+from xefm import favorites  # ty: ignore[unresolved-import]
 
 # --- ACTIONS ----------------------------------------------------------
 # A function takes one argument, the context object, and is run on the UI
@@ -192,6 +193,41 @@ def open_ghq_repo(ctx) -> None:
     )
 
 
+def fuzzy_favorites(ctx) -> None:
+    fzf_cmd = shutil.which("fzf")
+    if fzf_cmd is None:
+        ctx.message("fzf not found")
+        return
+
+    favs = {
+        f.name: f.path
+        for f in favorites.get_favorites()  # list[FavoriteEntry]
+    }
+    names = "\n".join(favs.keys())
+
+    completed = subprocess.run(
+        [fzf_cmd],
+        input=names,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode in (1, 130):
+        return
+
+    selected = completed.stdout.strip()
+    if not selected:
+        return
+
+    path = Path(favs[selected])
+    if path.is_dir():
+        ctx.pane.cd(path, focus_name=None)
+    else:
+        ctx.pane.cd(path.parent, focus_name=path.name)
+
+    ctx.pane.refresh()
+
+
 actions = {
     "open_in_vscode": open_in_vscode,
     "open_desktop": open_desktop,
@@ -205,4 +241,5 @@ actions = {
     "quick_copy": quick_copy,
     "quick_move": quick_move,
     "smart_select_all": smart_select_all,
+    "fuzzy_favorites": fuzzy_favorites,
 }
