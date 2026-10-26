@@ -3,7 +3,7 @@ import os
 
 from xefm import favorites as xefm_favorites  # ty: ignore[unresolved-import]
 
-from . import cursor_jumper, favorites, item_selector, misc, tree
+from . import cursor_jumper, favorites, item_selector, misc, navi, tree
 
 # ja: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 # en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
@@ -14,14 +14,15 @@ _ACTIONS = {
     "jump_down": cursor_jumper.jump_down,
     "jump_up": cursor_jumper.jump_up,
     "make_tree": tree.make_tree,
-    "open_desktop_both": misc.open_desktop_both,
-    "open_desktop": misc.open_desktop,
+    "open_desktop_both": navi.open_desktop_both,
+    "open_desktop_to_other": navi.open_desktop_to_other,
+    "open_desktop": navi.open_desktop,
     "open_ghq_repo": favorites.open_ghq_repo,
     "open_in_vscode": misc.open_in_vscode,
     "quick_copy": misc.quick_copy,
     "quick_move": misc.quick_move,
-    "smart_select_all": item_selector.smart_select_all,
     "select_by_extension": item_selector.select_by_extension,
+    "smart_select_all": item_selector.smart_select_all,
     "summarize_by": tree.summarize_by,
 }
 
@@ -86,7 +87,7 @@ _KEY_BINDINGS = {
     "file_diff.scroll_up": ["K", "UP"],
     "filter": ["Ctrl-Shift-F"],
     "find_by_tag": ["Shift-T"],
-    "find_files": ["Shift-F"],
+    "find_files": ["Shift-F", "g f"],
     "find_in_files": ["Shift-G"],
     "flat_view": ["Shift-B"],
     "focus_left": [],
@@ -112,7 +113,7 @@ _KEY_BINDINGS = {
     "isearch": ["F"],
     "jobs": ["Ctrl-G"],
     "jump_down": ["Alt-J"],
-    "jump_to_path": ["Ctrl-Shift-O"],
+    "jump_to_path": ["g g", "Ctrl-Shift-O"],
     "jump_up": ["Alt-K"],
     "menu": ["ALT"],
     "move_files": [],
@@ -120,8 +121,9 @@ _KEY_BINDINGS = {
     "nav_left": [],
     "nav_right": [],
     "next_tab": [],
-    "open_desktop": ["0"],
-    "open_desktop_both": ["BACKSLASH"],
+    "open_desktop": ["0 0"],
+    "open_desktop_both": ["BACKSLASH", "0 SPACE"],
+    "open_desktop_to_other": ["0 O"],
     "open_ghq_repo": ["G"],
     "open_in_new_tab": [],
     "open_in_vscode": ["Ctrl-Shift-V"],
