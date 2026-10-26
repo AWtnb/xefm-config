@@ -43,3 +43,23 @@ def smart_select_all(ctx) -> None:
         return
 
     _select_by_focus(ctx)
+
+
+def select_by_extension(ctx) -> None:
+    target = ctx.pane.selected() or ctx.pane.entries
+    if not target:
+        return
+
+    exts = {item.suffix for item in target if item.suffix}
+    if not exts:
+        return
+
+    focused = ctx.pane.focused.suffix
+    exts = sorted(exts, key=lambda e: (e != focused, e))
+
+    def _select(i: int) -> None:
+        if i is None:
+            return
+        ctx.pane.select(lambda ent: ent.suffix == exts[i])
+
+    ctx.choose(title="Extensions", items=exts, on_result=_select)
