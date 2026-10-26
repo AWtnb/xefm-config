@@ -10,6 +10,7 @@ from . import cursor_jumper, favorites, item_selector, misc, navi, tree
 _ACTIONS = {
     "edit_config": {"func": misc.launch_config_repo, "override": True},
     "focus_newest_item": cursor_jumper.focus_newest_item,
+    "focus_older_item": cursor_jumper.focus_older_item,
     "fuzzy_favorites": favorites.fuzzy_favorites,
     "jump_down": cursor_jumper.jump_down,
     "jump_up": cursor_jumper.jump_up,
@@ -94,6 +95,7 @@ _KEY_BINDINGS = {
     "flat_view": ["Shift-B"],
     "focus_left": [],
     "focus_newest_item": ["Alt-N"],
+    "focus_older_item": ["Alt-B"],
     "focus_right": [],
     "go_back": ["Alt-LEFT"],
     "go_forward": ["Alt-RIGHT"],

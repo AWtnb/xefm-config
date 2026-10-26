@@ -1,9 +1,36 @@
+from collections.abc import Callable
 from itertools import groupby
+from typing import NamedTuple
 
 from xefm import (  # ty: ignore[unresolved-import]
     favorites,
     name_key,
 )
+
+
+class SortScore(NamedTuple):
+    timestamp: str
+    item_index: int
+
+
+def _make_scorer(file_info) -> Callable[[int, str], SortScore | None]:
+    """
+    Create a function that returns (date_str, comparison name, index) from file_info.
+    Items without date information return None.
+    """
+
+    def _score(i, item) -> SortScore | None:
+        meta = file_info.get(str(item))
+        if not meta:
+            return None
+        date_str = meta.get("date_str")
+        if not date_str:
+            return None
+        name = meta.get("cmp_name") or name_key.compare_name(item)
+        name_key.nfc(name)
+        return SortScore(date_str, i)
+
+    return _score
 
 
 def focus_newest_item(ctx):
@@ -16,26 +43,41 @@ def focus_newest_item(ctx):
     if not file_info:
         return
 
-    best_index = None
-    best_rank = None
+    _score = _make_scorer(file_info)
+    scores = [_score(i, item) for i, item in enumerate(items)]
+    best = max((s for s in scores if s is not None), default=None)
+    if best is None:
+        return
 
-    for i, item in enumerate(items):
-        meta = file_info.get(str(item))
-        if not meta:
-            continue
-        date_str = meta.get("date_str")
-        if not date_str:
-            continue
+    ctx.pane.cursor = best.item_index
 
-        name = meta.get("cmp_name") or name_key.compare_name(item)
 
-        rank = (date_str, name_key.nfc(name))
-        if best_rank is None or best_rank < rank:
-            best_rank = rank
-            best_index = i
+def focus_older_item(ctx):
+    pane = ctx.pane._pane
+    items = pane.get("files")
+    if not items:
+        return
 
-    if best_index is not None:
-        ctx.pane.cursor = best_index
+    file_info = pane.get("file_info")
+    if not file_info:
+        return
+
+    current_index = ctx.pane.cursor
+    if current_index < 0:
+        return
+
+    _score = _make_scorer(file_info)
+    current_score = _score(current_index, items[current_index])
+    if current_score is None:
+        return
+
+    scores = [_score(i, item) for i, item in enumerate(items)]
+    older = [s for s in scores if (s is not None and s < current_score)]
+    best = max(older, default=None)
+    if best is None:
+        return
+
+    ctx.pane.cursor = best.item_index
 
 
 def _jump_cursor(ctx, down: bool) -> None:
