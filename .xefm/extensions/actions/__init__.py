@@ -78,8 +78,8 @@ _KEY_BINDINGS = {
     "diff_files": ["5"],
     "drives": ["D"],
     "duplicate_files": ["Shift-D"],
-    "edit_config": {"keys": ["Ctrl-E"], "selection": "none"},
-    "edit_file": {"keys": ["Ctrl-E"], "selection": "required"},
+    "edit_config": ["Ctrl-E Ctrl-E"],
+    "edit_file": ["Ctrl-E Ctrl-ENTER"],
     "extensions": [],
     "extract_archive": ["P", "Z"],
     "favorites": ["B"],
@@ -140,6 +140,7 @@ _KEY_BINDINGS = {
     "prev_tab": [],
     "programs": ["Alt-X"],
     "quick_copy": ["C"],
+    "quick_duplicate_files": ["Shift-D"],
     "quick_move": ["M"],
     "quick_sort_date": ["4"],
     "quick_sort_ext": ["2"],
@@ -245,5 +246,5 @@ _EVENT_HOOKS = {
 }
 
 
-def apply() -> tuple[dict, dict, dict]:
+def setup() -> tuple[dict, dict, dict]:
     return (_ACTIONS, _EVENT_HOOKS, _KEY_BINDINGS)

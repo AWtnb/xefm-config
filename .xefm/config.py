@@ -113,11 +113,15 @@ class Config:
                 "*.pptx",
             ],
             "enter": "viewer",
-            "open|edit": ["cmd", "/c", "start"],
+            "edit": ["cmd", "/c", "start"],
         },
         {
             "pattern": ["*.md", "*.txt"],
             "edit": ["vim"],
+        },
+        {
+            "pattern": ["*.csv"],
+            "edit": ["cmd", "/c", "start"],
         },
         {
             "pattern": ["*.jar", "*.whl", "*.egg"],
@@ -134,7 +138,7 @@ class Config:
     KEY_PRESET = None
     KEY_SEQUENCE_TIMEOUT = 1.0
 
-    ACTIONS, EVENT_HOOKS, KEY_BINDINGS = actions.apply()
+    ACTIONS, EVENT_HOOKS, KEY_BINDINGS = actions.setup()
 
     def underscore_based_sortkey(entry) -> tuple:
         name = entry.name  # ty: ignore[unresolved-attribute]
