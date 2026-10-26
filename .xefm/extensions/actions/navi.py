@@ -5,12 +5,14 @@ DESKTOP_PATH = Path(os.path.expanduser(r"~/Desktop"))
 
 
 def open_desktop(ctx) -> None:
-    ctx.pane.cd(DESKTOP_PATH)
+    if ctx.pane.path != (DESKTOP_PATH):
+        ctx.pane.cd(DESKTOP_PATH)
 
 
 def open_desktop_both(ctx) -> None:
-    ctx.pane.cd(DESKTOP_PATH)
-    ctx.other.cd(DESKTOP_PATH)
+    for pane in [ctx.pane, ctx.other]:
+        if pane.path != DESKTOP_PATH:
+            pane.cd(DESKTOP_PATH)
     ctx.invoke("reset_pane_boundary")
 
 
