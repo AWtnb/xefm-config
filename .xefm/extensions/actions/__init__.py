@@ -187,7 +187,11 @@ def validate_keys(ctx, _) -> None:
     for k, v in _KEY_BINDINGS.items():
         if "." in k:
             continue
-        keys = v if isinstance(v, list) else v["keys"]
+        keys = (
+            v
+            if isinstance(v, list)
+            else [f"{s}(selection: {v['selection']})" for s in v["keys"]]
+        )
         for key in keys:
             counts[key] = counts.get(key, 0) + 1
 
