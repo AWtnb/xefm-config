@@ -17,32 +17,18 @@ def open_ghq_repo(ctx) -> None:
         ctx.message(f"ghq root not found: {ghq_root}")
         return
 
-    ghq_cmd = shutil.which("ghq")
-    if ghq_cmd is None:
-        ctx.message("ghq is not installed or not in PATH.")
-        return
-    try:
-        out = subprocess.check_output(
-            [ghq_cmd, "list", "--full-path"],
-            text=True,
-            stderr=subprocess.STDOUT,
-        )
-    except Exception as exc:  # noqa: BLE001
-        ctx.message(f"ghq failed: {exc}")
-        return
+    repo_roots: list[Path] = sorted(p for p in ghq_root.glob("*/*/*") if p.is_dir())
 
     class RepoPath(NamedTuple):
         rel: str
         full: str
 
         @classmethod
-        def from_path(cls, path: str):
-            rel = Path(path).relative_to(ghq_root)
-            return cls(str(rel), path)
+        def from_path(cls, path: Path):
+            rel = path.relative_to(ghq_root)
+            return cls(str(rel), str(path))
 
-    repo_paths = [
-        RepoPath.from_path(line.strip()) for line in out.splitlines() if line.strip()
-    ]
+    repo_paths = [RepoPath.from_path(p) for p in repo_roots]
     if not repo_paths:
         ctx.message("No repositories found under ~/ghq.")
         return
