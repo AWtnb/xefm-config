@@ -3,16 +3,16 @@ import os
 
 from xefm import favorites as xefm_favorites  # ty: ignore[unresolved-import]
 
-from . import cursor_jump, favorites, item_selector, misc, tree
+from . import cursor_jumper, favorites, item_selector, misc, tree
 
 # ja: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 # en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 _ACTIONS = {
     "edit_config": {"func": misc.launch_config_repo, "override": True},
-    "focus_newest_item": cursor_jump.focus_newest_item,
+    "focus_newest_item": cursor_jumper.focus_newest_item,
     "fuzzy_favorites": favorites.fuzzy_favorites,
-    "jump_down": cursor_jump.jump_down,
-    "jump_up": cursor_jump.jump_up,
+    "jump_down": cursor_jumper.jump_down,
+    "jump_up": cursor_jumper.jump_up,
     "make_tree": tree.make_tree,
     "open_desktop_both": misc.open_desktop_both,
     "open_desktop": misc.open_desktop,
