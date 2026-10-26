@@ -112,7 +112,6 @@ class Config:
                 "*.ppt",
                 "*.pptx",
             ],
-            "enter": "viewer",
             "edit": ["cmd", "/c", "start"],
         },
         {
