@@ -38,7 +38,7 @@ def focus_newest_item(ctx):
         ctx.pane.cursor = best_index
 
 
-def _jump_focus(ctx, down: bool) -> None:
+def _jump_cursor(ctx, down: bool) -> None:
     pane_info = ctx.pane._pane
     items = pane_info.get("files")
     if not items:
@@ -78,7 +78,7 @@ def _jump_focus(ctx, down: bool) -> None:
     selected_indices = [
         i
         for i, item in enumerate(items)
-        if str(item.path) in ctx._pane["selected_files"]
+        if str(item) in ctx.pane._pane["selected_files"]
     ]
     for _, group in groupby(enumerate(selected_indices), key=lambda p: p[1] - p[0]):
         run = [idx for _, idx in group]
@@ -103,8 +103,8 @@ def _jump_focus(ctx, down: bool) -> None:
 
 
 def jump_down(ctx) -> None:
-    _jump_focus(ctx, True)
+    _jump_cursor(ctx, True)
 
 
 def jump_up(ctx) -> None:
-    _jump_focus(ctx, False)
+    _jump_cursor(ctx, False)

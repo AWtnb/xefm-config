@@ -37,7 +37,7 @@ class Config:
     CONFIRM_QUIT = True
     CONFIRM_COPY = True
     CONFIRM_MOVE = True
-    CONFIRM_DUPLICATE = True
+    CONFIRM_DUPLICATE = False
     CONFIRM_EXTRACT_ARCHIVE = True
     CONFIRM_ARCHIVE_CREATE = True
 
