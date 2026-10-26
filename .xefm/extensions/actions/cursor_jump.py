@@ -74,21 +74,24 @@ def _jump_focus(ctx, down: bool) -> None:
     if first_file is not None:
         candidates.add(first_file)
 
-    # 3) favorites
-    fav_paths = {f.path for f in favorites.get_favorites()}
-    for i, item in enumerate(items):
-        if str(item) in fav_paths:
-            candidates.add(i)
-
-    # 4) edge of selection
-    selected_names = {ent.name for ent in ctx.pane.selected()}
+    # 3) edge of selection
     selected_indices = [
-        i for i, item in enumerate(items) if item.name in selected_names
+        i
+        for i, item in enumerate(items)
+        if str(item.path) in ctx._pane["selected_files"]
     ]
     for _, group in groupby(enumerate(selected_indices), key=lambda p: p[1] - p[0]):
         run = [idx for _, idx in group]
         candidates.add(run[0])
         candidates.add(run[-1])
+
+    # 4) favorites
+    fav_paths = {f.path for f in favorites.get_favorites()}
+    for i, item in enumerate(items):
+        if i in selected_indices:
+            continue
+        if str(item) in fav_paths:
+            candidates.add(i)
 
     ordered = sorted(candidates)
     if down:
