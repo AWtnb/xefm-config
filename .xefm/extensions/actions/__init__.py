@@ -48,7 +48,7 @@ _KEY_BINDINGS = {
     "connect_server": [],
     "context_menu": ["/", "Shift-F10", "APPS"],
     "context_menu_dir": ["?", "Alt-Shift-F10", "Shift-APPS"],
-    "copy_files": {"keys": ["C"], "selection": "required"},
+    "copy_files": [],
     "copy_files_to": {"keys": ["Shift-C"], "selection": "required"},
     "copy_log_all": [],
     "copy_log_selection": [],
@@ -65,7 +65,7 @@ _KEY_BINDINGS = {
     "cursor_up": ["UP", "K"],
     "delete_files": {"keys": ["Ctrl-D"], "selection": "required"},
     "delete_permanently": {
-        "keys": ["Shift-K", "Shift-DELETE"],
+        "keys": ["Shift-DELETE"],
         "selection": "required",
     },
     "diff_directories": ["Shift-Minus"],
@@ -91,12 +91,12 @@ _KEY_BINDINGS = {
     "go_root": [],
     "help": ["F1"],
     "history": ["Ctrl-Z"],
-    "image_viewer.next": ["DOWN"],
+    "image_viewer.next": ["DOWN", "J"],
     "image_viewer.pan_down": ["Shift-DOWN"],
     "image_viewer.pan_left": ["Shift-LEFT"],
     "image_viewer.pan_right": ["Shift-RIGHT"],
     "image_viewer.pan_up": ["Shift-UP"],
-    "image_viewer.prev": ["UP"],
+    "image_viewer.prev": ["UP", "K"],
     "image_viewer.zoom_in": ["+", "="],
     "image_viewer.zoom_out": ["-", "_"],
     "image_viewer.zoom_reset": ["0"],
@@ -108,7 +108,7 @@ _KEY_BINDINGS = {
     "jump_to_path": ["Ctrl-J"],
     "jump_up": ["Alt-K"],
     "menu": ["F10", "ALT"],
-    "move_files": {"keys": ["M"], "selection": "required"},
+    "move_files": [],
     "move_files_to": {"keys": ["Shift-M"], "selection": "required"},
     "nav_left": [],
     "nav_right": [],
@@ -162,13 +162,13 @@ _KEY_BINDINGS = {
     "text_viewer.scroll_down": ["J", "DOWN"],
     "text_viewer.scroll_top": ["A", "HOME"],
     "text_viewer.scroll_up": ["K", "UP"],
+    "text_viewer.toggle_view_mode": ["M"],
     "toggle_color_scheme": [],
     "toggle_hidden": [".", "Shift-H"],
     "toggle_select_down": ["SPACE"],
     "toggle_select_files": [],
     "toggle_select_items": [],
     "toggle_select_up": ["Shift-SPACE"],
-    "toggle_view_mode": ["M"],
     "toggle_wrap": ["Alt-Z"],
     "unselect_all": ["U"],
     "unselect_by_pattern": [],
@@ -178,17 +178,17 @@ _KEY_BINDINGS = {
 
 
 def validate_keys(ctx, _) -> None:
-    warnings = []
-    seen = set()
-    for v in _KEY_BINDINGS.values():
+    counts = {}
+    for k, v in _KEY_BINDINGS.items():
+        if "." in k:
+            continue
         keys = v if isinstance(v, list) else v["keys"]
         for key in keys:
-            if key in seen:
-                warnings.append(key)
-                continue
-            seen.add(key)
-    for key in warnings:
-        ctx.message(f"[WARNING] Key duplicates: {key}")
+            counts[key] = counts.get(key, 0) + 1
+
+    for key, count in sorted(counts.items()):
+        if 1 < count:
+            ctx.message(f"[WARNING] Key duplicates: {key} ({count} times)")
 
 
 def on_enter(ctx, event) -> bool:
