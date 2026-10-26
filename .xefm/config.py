@@ -16,7 +16,7 @@ class Config:
     # en: https://github.com/crftwr/xefm/blob/main/doc/CONFIGURATION_FEATURE.md
     UI_FONT_NAME = "HackGen" if sys.platform == "win32" else None
     MONO_FONT_NAME = "HackGen" if sys.platform == "win32" else None
-    FONT_SIZE = 14
+    FONT_SIZE = 16
 
     SHOW_HIDDEN_FILES = True
     DEFAULT_LEFT_PANE_RATIO = 0.5
