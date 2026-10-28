@@ -16,11 +16,10 @@ def open_in_smoothcsv(ctx) -> None:
         ctx.message("SmoothCSV not found...")
         return
 
-    target = ctx.pane.selected() or ctx.pane.entries
+    target = ctx.pane.selected() or [ctx.pane.focused]
     for entry in target:
-        if entry.path.suffix not in [".csv", ".txt"]:
-            continue
-        ctx.run_program([smooth_csv_path, str(entry.path)])
+        if entry.path.suffix in [".csv", ".txt"]:
+            ctx.run_program([smooth_csv_path, str(entry.path)])
 
 
 def quick_copy(ctx) -> None:
