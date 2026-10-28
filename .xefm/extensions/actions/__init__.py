@@ -61,7 +61,7 @@ _KEY_BINDINGS = {
     "copy_names": ["Ctrl-N"],
     "copy_paths": ["Ctrl-P"],
     "create_archive": {"keys": ["Shift-P", "Shift-Z"], "selection": "required"},
-    "create_directory": {"keys": ["Ctrl-Shift-N"], "selection": "none"},
+    "create_directory": {"keys": ["D", "Shift-N"], "selection": "none"},
     "create_file": ["T"],
     "cursor_bottom": ["END", "E"],
     "cursor_down": ["DOWN", "J"],
