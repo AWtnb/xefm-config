@@ -10,7 +10,7 @@ def _as_codeblock(root: Path, path: Path) -> str:
 
 
 def smart_copy(ctx) -> None:
-    target = ctx.pane.selected() or ctx.pane.entries
+    target = ctx.pane.selected() or [ctx.pane.focused]
 
     options = ["Fullname", "Name"]
     if not all(e.is_dir for e in target):
