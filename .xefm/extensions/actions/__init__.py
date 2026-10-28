@@ -3,7 +3,7 @@ import os
 
 from xefm import favorites as xefm_favorites  # ty: ignore[unresolved-import]
 
-from . import cursor_jumper, favorites, item_selector, misc, navi, tree
+from . import clipboard, cursor_jumper, favorites, item_selector, misc, navi, tree
 
 # ja: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 # en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
@@ -26,6 +26,7 @@ _ACTIONS = {
     "quick_copy": misc.quick_copy,
     "quick_move": misc.quick_move,
     "select_by_extension": item_selector.select_by_extension,
+    "smart_copy": clipboard.smart_copy,
     "smart_select_all": item_selector.smart_select_all,
     "summarize_by": tree.summarize_by,
 }
@@ -46,7 +47,7 @@ _KEY_BINDINGS = {
     "check_extension_updates": [],
     "clear_filter": [": *"],
     "clipboard_clear": [],
-    "clipboard_copy": ["Ctrl-C", "Y"],
+    "clipboard_copy": ["Y"],
     "clipboard_cut": ["Ctrl-X", "Shift-Y"],
     "clipboard_paste": ["Ctrl-V"],
     "close_tab": [],
@@ -166,6 +167,7 @@ _KEY_BINDINGS = {
     "select_same_extension": [";"],
     "select_by_extension": ["Shift-X"],
     "settings_menu": ["Shift-Z"],
+    "smart_copy": ["Ctrl-C"],
     "smart_select_all": ["Ctrl-A"],
     "sort": ["S"],
     "subshell": ["@"],

@@ -14,7 +14,7 @@ def traverse_file(root: str | Path) -> Iterator[str]:
             yield os.path.join(dir_path, f)
 
 
-def _get_git_root(path: str) -> Path:
+def get_git_root(path: str) -> Path:
     original = Path(path)
     current = original
     while True:
@@ -26,7 +26,7 @@ def _get_git_root(path: str) -> Path:
 
 
 def make_tree(ctx) -> None:
-    root = _get_git_root(str(ctx.pane.path))
+    root = get_git_root(str(ctx.pane.path))
     lines = [p for p in traverse_file(root)]
     selected = {str(ent.path) for ent in ctx.pane.selected()}
     if selected:
@@ -88,6 +88,6 @@ def summarize_by(ctx) -> None:
 
     ctx.input(
         prompt="root of summary",
-        default=str(_get_git_root(str(ctx.other.path))),
+        default=str(get_git_root(str(ctx.other.path))),
         on_accept=_summarize,
     )
