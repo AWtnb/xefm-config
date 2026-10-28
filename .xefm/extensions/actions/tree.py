@@ -2,6 +2,8 @@ import os
 from collections.abc import Iterator
 from pathlib import Path
 
+from ._utils import get_git_root
+
 
 def _is_skippable(dir_name: str) -> bool:
     return dir_name in ("node_modules", ".git") or dir_name.startswith("__")
@@ -12,17 +14,6 @@ def traverse_file(root: str | Path) -> Iterator[str]:
         dir_names[:] = [d for d in dir_names if not _is_skippable(d)]
         for f in file_names:
             yield os.path.join(dir_path, f)
-
-
-def get_git_root(path: str) -> Path:
-    original = Path(path)
-    current = original
-    while True:
-        if (current / ".git").exists():
-            return Path(current)
-        if current.parent == current:
-            return Path(original)
-        current = current.parent
 
 
 def make_tree(ctx) -> None:

@@ -10,3 +10,14 @@ def smart_check_path(path: str | Path, timeout_sec: float | None = None) -> bool
         return future.result(timeout_sec)
     except Exception:  # noqa: BLE001
         return False
+
+
+def get_git_root(path: str) -> Path:
+    original = Path(path)
+    current = original
+    while True:
+        if (current / ".git").exists():
+            return Path(current)
+        if current.parent == current:
+            return Path(original)
+        current = current.parent

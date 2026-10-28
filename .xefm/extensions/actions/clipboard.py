@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from .tree import get_git_root
+from ._utils import get_git_root
 
 
 def _as_codeblock(root: Path, path: Path) -> str:
