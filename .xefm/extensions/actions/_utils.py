@@ -21,3 +21,7 @@ def get_git_root(path: str) -> Path:
         if current.parent == current:
             return Path(original)
         current = current.parent
+
+
+def get_selected_or_focused(ctx) -> list:
+    return ctx.pane.selected() or [ctx.pane.focused]

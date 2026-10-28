@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from ._utils import get_git_root
+from ._utils import get_git_root, get_selected_or_focused
 
 
 def _as_codeblock(root: Path, path: Path) -> str:
@@ -10,7 +10,7 @@ def _as_codeblock(root: Path, path: Path) -> str:
 
 
 def smart_copy(ctx) -> None:
-    target = ctx.pane.selected() or [ctx.pane.focused]
+    target = get_selected_or_focused(ctx)
 
     options = ["Fullname", "Name"]
     if not all(e.is_dir for e in target):

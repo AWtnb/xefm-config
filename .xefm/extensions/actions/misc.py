@@ -2,6 +2,7 @@ import os
 import shutil
 import subprocess
 
+from ._utils import get_selected_or_focused
 from .item_selector import select_under_cursor
 
 
@@ -17,7 +18,7 @@ def open_in_smoothcsv(ctx) -> None:
         ctx.message("SmoothCSV not found...")
         return
 
-    target = ctx.pane.selected() or [ctx.pane.focused]
+    target = get_selected_or_focused(ctx)
     for entry in target:
         if entry.path.suffix in [".csv", ".txt"]:
             ctx.run_program([smooth_csv_path, str(entry.path)])
