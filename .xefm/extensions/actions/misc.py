@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 
 from .item_selector import select_under_cursor
 
@@ -49,3 +50,7 @@ def launch_config_repo(ctx) -> None:
         cmd[0] = vscode_path
 
     ctx.run_program(cmd)
+
+
+def launch_recycle_bin(_) -> None:
+    subprocess.run(["explorer.exe", "shell:RecycleBinFolder"], check=False)

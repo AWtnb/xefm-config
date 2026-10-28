@@ -15,6 +15,7 @@ _ACTIONS = {
     "jump_down": cursor_jumper.jump_down,
     "jump_up": cursor_jumper.jump_up,
     "make_tree": tree.make_tree,
+    "recycle_bin": misc.launch_recycle_bin,
     "open_desktop_both": navi.open_desktop_both,
     "open_desktop_to_other": navi.open_desktop_to_other,
     "open_desktop": navi.open_desktop,
