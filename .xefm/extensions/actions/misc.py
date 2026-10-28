@@ -9,6 +9,20 @@ def open_in_vscode(ctx) -> None:
     ctx.run_program(["code", str(ctx.pane.path)])
 
 
+def open_in_smoothcsv(ctx) -> None:
+    """Open item in SmoothCSV"""
+    smooth_csv_path = r"C:\Program Files\SmoothCSV\smoothcsv-cli.exe"
+    if not os.path.exists(smooth_csv_path):
+        ctx.message("SmoothCSV not found...")
+        return
+
+    target = ctx.pane.selected() or ctx.pane.entries
+    for entry in target:
+        if entry.path.suffix not in [".csv", ".txt"]:
+            continue
+        ctx.run_program([smooth_csv_path, str(entry.path)])
+
+
 def quick_copy(ctx) -> None:
     if not ctx.pane.selected():
         select_under_cursor(ctx)
