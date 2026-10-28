@@ -54,3 +54,51 @@ def launch_config_repo(ctx) -> None:
 
 def launch_recycle_bin(_) -> None:
     subprocess.run(["explorer.exe", "shell:RecycleBinFolder"], check=False)
+
+
+def conc_pdf(ctx) -> None:
+    exe_name = "go-pdfconc.exe"
+    exe_path = shutil.which(exe_name)
+    if not exe_path:
+        ctx.message(f"'{exe_name}' not found!")
+        return
+
+    selected = [ent for ent in ctx.pane.selected() if ent.path.suffix.lower() == ".pdf"]
+    if len(selected) < 2:
+        return
+
+    target = [str(ent.path) for ent in selected]
+
+    def _conc(out_name: str) -> None:
+        out_name = out_name.removesuffix(".pdf")
+
+        def _work(_) -> None:
+            cmd = [exe_path, "--outname", out_name]
+            try:
+                subprocess.run(
+                    cmd,
+                    input="\n".join(target),
+                    capture_output=True,
+                    encoding="utf-8",
+                    creationflags=subprocess.CREATE_NO_WINDOW,
+                    check=True,
+                )
+            except Exception as e:  # noqa: BLE001
+                raise RuntimeError(str(e))
+
+        ctx.run_task(
+            title="Concatenate PDFs",
+            work=_work,
+            on_done=lambda c, outcome: (
+                c.message("PDF concatenation finished.")
+                if outcome.ok
+                else c.message(f"PDF concatenation failed: {outcome.error}")
+            ),
+        )
+
+    ctx.input(
+        prompt="Concatenated file name:",
+        default="conc",
+        title="Concatenate PDFs",
+        on_accept=_conc,
+    )

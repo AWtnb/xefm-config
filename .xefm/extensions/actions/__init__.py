@@ -9,6 +9,7 @@ from . import clipboard, cursor_jumper, favorites, item_selector, misc, navi, tr
 # en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 _ACTIONS = {
     "edit_config": {"func": misc.launch_config_repo, "override": True},
+    "conc_pdf": misc.conc_pdf,
     "focus_newest_item": cursor_jumper.focus_newest_item,
     "focus_older_item": cursor_jumper.focus_older_item,
     "fuzzy_favorites": favorites.fuzzy_favorites,
