@@ -18,7 +18,10 @@ def smart_copy(ctx) -> None:
     options.append("Codeblock")
     options.append("(Entry)")
 
-    def _copy(i: int) -> None:
+    def _copy(i: int | None) -> None:
+        if i is None:
+            return
+
         sel = options[i]
         if sel == "Fullname":
             ctx.copy_text("\n".join(str(e.path) for e in target))

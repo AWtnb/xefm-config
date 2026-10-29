@@ -35,7 +35,10 @@ def summarize_by(ctx) -> None:
         return
     rel_paths = Path(selected[0].path).read_text(encoding="utf-8").splitlines()
 
-    def _summarize(root: str) -> None:
+    def _summarize(root: str | None) -> None:
+        if root is None:
+            return
+
         _, root_name = os.path.split(root)
         targets = []
         for rel in rel_paths:

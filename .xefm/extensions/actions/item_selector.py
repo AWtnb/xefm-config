@@ -57,7 +57,7 @@ def select_by_extension(ctx) -> None:
     focused = ctx.pane.focused.suffix
     exts = sorted(exts, key=lambda e: (e != focused, e))
 
-    def _select(i: int) -> None:
+    def _select(i: int | None) -> None:
         if i is None:
             return
         ctx.pane.select(lambda ent: ent.suffix == exts[i])

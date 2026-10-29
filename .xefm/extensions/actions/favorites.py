@@ -33,7 +33,7 @@ def open_ghq_repo(ctx) -> None:
         ctx.message("No repositories found under ~/ghq.")
         return
 
-    def _on_select(index):
+    def _on_select(index: int | None):
         if index is None:
             return
         ctx.pane.cd(repo_paths[index].full)

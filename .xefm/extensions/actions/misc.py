@@ -70,7 +70,10 @@ def conc_pdf(ctx) -> None:
 
     target = [str(ent.path) for ent in selected]
 
-    def _conc(out_name: str) -> None:
+    def _conc(out_name: str | None) -> None:
+        if out_name is None:
+            return
+
         out_name = out_name.removesuffix(".pdf")
 
         def _work(_) -> None:
