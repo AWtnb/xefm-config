@@ -6,7 +6,7 @@ from ._utils import get_git_root, get_selected_or_focused
 def _as_codeblock(root: Path, path: Path) -> str:
     content = path.read_text(encoding="utf-8")
     border = "```"
-    return f"{border}{path.relative_to(root)}\n{content}\n{border}"
+    return f"\n\n{border}{path.relative_to(root)}\n{content}\n{border}"
 
 
 def smart_copy(ctx) -> None:
@@ -37,7 +37,7 @@ def smart_copy(ctx) -> None:
 
         if sel == "Codeblock":
             git_root = get_git_root(ctx.pane.path)
-            ctx.copy_text("\n\n".join(_as_codeblock(git_root, e.path) for e in target))
+            ctx.copy_text("\n".join(_as_codeblock(git_root, e.path) for e in target))
             return
 
         ctx.invoke("clipboard_copy")

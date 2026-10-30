@@ -91,7 +91,7 @@ _KEY_BINDINGS = {
     "drives": ["D"],
     "duplicate_files": ["Shift-D"],
     "edit_config": ["Ctrl-E Ctrl-E"],
-    "edit_file": ["Ctrl-E Ctrl-ENTER"],
+    "edit_file": ["Ctrl-E E"],
     "extensions": [],
     "extract_archive": ["P", "Z"],
     "favorites": ["B"],
