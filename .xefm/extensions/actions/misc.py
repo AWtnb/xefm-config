@@ -106,16 +106,3 @@ def conc_pdf(ctx) -> None:
         title="Concatenate PDFs",
         on_accept=_conc,
     )
-
-
-def smart_nav_right(ctx) -> None:
-    focus = ctx.pane.focused
-    if focus is None:
-        ctx.invoke("switch_pane")
-        return
-
-    if focus.path.is_dir():
-        ctx.invoke("open_item")
-        return
-
-    ctx.invoke("switch_pane")

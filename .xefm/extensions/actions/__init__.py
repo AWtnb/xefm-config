@@ -3,7 +3,15 @@ import os
 
 from xefm import favorites as xefm_favorites  # ty: ignore[unresolved-import]
 
-from . import clipboard, cursor_jumper, favorites, item_selector, misc, navi, tree
+from . import (
+    clipboard,
+    cursor_jumper,
+    favorites,
+    item_selector,
+    misc,
+    navi,
+    tree,
+)
 
 # ja: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 # en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
@@ -30,7 +38,6 @@ _ACTIONS = {
     "select_by_extension": item_selector.select_by_extension,
     "smart_copy": clipboard.smart_copy,
     "smart_select_all": item_selector.smart_select_all,
-    "smart_nav_right": misc.smart_nav_right,
     "summarize_by": tree.summarize_by,
 }
 
@@ -63,8 +70,8 @@ _KEY_BINDINGS = {
     "copy_files_to": {"keys": ["Shift-C"], "selection": "required"},
     "copy_log_all": [],
     "copy_log_selection": [],
-    "copy_names": ["Ctrl-N"],
-    "copy_paths": ["Ctrl-P"],
+    "copy_names": [],
+    "copy_paths": [],
     "create_archive": {"keys": ["Shift-P", "Shift-Z"], "selection": "required"},
     "create_directory": {"keys": ["D", "Shift-N"], "selection": "none"},
     "create_file": ["T"],
