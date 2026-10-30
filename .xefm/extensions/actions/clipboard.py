@@ -16,7 +16,7 @@ def smart_copy(ctx) -> None:
     if not all(e.is_dir for e in target):
         options.append("BaseName")
     options.append("Codeblock")
-    options.append("(Entry)")
+    options.append("Entry")
 
     def _copy(i: int | None) -> None:
         if i is None:
