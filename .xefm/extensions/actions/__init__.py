@@ -30,6 +30,7 @@ _ACTIONS = {
     "select_by_extension": item_selector.select_by_extension,
     "smart_copy": clipboard.smart_copy,
     "smart_select_all": item_selector.smart_select_all,
+    "smart_nav_right": misc.smart_nav_right,
     "summarize_by": tree.summarize_by,
 }
 
