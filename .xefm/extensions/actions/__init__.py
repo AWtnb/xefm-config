@@ -166,7 +166,7 @@ _KEY_BINDINGS = {
     "scroll_log_page_up": [],
     "scroll_log_up": ["Shift-K", "Shift-UP"],
     "select_by_pattern": ["*"],
-    "select_range": ["Ctrl-Alt-SPACE"],
+    "select_range": ["R"],
     "select_same_extension": [";"],
     "select_by_extension": ["Shift-X"],
     "settings_menu": ["Shift-Z"],
