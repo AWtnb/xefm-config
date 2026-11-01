@@ -61,15 +61,14 @@ def rename_lightroom_photo(ctx) -> None:
 
 
 _TZ_JST = datetime.timezone(datetime.timedelta(hours=9))
-_FILLER_TS = datetime.datetime.fromtimestamp(0, tz=_TZ_JST)
 
 
-def _get_exif_timestamp(path: Path) -> datetime.datetime:
+def _get_exif_timestamp(path: Path) -> datetime.datetime | None:
     try:
         with PILImage.open(path) as img:
             exif_data = img._getexif()
             if not exif_data:
-                return _FILLER_TS
+                return None
             for tag_id, value in exif_data.items():
                 tag = TAGS.get(tag_id, tag_id)
                 if tag == "DateTimeOriginal":
@@ -77,10 +76,10 @@ def _get_exif_timestamp(path: Path) -> datetime.datetime:
                         tzinfo=_TZ_JST
                     )
                     return dt
-            return _FILLER_TS
+            return None
     except Exception as e:  # noqa: BLE001
         print(e)
-        return _FILLER_TS
+        return None
 
 
 def _timestamp_position_of(path: Path) -> int | None:
@@ -99,13 +98,14 @@ def _timestamp_position_of(path: Path) -> int | None:
     return -1
 
 
-def get_timestamp(path: Path) -> datetime.datetime:
+def get_timestamp(path: Path) -> datetime.datetime | None:
+
     offset = _timestamp_position_of(path)
     if offset is None:
         return _get_exif_timestamp(path)
 
     if offset < 1:
-        return _FILLER_TS
+        return None
 
     with open(path, "rb") as f:
         f.seek(offset)
@@ -114,3 +114,16 @@ def get_timestamp(path: Path) -> datetime.datetime:
     return datetime.datetime.strptime(decoded, "%Y:%m:%d %H:%M:%S").replace(
         tzinfo=_TZ_JST
     )
+
+
+TS_FORMAT = "%Y_%m%d_%H%M%S00"
+TS_FILLER = datetime.datetime.fromtimestamp(0, tz=_TZ_JST)
+
+
+def get_timestamp_mapping(paths: list[Path]) -> dict[Path, str]:
+    d = {}
+    for p in paths:
+        ts = get_timestamp(p)
+        if ts is not None:
+            d[p] = ts.strftime(TS_FORMAT)
+    return d
