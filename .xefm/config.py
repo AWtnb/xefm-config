@@ -110,7 +110,7 @@ class Config:
     # ja: https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.ja.md
     # en: https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.md
     SUBSHELL = None
-    TERMINAL = None
+    TERMINAL = ["wezterm", "start", "--"]  # noqa: RUF012
 
     S3_CACHE_TTL = 60
     SSH_CACHE_TTL = 30
