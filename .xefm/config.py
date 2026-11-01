@@ -109,7 +109,7 @@ class Config:
 
     # ja: https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.ja.md
     # en: https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.md
-    SUBSHELL = ["powershell", "-nop", "-nologo"]  # noqa: RUF012
+    SUBSHELL = None
     TERMINAL = None
 
     S3_CACHE_TTL = 60
