@@ -10,6 +10,7 @@ from . import (
     item_selector,
     misc,
     navi,
+    photo_renamer,
     tree,
 )
 
@@ -35,6 +36,7 @@ _ACTIONS = {
     "open_to_other": navi.open_to_other,
     "quick_copy": misc.quick_copy,
     "quick_move": misc.quick_move,
+    "rename_rightloom_photo": photo_renamer.rename_lightroom_photo,
     "select_by_extension": item_selector.select_by_extension,
     "smart_copy": clipboard.smart_copy,
     "smart_select_all": item_selector.smart_select_all,
