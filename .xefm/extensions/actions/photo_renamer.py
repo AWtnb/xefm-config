@@ -98,7 +98,7 @@ def _timestamp_position_of(path: Path) -> int | None:
     return -1
 
 
-def get_timestamp(path: Path) -> datetime.datetime | None:
+def _get_timestamp(path: Path) -> datetime.datetime | None:
 
     offset = _timestamp_position_of(path)
     if offset is None:
@@ -120,10 +120,30 @@ TS_FORMAT = "%Y_%m%d_%H%M%S00"
 TS_FILLER = datetime.datetime.fromtimestamp(0, tz=_TZ_JST)
 
 
-def get_timestamp_mapping(paths: list[Path]) -> dict[Path, str]:
+def _get_timestamp_mapping(paths: list[Path]) -> dict[Path, str]:
     d = {}
     for p in paths:
-        ts = get_timestamp(p)
+        ts = _get_timestamp(p)
         if ts is not None:
             d[p] = ts.strftime(TS_FORMAT)
     return d
+
+
+def rename_photo_by_exif_timestamp(ctx) -> None:
+    """
+    Rename photo files by its exif-based timestamp
+    """
+    selected = ctx.pane.selected()
+    mapping = _get_timestamp_mapping([e.path for e in selected])
+    if not mapping:
+        return
+
+    targets = [e.path for e in selected if e.path in mapping]
+    if not targets:
+        return
+
+    def _rename(ok: bool) -> None:
+        if not ok:
+            return
+
+    ctx.confirm(f"Rename {len(targets)} item(s)?", on_result=_rename)
