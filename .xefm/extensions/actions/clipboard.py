@@ -6,7 +6,7 @@ from ._utils import get_git_root, get_selected_or_focused
 def _as_codeblock(root: Path, path: Path) -> str:
     content = path.read_text(encoding="utf-8")
     border = "```"
-    return f"\n\n{border}{path.relative_to(root)}\n{content}\n{border}"
+    return f"\n\n{border}{path.relative_to(root)}\n{content}\n{border}\n\n"
 
 
 def smart_copy(ctx) -> None:
