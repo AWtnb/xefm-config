@@ -32,6 +32,27 @@ def _get_new_name(path: Path) -> str:
     return f"{yyyy}{mm}{dd}-IMG_{hh}{mi}{ss}{suffix}.jpg"
 
 
+def _as_preview_message(mapping: dict[Path, str]) -> str:
+    count = len(mapping)
+    width = len(str(count))
+
+    def _pad(i: int) -> str:
+        return str(i).rjust(width)
+
+    total = _pad(count)
+    arrow = "=" * (width * 2) + "> "
+    lines = [
+        f"{_pad(i)}/{total}: {p.name}\n {arrow}{n}"
+        for i, (p, n) in enumerate(mapping.items(), start=1)
+    ]
+    assert 0 < len(lines)
+
+    if len(lines) == 1:
+        return f"Rename 1 item?\n{lines[0]}"
+
+    return f"Rename {len(lines)} items?\n{lines[0]}\n︙\n{lines[-1]}"
+
+
 def rename_lightroom_photo(ctx) -> None:
     """
     Rename lightroom-processed photo file downloeded through dropbox
@@ -40,12 +61,14 @@ def rename_lightroom_photo(ctx) -> None:
     if not targets:
         return
 
+    mapping = {ent.path: _get_new_name(ent.path) for ent in targets}
+
     def _rename(ok: bool) -> None:
         if not ok:
             return
         existing = {e.path.name for e in ctx.pane.entries}
         for ent in targets:
-            new_name = _get_new_name(ent.path)
+            new_name = mapping[ent.path]
             if new_name in existing:
                 ctx.message(f"{ent.name}: name already exists")
                 continue
@@ -57,7 +80,7 @@ def rename_lightroom_photo(ctx) -> None:
                 ctx.message(f"{ent.name}: {e}")
         ctx.pane.refresh()
 
-    ctx.confirm(f"Rename {len(targets)} item(s)?", on_result=_rename)
+    ctx.confirm(_as_preview_message(mapping), on_result=_rename)
 
 
 _TZ_JST = datetime.timezone(datetime.timedelta(hours=9))
@@ -129,18 +152,21 @@ def rename_photo_by_exif_timestamp(ctx) -> None:
     if not targets:
         return
 
+    mapping = {}
+    for ent in targets:
+        ts = _get_timestamp(ent.path)
+        prefix = (
+            _TS_FILLER.strftime(_TS_FORMAT) if ts is None else ts.strftime(_TS_FORMAT)
+        )
+        new_name = f"{prefix}_{ent.path.name}"
+        mapping[ent.path] = new_name
+
     def _rename(ok: bool) -> None:
         if not ok:
             return
         existing = {e.path.name for e in ctx.pane.entries}
         for ent in targets:
-            ts = _get_timestamp(ent.path)
-            prefix = (
-                _TS_FILLER.strftime(_TS_FORMAT)
-                if ts is None
-                else ts.strftime(_TS_FORMAT)
-            )
-            new_name = f"{prefix}_{ent.path.name}"
+            new_name = mapping[ent.path]
             if new_name in existing:
                 ctx.message(f"{ent.name}: name already exists")
                 continue
@@ -152,4 +178,4 @@ def rename_photo_by_exif_timestamp(ctx) -> None:
                 ctx.message(f"{ent.name}: {e}")
         ctx.pane.refresh()
 
-    ctx.confirm(f"Rename {len(targets)} item(s)?", on_result=_rename)
+    ctx.confirm(_as_preview_message(mapping), on_result=_rename)

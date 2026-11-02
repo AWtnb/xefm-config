@@ -37,6 +37,7 @@ _ACTIONS = {
     "quick_copy": misc.quick_copy,
     "quick_move": misc.quick_move,
     "rename_rightloom_photo": photo_renamer.rename_lightroom_photo,
+    "rename_photo_by_exif_timestamp": photo_renamer.rename_photo_by_exif_timestamp,
     "select_by_extension": item_selector.select_by_extension,
     "smart_copy": clipboard.smart_copy,
     "smart_select_all": item_selector.smart_select_all,
