@@ -6,44 +6,50 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
-from typing import NamedTuple
 
 from xefm import favorites  # ty: ignore[unresolved-import]
 
 
-def open_ghq_repo(ctx) -> None:
+def fuzzy_ghq(ctx) -> None:
     ghq_root = Path(os.path.expanduser(r"~/ghq"))
     if not ghq_root.is_dir():
         ctx.message(f"ghq root not found: {ghq_root}")
         return
 
-    repo_roots: list[Path] = sorted(p for p in ghq_root.glob("*/*/*") if p.is_dir())
+    fzf_cmd = shutil.which("fzf")
+    if fzf_cmd is None:
+        ctx.message("fzf not found")
+        return
 
-    class RepoPath(NamedTuple):
-        rel: str
-        full: str
-
-        @classmethod
-        def from_path(cls, path: Path):
-            rel = path.relative_to(ghq_root)
-            return cls(str(rel), str(path))
-
-    repo_paths = [RepoPath.from_path(p) for p in repo_roots]
-    if not repo_paths:
+    repo_roots = [p for p in ghq_root.glob("*/*/*") if p.is_dir()]
+    if not repo_roots:
         ctx.message("No repositories found under ~/ghq.")
         return
 
-    def _on_select(index: int | None):
-        if index is None:
-            return
-        ctx.pane.cd(repo_paths[index].full)
+    repo_paths = {}
+    for path in repo_roots:
+        rel = path.relative_to(ghq_root)
+        repo_paths[str(rel)] = str(path)
 
-    ctx.choose(
-        "Select ghq repository",
-        [r.rel for r in repo_paths],
-        type="filter",
-        on_result=_on_select,
-    )
+    # https://github.com/crftwr/xefm/issues/755
+    with ctx.terminal_backend_suspended():
+        r = subprocess.run(
+            [fzf_cmd],
+            input="\n".join(repo_paths.keys()),
+            encoding="utf-8",
+            stdout=subprocess.PIPE,
+            check=False,
+            **ctx.program_env(),
+        )
+
+    if r.returncode in (1, 130):
+        return
+
+    selected = r.stdout.strip()
+    if not selected:
+        return
+
+    ctx.pane.cd(repo_paths[selected])
 
 
 def fuzzy_favorites(ctx) -> None:
@@ -56,19 +62,22 @@ def fuzzy_favorites(ctx) -> None:
         f.name: f.path
         for f in favorites.get_favorites()  # list[FavoriteEntry]
     }
-    names = "\n".join(favs.keys())
 
-    completed = subprocess.run(
-        [fzf_cmd],
-        input=names,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-    if completed.returncode in (1, 130):
+    # https://github.com/crftwr/xefm/issues/755
+    with ctx.terminal_backend_suspended():
+        r = subprocess.run(
+            [fzf_cmd],
+            input="\n".join(favs.keys()),
+            encoding="utf-8",
+            stdout=subprocess.PIPE,
+            check=False,
+            **ctx.program_env(),
+        )
+
+    if r.returncode in (1, 130):
         return
 
-    selected = completed.stdout.strip()
+    selected = r.stdout.strip()
     if not selected:
         return
 

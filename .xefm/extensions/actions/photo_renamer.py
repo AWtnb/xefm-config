@@ -116,34 +116,40 @@ def _get_timestamp(path: Path) -> datetime.datetime | None:
     )
 
 
-TS_FORMAT = "%Y_%m%d_%H%M%S00"
-TS_FILLER = datetime.datetime.fromtimestamp(0, tz=_TZ_JST)
-
-
-def _get_timestamp_mapping(paths: list[Path]) -> dict[Path, str]:
-    d = {}
-    for p in paths:
-        ts = _get_timestamp(p)
-        if ts is not None:
-            d[p] = ts.strftime(TS_FORMAT)
-    return d
+_TS_FORMAT = "%Y_%m%d_%H%M%S00"
+_TS_FILLER = datetime.datetime.fromtimestamp(0, tz=_TZ_JST)
 
 
 def rename_photo_by_exif_timestamp(ctx) -> None:
     """
     Rename photo files by its exif-based timestamp
     """
-    selected = ctx.pane.selected()
-    mapping = _get_timestamp_mapping([e.path for e in selected])
-    if not mapping:
-        return
 
-    targets = [e.path for e in selected if e.path in mapping]
+    targets = ctx.pane.selected()
     if not targets:
         return
 
     def _rename(ok: bool) -> None:
         if not ok:
             return
+        existing = {e.path.name for e in ctx.pane.entries}
+        for ent in targets:
+            ts = _get_timestamp(ent.path)
+            prefix = (
+                _TS_FILLER.strftime(_TS_FORMAT)
+                if ts is None
+                else ts.strftime(_TS_FORMAT)
+            )
+            new_name = f"{prefix}_{ent.path.name}"
+            if new_name in existing:
+                ctx.message(f"{ent.name}: name already exists")
+                continue
+            try:
+                ent.path.rename(ent.path.with_name(new_name))
+                ctx.message(f"Renamed: {ent.name}")
+                ctx.message(f"    ===> {new_name}")
+            except Exception as e:  # noqa: BLE001
+                ctx.message(f"{ent.name}: {e}")
+        ctx.pane.refresh()
 
     ctx.confirm(f"Rename {len(targets)} item(s)?", on_result=_rename)
