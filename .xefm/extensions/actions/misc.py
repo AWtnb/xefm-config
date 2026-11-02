@@ -6,6 +6,38 @@ from ._utils import get_selected_or_focused
 from .item_selector import select_under_cursor
 
 
+def diffinity(ctx) -> None:
+    diffinity_exe = shutil.which("diffinity")
+    if diffinity_exe is None:
+        ctx.message("diffinity not found")
+        return
+
+    def _get_paths() -> tuple[str, str] | None:
+        l_sels = ctx.left.selected()
+        r_sels = ctx.right.selected()
+        if len(l_sels) == 1 and len(r_sels) == 1:
+            l = l_sels[0]
+            r = r_sels[0]
+            if not l.is_dir and not r.is_dir:
+                return str(l.path), str(r.path)
+
+        sels = ctx.pane.selected()
+        if len(sels) == 2:
+            l, r = sels
+            if not l.is_dir and not r.is_dir:
+                return str(l.path), str(r.path)
+
+        return None
+
+    paths = _get_paths()
+    if paths is None:
+        ctx.message("Select just 2 files")
+        return
+
+    l_path, r_path = paths
+    ctx.run_program([diffinity_exe, l_path, r_path])
+
+
 def open_in_vscode(ctx) -> None:
     """Open current dir in VS Code."""
     ctx.run_program(["code", str(ctx.pane.path)])
