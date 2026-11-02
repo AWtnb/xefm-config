@@ -151,6 +151,8 @@ _KEY_BINDINGS = {
     "open_in_new_tab": [],
     "open_in_smoothcsv": [","],
     "open_in_vscode": ["Ctrl-Shift-V"],
+    "open_list_from_command": ["Ctrl-Shift-K"],
+    "open_list_from_clipboard": [],
     "open_item": ["ENTER", "L", "RIGHT"],
     "open_parent_to_other": ["Shift-U"],
     "open_with_os": ["Ctrl-ENTER", "Ctrl-O"],

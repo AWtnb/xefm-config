@@ -37,7 +37,11 @@ def smart_copy(ctx) -> None:
 
         if sel == "Codeblock":
             git_root = get_git_root(ctx.pane.path)
-            ctx.copy_text("\n".join(_as_codeblock(git_root, e.path) for e in target))
+            ctx.copy_text(
+                "\n".join(
+                    _as_codeblock(git_root, e.path) for e in target if not e.is_dir
+                )
+            )
             return
 
         ctx.invoke("clipboard_copy")
