@@ -56,6 +56,7 @@ def smart_select_all(ctx) -> None:
 
 
 def select_by_extension(ctx) -> None:
+
     target = ctx.pane.selected() or ctx.pane.entries
     if not target:
         return
@@ -67,9 +68,14 @@ def select_by_extension(ctx) -> None:
     focused = ctx.pane.focused.suffix
     exts = sorted(exts, key=lambda e: (e != focused, e))
 
-    def _select(i: int | None) -> None:
-        if i is None:
-            return
-        ctx.pane.select(lambda ent: ent.suffix == exts[i])
+    has_selections = 0 < len(ctx.pane.selected())
 
-    ctx.choose(title="Extensions", items=exts, on_result=_select)
+    def _select(i: int | None) -> None:
+        if i is not None:
+            if has_selections:
+                ctx.pane.unselect(lambda ent: ent.suffix == exts[i])
+            else:
+                ctx.pane.select(lambda ent: ent.suffix == exts[i])
+
+    title_prefix = "Select by" if not has_selections else "Unselect by"
+    ctx.choose(title=f"{title_prefix} Extensions", items=exts, on_result=_select)
