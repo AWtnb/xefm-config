@@ -1,4 +1,5 @@
 import unicodedata
+from datetime import datetime
 
 from xefm.user_api import Cell  # ty: ignore[unresolved-import]
 
@@ -19,7 +20,6 @@ def _nfd_mark(value, _):
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 # https://github.com/crftwr/xefm/blob/main/doc/FILE_LIST_LAYOUTS_FEATURE.ja.md
 # https://github.com/crftwr/xefm/blob/main/doc/FILE_LIST_LAYOUTS_FEATURE.md
-DEFAULT_LAYOUT = "default"
 
 ATTRIBUTES = {
     "name_form": {
@@ -31,7 +31,41 @@ ATTRIBUTES = {
     },
 }
 
-LAYOUTS = {}
+
+def _smart_mtime(_, entry):
+    mtime = entry.mtime
+    if mtime is None:
+        return ""
+
+    dt = datetime.fromtimestamp(mtime)
+
+    now = datetime.now()
+    fmt = "%m-%d %H:%M:%S" if dt.year == now.year else "%Y-%m-%d %H:%M:%S"
+    return dt.strftime(fmt)
+
+
+LAYOUTS = {
+    "smart-mtime": {
+        "label": "Smart mtime",
+        "columns": [
+            "name",
+            "ext",
+            {
+                "attr": "size",
+                "priority": 1,
+            },
+            {
+                "attr": "mtime",
+                "format": _smart_mtime,
+                "align": "right",
+                "width": len("yyyy-mm-dd hh:MM:ss"),
+                "priority": 2,
+            },
+        ],
+        "override": True,
+    },
+}
+DEFAULT_LAYOUT = "smart-mtime"
 
 LAYOUT_EXTRAS = {
     "nfd": {
