@@ -1,3 +1,13 @@
+from ._utils import is_nfd
+
+
+# https://github.com/crftwr/xefm/wiki/Spot-NFD-File-Names
+def select_nfd_names(ctx):
+    """Select the items whose names are stored decomposed (NFD)."""
+    n = ctx.pane.select(is_nfd)
+    ctx.message(f"Selected {n} NFD name(s)")
+
+
 def select_under_cursor(ctx) -> None:
     ctx.pane.select(lambda ent: ent.path == ctx.pane.focused.path)
 

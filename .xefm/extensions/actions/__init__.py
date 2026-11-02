@@ -10,6 +10,7 @@ from . import (
     item_selector,
     misc,
     navi,
+    nfd_renamer,
     photo_renamer,
     tree,
 )
@@ -18,6 +19,7 @@ from . import (
 # en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 _ACTIONS = {
     "edit_config": {"func": misc.launch_config_repo, "override": True},
+    "compose_nfd_names": nfd_renamer.compose_nfd_names,
     "conc_pdf": misc.conc_pdf,
     "focus_newest_item": cursor_jumper.focus_newest_item,
     "focus_older_item": cursor_jumper.focus_older_item,
@@ -38,6 +40,7 @@ _ACTIONS = {
     "quick_move": misc.quick_move,
     "rename_rightloom_photo": photo_renamer.rename_lightroom_photo,
     "rename_photo_by_exif_timestamp": photo_renamer.rename_photo_by_exif_timestamp,
+    "select_nfd_names": item_selector.select_nfd_names,
     "select_by_extension": item_selector.select_by_extension,
     "smart_copy": clipboard.smart_copy,
     "smart_select_all": item_selector.smart_select_all,

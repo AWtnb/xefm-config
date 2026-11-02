@@ -1,3 +1,4 @@
+import unicodedata
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -25,3 +26,7 @@ def get_git_root(path: str) -> Path:
 
 def get_selected_or_focused(ctx) -> list:
     return ctx.pane.selected() or [ctx.pane.focused]
+
+
+def is_nfd(entry):
+    return not unicodedata.is_normalized("NFC", entry.path.name)
