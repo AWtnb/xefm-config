@@ -5,9 +5,11 @@ https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 import os
 import shutil
 import subprocess
+from contextlib import nullcontext
 from pathlib import Path
 
 from xefm import favorites  # ty: ignore[unresolved-import]
+from xefm.user_api import is_desktop_mode  # ty: ignore[unresolved-import]
 
 
 def fuzzy_ghq(ctx) -> None:
@@ -31,15 +33,22 @@ def fuzzy_ghq(ctx) -> None:
         rel = path.relative_to(ghq_root)
         repo_paths[str(rel)] = str(path)
 
+    desktop_mode = is_desktop_mode()
+    terminal_context = (
+        nullcontext() if desktop_mode else ctx.terminal_backend_suspended()
+    )
+    program_env = {} if desktop_mode else ctx.program_env()
+
     # https://github.com/crftwr/xefm/issues/755
-    with ctx.terminal_backend_suspended():
+    with terminal_context:
         r = subprocess.run(
             [fzf_cmd],
             input="\n".join(repo_paths.keys()),
             encoding="utf-8",
-            stdout=subprocess.PIPE,
             check=False,
-            **ctx.program_env(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE if desktop_mode else None,
+            **program_env,
         )
 
     if r.returncode in (1, 130):
@@ -63,15 +72,22 @@ def fuzzy_favorites(ctx) -> None:
         for f in favorites.get_favorites()  # list[FavoriteEntry]
     }
 
+    desktop_mode = is_desktop_mode()
+    terminal_context = (
+        nullcontext() if desktop_mode else ctx.terminal_backend_suspended()
+    )
+    program_env = {} if desktop_mode else ctx.program_env()
+
     # https://github.com/crftwr/xefm/issues/755
-    with ctx.terminal_backend_suspended():
+    with terminal_context:
         r = subprocess.run(
             [fzf_cmd],
             input="\n".join(favs.keys()),
             encoding="utf-8",
-            stdout=subprocess.PIPE,
             check=False,
-            **ctx.program_env(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE if desktop_mode else None,
+            **program_env,
         )
 
     if r.returncode in (1, 130):
