@@ -68,7 +68,7 @@ def fuzzy_favorites(ctx) -> None:
         return
 
     favs = {
-        f.name: f.path
+        f"{f.name} - {f.path}": f.path
         for f in favorites.get_favorites()  # list[FavoriteEntry]
     }
 
