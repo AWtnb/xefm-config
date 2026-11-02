@@ -43,9 +43,9 @@ def open_in_vscode(ctx) -> None:
     ctx.run_program(["code", str(ctx.pane.path)])
 
 
-def open_in_smoothcsv(ctx) -> None:
-    """Open item in SmoothCSV"""
-    smooth_csv_path = r"C:\Program Files\SmoothCSV\smoothcsv-cli.exe"
+def open_with_smoothcsv(ctx) -> None:
+    """Open item with SmoothCSV"""
+    smooth_csv_path = "C:/Program Files/SmoothCSV/smoothcsv-cli.exe"
     if not os.path.exists(smooth_csv_path):
         ctx.message("SmoothCSV not found...")
         return

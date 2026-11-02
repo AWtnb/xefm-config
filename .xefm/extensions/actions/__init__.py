@@ -15,13 +15,13 @@ from . import (
     tree,
 )
 
-# ja: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
-# en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
+# https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
+# https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 _ACTIONS = {
-    "edit_config": {"func": misc.launch_config_repo, "override": True},
     "compose_nfd_names": nfd_renamer.compose_nfd_names,
     "conc_pdf": misc.conc_pdf,
     "diffinity": misc.diffinity,
+    "edit_config": {"func": misc.launch_config_repo, "override": True},
     "focus_newest_item": cursor_jumper.focus_newest_item,
     "focus_older_item": cursor_jumper.focus_older_item,
     "fuzzy_favorites": favorites.fuzzy_favorites,
@@ -29,31 +29,31 @@ _ACTIONS = {
     "jump_down": cursor_jumper.jump_down,
     "jump_up": cursor_jumper.jump_up,
     "make_tree": tree.make_tree,
-    "recycle_bin": misc.launch_recycle_bin,
     "open_desktop_both": navi.open_desktop_both,
     "open_desktop_to_other": navi.open_desktop_to_other,
     "open_desktop": navi.open_desktop,
-    "open_parent_to_other": navi.open_parent_to_other,
-    "open_in_smoothcsv": misc.open_in_smoothcsv,
     "open_in_vscode": misc.open_in_vscode,
+    "open_parent_to_other": navi.open_parent_to_other,
     "open_to_other": navi.open_to_other,
+    "open_with_smoothcsv": misc.open_with_smoothcsv,
     "quick_copy": misc.quick_copy,
     "quick_move": misc.quick_move,
-    "rename_rightloom_photo": photo_renamer.rename_lightroom_photo,
+    "recycle_bin": misc.launch_recycle_bin,
     "rename_photo_by_exif_timestamp": photo_renamer.rename_photo_by_exif_timestamp,
-    "select_nfd_names": item_selector.select_nfd_names,
+    "rename_rightloom_photo": photo_renamer.rename_lightroom_photo,
     "select_by_extension": item_selector.select_by_extension,
+    "select_nfd_names": item_selector.select_nfd_names,
     "smart_copy": clipboard.smart_copy,
     "smart_select_all": item_selector.smart_select_all,
     "summarize_by": tree.summarize_by,
 }
 
-# ja: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
-# ja: https://github.com/crftwr/xefm/blob/main/doc/KEY_BINDINGS_FEATURE.ja.md
-# ja: https://github.com/crftwr/xefm/blob/main/doc/KEYMAP_PRESETS_FEATURE.ja.md
-# en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
-# en: https://github.com/crftwr/xefm/blob/main/doc/KEY_BINDINGS_FEATURE.md
-# en: https://github.com/crftwr/xefm/blob/main/doc/KEYMAP_PRESETS_FEATURE.md
+# https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
+# https://github.com/crftwr/xefm/blob/main/doc/KEY_BINDINGS_FEATURE.ja.md
+# https://github.com/crftwr/xefm/blob/main/doc/KEYMAP_PRESETS_FEATURE.ja.md
+# https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
+# https://github.com/crftwr/xefm/blob/main/doc/KEY_BINDINGS_FEATURE.md
+# https://github.com/crftwr/xefm/blob/main/doc/KEYMAP_PRESETS_FEATURE.md
 _KEY_BINDINGS = {
     "add_favorite": ["Ctrl-B"],
     "adjust_log_down": ["}", "Alt-Down"],
@@ -150,11 +150,11 @@ _KEY_BINDINGS = {
     "open_desktop_both": ["BACKSLASH", "0 SPACE"],
     "open_desktop_to_other": ["0 O"],
     "open_in_new_tab": [],
-    "open_in_smoothcsv": [","],
     "open_in_vscode": ["Ctrl-Shift-V"],
     "open_list_from_command": ["Ctrl-Shift-K"],
     "open_list_from_clipboard": [],
     "open_item": ["ENTER", "L", "RIGHT"],
+    "open_with_smoothcsv": [","],
     "open_parent_to_other": ["Shift-U"],
     "open_with_os": ["Ctrl-ENTER", "Ctrl-O"],
     "open_to_other": ["Shift-L"],
@@ -260,8 +260,8 @@ def backup_favorites_on_quit(ctx, _) -> bool:
     return False
 
 
-# ja: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
-# en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
+# https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
+# https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 _EVENT_HOOKS = {
     "startup": [validate_keys],
     "quit": [backup_favorites_on_quit],

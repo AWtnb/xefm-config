@@ -12,8 +12,8 @@ from xefm.external_programs import (  # ty: ignore[unresolved-import]
 
 
 class Config:
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/CONFIGURATION_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/CONFIGURATION_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/CONFIGURATION_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/CONFIGURATION_FEATURE.md
     UI_FONT_NAME = "HackGen" if sys.platform == "win32" else None
     MONO_FONT_NAME = "HackGen" if sys.platform == "win32" else None
     FONT_SIZE = 16
@@ -26,12 +26,12 @@ class Config:
     DEFAULT_SORT_REVERSE = False
     THEMES, DEFAULT_LAYOUT, ATTRIBUTES, LAYOUTS, LAYOUT_EXTRAS = styles.setup()
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/TRASH_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/TRASH_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/TRASH_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/TRASH_FEATURE.md
     DELETE_TO_TRASH = True
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/FILE_OPERATIONS_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/FILE_OPERATIONS_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/FILE_OPERATIONS_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/FILE_OPERATIONS_FEATURE.md
     CONFIRM_TRASH = True
     CONFIRM_DELETE = True
     CONFIRM_QUIT = True
@@ -41,8 +41,8 @@ class Config:
     CONFIRM_EXTRACT_ARCHIVE = True
     CONFIRM_ARCHIVE_CREATE = True
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/FILE_OPERATIONS_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/FILE_OPERATIONS_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/FILE_OPERATIONS_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/FILE_OPERATIONS_FEATURE.md
     TRANSFER_CONCURRENCY = "auto"
     FILE_OP_WORKERS_LOCAL = 4
     FILE_OP_WORKERS_S3 = 8
@@ -59,22 +59,22 @@ class Config:
     SEPARATE_EXTENSIONS = True
     MAX_EXTENSION_LENGTH = 5
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/MIGEMO_SEARCH_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/MIGEMO_SEARCH_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/MIGEMO_SEARCH_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/MIGEMO_SEARCH_FEATURE.md
     MIGEMO_SEARCH = False
     MIGEMO_MIN_LENGTH = 3
     MIGEMO_ROMAJI_TABLE = "default"
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/TEXT_EDITOR_FEATURE.ja.md
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/TEXT_ENCODING_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/TEXT_EDITOR_FEATURE.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/TEXT_ENCODING_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/TEXT_EDITOR_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/TEXT_ENCODING_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/TEXT_EDITOR_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/TEXT_ENCODING_FEATURE.md
     TEXT_EDITOR = "vim"
     TEXT_ENCODINGS = ["utf-8", "cp932", "euc-jp", "iso-2022-jp", "latin-1"]  # noqa: RUF012
     TEXT_DIFF = ["code", "--diff"] if is_desktop_mode() else "vimdiff"
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.md
     SUBSHELL = None
     TERMINAL = ["wezterm", "start", "--"]  # noqa: RUF012
 
@@ -85,23 +85,25 @@ class Config:
     ARCHIVE_CACHE_MAX_OPEN = 5
     ARCHIVE_CACHE_TTL = 300
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/FILE_MONITORING_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/FILE_MONITORING_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/FILE_MONITORING_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/FILE_MONITORING_FEATURE.md
     FILE_MONITORING_ENABLED = True
     FILE_MONITORING_COALESCE_DELAY_MS = 200
     FILE_MONITORING_MAX_RELOADS_PER_SECOND = 5
     FILE_MONITORING_FALLBACK_POLL_INTERVAL_S = 5
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
     FAVORITES = [  # noqa: RUF012
         {"name": "Desktop", "path": os.path.expanduser(r"~/Desktop")},
         {"name": "Dropbox", "path": os.path.expanduser(r"~/Dropbox")},
         {"name": "AppData", "path": os.path.expanduser(r"~/AppData")},
     ]
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/FILE_ASSOCIATIONS_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/FILE_ASSOCIATIONS_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/FILE_ASSOCIATIONS_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/FILE_ASSOCIATIONS_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/OPEN_WITH_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/OPEN_WITH_FEATURE.md
     FILE_ASSOCIATIONS = [  # noqa: RUF012
         {
             "pattern": [
@@ -117,6 +119,16 @@ class Config:
         {
             "pattern": ["*.md", "*.txt"],
             "edit": ["vim"],
+            "open_with": [
+                {
+                    "name": "Smooth CSV",
+                    "command": ["C:/Program Files/SmoothCSV/smoothcsv-cli.exe"],
+                },
+                {
+                    "name": "Notepad",
+                    "command": ["C:/Windows/System32/notepad.exe"],
+                },
+            ],
         },
         {
             "pattern": ["*.csv"],
@@ -128,8 +140,8 @@ class Config:
         },
     ]
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_PROGRAMS_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_PROGRAMS_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_PROGRAMS_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_PROGRAMS_FEATURE.md
     PROGRAMS = [  # noqa: RUF012
         {"name": "Open in VSCode", "command": [xefm_python, xefm_tool("vscode.py")]},
     ]
@@ -152,10 +164,10 @@ class Config:
             ext.lower(),
         )
 
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
-    # ja: https://github.com/crftwr/xefm/blob/main/doc/SORT_DIALOG_FEATURE.ja.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
-    # en: https://github.com/crftwr/xefm/blob/main/doc/SORT_DIALOG_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/SORT_DIALOG_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/SORT_DIALOG_FEATURE.md
     SORT_KEYS = {  # noqa: RUF012
         "filename": {"key": underscore_based_sortkey, "override": True}
     }
