@@ -1,36 +1,72 @@
 # https://github.com/crftwr/xefm/blob/main/doc/COLOR_SCHEMES_FEATURE.ja.md
 # https://github.com/crftwr/xefm/blob/main/doc/COLOR_SCHEMES_FEATURE.md
-PHOSPHOR_THEME = {
-    "post_effect": "crt",  # CRT glow/bloom/scanlines (GUI backend)
-    "animation": "rain",  # falling phosphor streaks (GUI backend)
-    "opacity": 0.6,  # chrome opacity; < 1 lets the rain show through
-    "background": (4, 15, 7),  # dark CRT green-black
-    "foreground": (51, 245, 121),  # phosphor green
-    "muted": (33, 138, 74),  # dim green (secondary text / dividers)
-    "accent": (60, 235, 122),  # focus ring / selection accent
-    "accent2": (124, 255, 168),  # pale mint (i-search match base)
-    "surface": (11, 38, 20),  # raised panels (header / popup)
-    "selection": (24, 105, 54),  # active selection fill
-    "status": (12, 40, 22),  # status bar (dark green panel)
-    "footer": (22, 68, 40),  # per-pane info bar (lighter, so the
-    # footer/status boundary reads on TUI)
+
+
+def _color(color: str) -> tuple[int, ...]:
+    """Convert a #RRGGBB color code to an RGB tuple."""
+    color = color.removeprefix("#")
+    return tuple(int(color[index : index + 2], 16) for index in (0, 2, 4))
+
+
+one_dark = {
+    "opacity": 1.0,
+    "background": _color("#282c34"),
+    "foreground": _color("#abb2bf"),
+    "muted": _color("#5c6370"),
+    "accent": _color("#61afef"),
+    "accent2": _color("#e5c07b"),
+    "surface": _color("#21252b"),
+    "selection": _color("#3e4451"),
+    "status": _color("#21252b"),
+    "footer": _color("#2c313c"),
     "file_types": {
-        "directory": (150, 255, 150),  # directories (brightest green)
-        "link": (124, 255, 168),  # symlinks (pale mint)
+        "directory": _color("#e06c75"),
+        "link": _color("#56b6c2"),
     },
-    "cursor": {  # keep the cue on-palette, not red
-        "active": (180, 255, 180),  # bright green frame (focused pane)
-        "inactive": (60, 150, 90),  # dim green frame (blurred pane)
+    "cursor": {
+        "active": _color("#61afef"),
+        "inactive": _color("#5c6370"),
     },
     "syntax": {
-        "keyword": (130, 255, 150),
-        "string": (90, 220, 120),
-        "comment": (36, 140, 78),
-        "number": (150, 255, 130),
-        "operator": (70, 210, 110),
-        "builtin": (150, 255, 170),
-        "name": (60, 235, 120),
+        "keyword": _color("#c678dd"),
+        "string": _color("#98c379"),
+        "comment": _color("#5c6370"),
+        "number": _color("#d19a66"),
+        "operator": _color("#56b6c2"),
+        "builtin": _color("#e5c07b"),
+        "name": _color("#e06c75"),
     },
 }
 
-THEMES = {"Phosphor": PHOSPHOR_THEME}
+
+tokyo_night = {
+    "opacity": 1.0,
+    "background": _color("#1a1b26"),
+    "foreground": _color("#c0caf5"),
+    "muted": _color("#565f89"),
+    "accent": _color("#7aa2f7"),
+    "accent2": _color("#e0af68"),
+    "surface": _color("#16161e"),
+    "selection": _color("#283457"),
+    "status": _color("#16161e"),
+    "footer": _color("#1f2335"),
+    "file_types": {
+        "directory": _color("#7aa2f7"),
+        "link": _color("#7dcfff"),
+    },
+    "cursor": {
+        "active": _color("#7aa2f7"),
+        "inactive": _color("#565f89"),
+    },
+    "syntax": {
+        "keyword": _color("#bb9af7"),
+        "string": _color("#9ece6a"),
+        "comment": _color("#565f89"),
+        "number": _color("#ff9e64"),
+        "operator": _color("#89ddff"),
+        "builtin": _color("#7dcfff"),
+        "name": _color("#f7768e"),
+    },
+}
+
+THEMES = {"One Dark": one_dark, "Tokyo Night": tokyo_night}
