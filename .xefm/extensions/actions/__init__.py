@@ -147,7 +147,7 @@ _KEY_BINDINGS = {
     "nav_right": [],
     "next_tab": [],
     "open_desktop": ["0 0"],
-    "open_desktop_both": ["BACKSLASH", "0 SPACE"],
+    "open_desktop_both": ["0 SPACE"],
     "open_desktop_to_other": ["0 O"],
     "open_in_new_tab": [],
     "open_in_vscode": ["Ctrl-Shift-V"],
