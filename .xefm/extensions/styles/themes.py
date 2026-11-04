@@ -109,7 +109,7 @@ ayu_mirage = {
     "surface": _color("#1a1f29"),
     "selection": _color("#33415e"),
     "status": _color("#1a1f29"),
-    "footer": _color("#232834"),
+    "footer": _color("#dfbfff"),
     "file_types": {
         "directory": _color("#73d0ff"),
         "link": _color("#95e6cb"),
