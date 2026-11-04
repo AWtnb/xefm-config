@@ -133,6 +133,18 @@ class Config:
         {
             "pattern": ["*.csv"],
             "edit": ["cmd", "/c", "start"],
+            "open_with": [
+                {
+                    "name": "Mery",
+                    "command": [
+                        os.path.expanduser("~/AppData/Local/Programs/Mery/Mery.exe")
+                    ],
+                },
+                {
+                    "name": "Notepad",
+                    "command": ["C:/Windows/System32/notepad.exe"],
+                },
+            ],
         },
         {
             "pattern": ["*.jar", "*.whl", "*.egg"],
