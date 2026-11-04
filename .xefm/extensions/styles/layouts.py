@@ -48,12 +48,9 @@ LAYOUTS = {
     "smart-mtime": {
         "label": "Smart mtime",
         "columns": [
-            "name",
-            "ext",
-            {
-                "attr": "size",
-                "priority": 1,
-            },
+            {"attr": "name", "priority": 4},
+            {"attr": "ext"},
+            {"attr": "size", "priority": 1},
             {
                 "attr": "mtime",
                 "format": _smart_mtime,
@@ -62,7 +59,6 @@ LAYOUTS = {
                 "priority": 2,
             },
         ],
-        "override": True,
     },
 }
 DEFAULT_LAYOUT = "smart-mtime"
