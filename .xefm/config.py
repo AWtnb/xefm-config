@@ -75,7 +75,7 @@ class Config:
 
     # https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.ja.md
     # https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.md
-    SUBSHELL = None
+    SUBSHELL = ["powershell.exe"]  # noqa: RUF012
     TERMINAL = ["wezterm", "start", "--"]  # noqa: RUF012
 
     S3_CACHE_TTL = 60
