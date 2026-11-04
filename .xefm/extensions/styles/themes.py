@@ -69,4 +69,100 @@ tokyo_night = {
     },
 }
 
-THEMES = {"One Dark": one_dark, "Tokyo Night": tokyo_night}
+ayu_dark = {
+    "opacity": 1.0,
+    "background": _color("#0b0e14"),
+    "foreground": _color("#bfbdb6"),
+    "muted": _color("#565b66"),
+    "accent": _color("#e6b450"),
+    "accent2": _color("#ffb454"),
+    "surface": _color("#0d1017"),
+    "selection": _color("#273747"),
+    "status": _color("#0d1017"),
+    "footer": _color("#131721"),
+    "file_types": {
+        "directory": _color("#59c2ff"),
+        "link": _color("#95e6cb"),
+    },
+    "cursor": {
+        "active": _color("#e6b450"),
+        "inactive": _color("#565b66"),
+    },
+    "syntax": {
+        "keyword": _color("#ff8f40"),
+        "string": _color("#aad94c"),
+        "comment": _color("#5c6773"),
+        "number": _color("#d2a6ff"),
+        "operator": _color("#f29668"),
+        "builtin": _color("#59c2ff"),
+        "name": _color("#ffb454"),
+    },
+}
+
+ayu_mirage = {
+    "opacity": 1.0,
+    "background": _color("#1f2430"),
+    "foreground": _color("#cccac2"),
+    "muted": _color("#707a8c"),
+    "accent": _color("#ffcc66"),
+    "accent2": _color("#ffad66"),
+    "surface": _color("#1a1f29"),
+    "selection": _color("#33415e"),
+    "status": _color("#1a1f29"),
+    "footer": _color("#232834"),
+    "file_types": {
+        "directory": _color("#73d0ff"),
+        "link": _color("#95e6cb"),
+    },
+    "cursor": {
+        "active": _color("#ffcc66"),
+        "inactive": _color("#707a8c"),
+    },
+    "syntax": {
+        "keyword": _color("#ffad66"),
+        "string": _color("#d5ff80"),
+        "comment": _color("#6e7c8e"),
+        "number": _color("#dfbfff"),
+        "operator": _color("#f29e74"),
+        "builtin": _color("#73d0ff"),
+        "name": _color("#ffd173"),
+    },
+}
+
+cobalt2 = {
+    "opacity": 1.0,
+    "background": _color("#193549"),
+    "foreground": _color("#ffffff"),
+    "muted": _color("#0088ff"),
+    "accent": _color("#ffc600"),
+    "accent2": _color("#ff9d00"),
+    "surface": _color("#15232d"),
+    "selection": _color("#0d3a58"),
+    "status": _color("#15232d"),
+    "footer": _color("#1f4662"),
+    "file_types": {
+        "directory": _color("#9effff"),
+        "link": _color("#80ffbb"),
+    },
+    "cursor": {
+        "active": _color("#ffc600"),
+        "inactive": _color("#0088ff"),
+    },
+    "syntax": {
+        "keyword": _color("#ff9d00"),
+        "string": _color("#3ad900"),
+        "comment": _color("#0088ff"),
+        "number": _color("#ff628c"),
+        "operator": _color("#ff9d00"),
+        "builtin": _color("#80ffbb"),
+        "name": _color("#ffc600"),
+    },
+}
+
+THEMES = {
+    "One Dark": one_dark,
+    "Tokyo Night": tokyo_night,
+    "Ayu Dark": ayu_dark,
+    "Ayu Mirage": ayu_mirage,
+    "Cobalt2": cobalt2,
+}
