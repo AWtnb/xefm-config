@@ -3,6 +3,7 @@
 # https://github.com/crftwr/xefm/blob/main/doc/FILE_LIST_LAYOUTS_FEATURE.ja.md
 # https://github.com/crftwr/xefm/blob/main/doc/FILE_LIST_LAYOUTS_FEATURE.md
 
+import os
 import subprocess
 import unicodedata
 from datetime import datetime
@@ -75,6 +76,9 @@ def _is_under_git(path: str | Path) -> bool:
     return False
 
 
+ATTENTION_SYMBOL = "!"
+
+
 def git_attention(directory, entries) -> list:
     if _is_under_git(directory):
         return [None for _ in entries]
@@ -98,13 +102,46 @@ def git_attention(directory, entries) -> list:
         ahead = _git_output(path, "rev-list", "--count", "@{upstream}..HEAD")
         has_unpushed = ahead is not None and ahead.strip().isdigit() and 0 < int(ahead)
 
-        values.append("!" if status.strip() or has_unpushed else None)
+        values.append(ATTENTION_SYMBOL if status.strip() or has_unpushed else None)
 
     return values
 
 
 def git_attention_marker(value, _):
-    return Cell("!", color="orange") if value == "!" else ""
+    return Cell(ATTENTION_SYMBOL, color="orange") if value == ATTENTION_SYMBOL else ""
+
+
+def _is_junction(p: Path):
+    try:
+        return bool(
+            os.lstat(p).st_file_attributes & 0x400
+        )  # FILE_ATTRIBUTE_REPARSE_POINT
+    except (OSError, AttributeError):
+        return False
+
+
+def _is_link(path: Path) -> bool:
+    return path.is_symlink() or _is_junction(path)
+
+
+LINK_SYMBOL = "\u2197"
+
+
+def link_dummy(_, entries) -> list:
+
+    values = []
+    for entry in entries:
+        path = Path(entry.path)
+        if _is_link(path):
+            values.append(LINK_SYMBOL)
+        else:
+            values.append(None)
+
+    return values
+
+
+def link_dummy_marker(value, _):
+    return Cell(LINK_SYMBOL, color="blue") if value == LINK_SYMBOL else ""
 
 
 ATTRIBUTES = {
@@ -121,7 +158,19 @@ ATTRIBUTES = {
         "read": git_attention,
         "where": "local",
         "values": {
-            "!": {"label": "Uncommitted or unpushed changes", "color": "orange"},
+            ATTENTION_SYMBOL: {
+                "label": "Uncommitted or unpushed changes",
+                "color": "orange",
+            },
+        },
+    },
+    "link_dummy": {
+        "label": "Link dummies",
+        "type": "enum",
+        "read": link_dummy,
+        "where": "local",
+        "values": {
+            LINK_SYMBOL: {"label": "Link to other directory", "color": "blue"},
         },
     },
 }
@@ -136,13 +185,23 @@ LAYOUT_EXTRAS = {
     },
     "git_attention": {
         "label": "Git changes",
-        "when": "always",
         "markers": [
             {
                 "attr": "git_attention",
                 "format": git_attention_marker,
                 "on": "name",
                 "side": "before",
+            },
+        ],
+    },
+    "link_dummy": {
+        "label": "Link dummies",
+        "markers": [
+            {
+                "attr": "link_dummy",
+                "format": link_dummy_marker,
+                "on": "name",
+                "side": "after",
             },
         ],
     },
