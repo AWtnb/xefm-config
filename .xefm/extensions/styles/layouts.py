@@ -1,38 +1,17 @@
-import unicodedata
-from datetime import datetime
-
-from xefm.user_api import Cell  # ty: ignore[unresolved-import]
-
-
-def _is_nfd(entry):
-    return not unicodedata.is_normalized("NFC", entry.path.name)
-
-
-def _name_form(_, entries):
-    return ["NFD" if _is_nfd(e) else None for e in entries]
-
-
-def _nfd_mark(value, _):
-    return Cell("NFD", color="orange") if value else ""
-
-
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 # https://github.com/crftwr/xefm/blob/main/doc/FILE_LIST_LAYOUTS_FEATURE.ja.md
 # https://github.com/crftwr/xefm/blob/main/doc/FILE_LIST_LAYOUTS_FEATURE.md
 
-ATTRIBUTES = {
-    "name_form": {
-        "label": "Name form",
-        "type": "enum",
-        "read": _name_form,
-        "where": ["local", "archive", "ssh", "s3"],
-        "values": {"NFD": {"label": "Name stored decomposed (NFD)", "color": "orange"}},
-    },
-}
+import subprocess
+import unicodedata
+from datetime import datetime
+from pathlib import Path
+
+from xefm.user_api import Cell  # ty: ignore[unresolved-import]
 
 
-def _smart_mtime(_, entry):
+def smart_mtime(_, entry):
     mtime = entry.mtime
     if mtime is None:
         return ""
@@ -53,7 +32,7 @@ LAYOUTS = {
             {"attr": "size", "priority": 1},
             {
                 "attr": "mtime",
-                "format": _smart_mtime,
+                "format": smart_mtime,
                 "align": "right",
                 "width": len("yyyy-mm-dd hh:MM:ss"),
                 "priority": 2,
@@ -63,11 +42,108 @@ LAYOUTS = {
 }
 DEFAULT_LAYOUT = "smart-mtime"
 
+
+def name_form(_, entries):
+    return [
+        "NFD" if not unicodedata.is_normalized("NFC", e.path.name) else None
+        for e in entries
+    ]
+
+
+def nfd_mark(value, _):
+    return Cell("NFD", color="orange") if value else ""
+
+
+def _git_output(path, *args):
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(path), *args],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return result.stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+
+def _is_under_git(path: str | Path) -> bool:
+    current = Path(path).resolve()
+    for p in (current, *current.parents):
+        if (p / ".git").exists():
+            return True
+    return False
+
+
+def git_attention(directory, entries) -> list:
+    if _is_under_git(directory):
+        return [None for _ in entries]
+
+    values = []
+
+    for entry in entries:
+        path = entry.path
+
+        if not path.is_dir() or not (path / ".git").exists():
+            values.append(None)
+            continue
+
+        status = _git_output(
+            path, "status", "--porcelain", "--untracked-files=all", "--", "."
+        )
+        if status is None:
+            values.append(None)
+            continue
+
+        ahead = _git_output(path, "rev-list", "--count", "@{upstream}..HEAD")
+        has_unpushed = ahead is not None and ahead.strip().isdigit() and 0 < int(ahead)
+
+        values.append("!" if status.strip() or has_unpushed else None)
+
+    return values
+
+
+def git_attention_marker(value, _):
+    return Cell("!", color="orange") if value == "!" else ""
+
+
+ATTRIBUTES = {
+    "name_form": {
+        "label": "Name form",
+        "type": "enum",
+        "read": name_form,
+        "where": ["local", "archive", "ssh", "s3"],
+        "values": {"NFD": {"label": "Name stored decomposed (NFD)", "color": "orange"}},
+    },
+    "git_attention": {
+        "label": "Git changes",
+        "type": "enum",
+        "read": git_attention,
+        "where": "local",
+        "values": {
+            "!": {"label": "Uncommitted or unpushed changes", "color": "orange"},
+        },
+    },
+}
+
+
 LAYOUT_EXTRAS = {
     "nfd": {
         "label": "NFD names",
         "markers": [
-            {"attr": "name_form", "format": _nfd_mark, "on": "name", "side": "after"}
+            {"attr": "name_form", "format": nfd_mark, "on": "name", "side": "after"}
+        ],
+    },
+    "git_attention": {
+        "label": "Git changes",
+        "when": "always",
+        "markers": [
+            {
+                "attr": "git_attention",
+                "format": git_attention_marker,
+                "on": "name",
+                "side": "before",
+            },
         ],
     },
 }
