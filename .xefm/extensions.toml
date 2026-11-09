@@ -4,7 +4,7 @@
 
 [extensions."xefm-pdftool"]
 version = "0.1.2"
-source = "github:AWtnb/xefm-pdftool@v0.1.2"
+source = "github:AWtnb/xefm-pdftool"
 directory = "xefm-pdftool"
 enabled = true
 updates = "github:AWtnb/xefm-pdftool"
