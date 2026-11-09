@@ -1,0 +1,9 @@
+# The installed extensions - written by XeFM (`xefm ext ...`).
+# The package directories are rebuilt from this list by
+# `xefm ext sync`, so it is the part worth keeping.
+
+[extensions."xefm-pdftool"]
+version = "0.1.0"
+source = "github:AWtnb/xefm-pdftool"
+directory = "xefm-pdftool"
+enabled = true

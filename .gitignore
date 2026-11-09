@@ -1,3 +1,7 @@
 __pycache__
 *.db
 .venv
+.xefm/extensions/*
+!.xefm/extensions/actions/
+!.xefm/extensions/styles/
+site-packages
