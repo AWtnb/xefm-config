@@ -62,6 +62,7 @@ def _git_output(path, *args):
             check=True,
             capture_output=True,
             text=True,
+            creationflags=subprocess.CREATE_NO_WINDOW,
         )
         return result.stdout
     except (OSError, subprocess.CalledProcessError):
