@@ -1,6 +1,8 @@
+import configparser
 import os
 import shutil
 import subprocess
+import webbrowser
 
 from ._utils import get_selected_or_focused
 from .item_selector import select_under_cursor
@@ -138,3 +140,31 @@ def conc_pdf(ctx) -> None:
         title="Concatenate PDFs",
         on_accept=_conc,
     )
+
+
+def open_git_remote(ctx) -> None:
+    dirs = [e for e in get_selected_or_focused(ctx) if e.is_dir]
+    if not dirs:
+        return
+
+    for d in dirs:
+        git_path = d.path / ".git"
+        if not git_path.exists():
+            continue
+
+        config_path = git_path / "config"
+        if not config_path.is_file():
+            continue
+
+        config = configparser.ConfigParser(interpolation=None)
+        try:
+            config.read_string(config_path.read_text(encoding="utf-8"))
+        except (OSError, configparser.Error):
+            continue
+
+        remote_url = config.get('remote "origin"', "url", fallback="").strip()
+        if 2 <= len(remote_url) and remote_url[0] == remote_url[-1] == '"':
+            remote_url = remote_url[1:-1]
+
+        if remote_url:
+            webbrowser.open(remote_url)

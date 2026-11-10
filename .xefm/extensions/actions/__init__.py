@@ -33,6 +33,7 @@ _ACTIONS = {
     "open_desktop_both": navi.open_desktop_both,
     "open_desktop_to_other": navi.open_desktop_to_other,
     "open_desktop": navi.open_desktop,
+    "open_git_remote": misc.open_git_remote,
     "open_in_vscode": misc.open_in_vscode,
     "open_parent_to_other": navi.open_parent_to_other,
     "open_to_other": navi.open_to_other,
