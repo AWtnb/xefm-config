@@ -1,6 +1,7 @@
 __pycache__
 *.db
 .venv
+.xefm/extensions.toml
 .xefm/extensions/*
 !.xefm/extensions/actions/
 !.xefm/extensions/styles/
