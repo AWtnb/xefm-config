@@ -1,4 +1,4 @@
-from ._utils import fzf_fileter, is_nfd
+from ._utils import fzf_filter, is_nfd
 
 
 # https://github.com/crftwr/xefm/wiki/Spot-NFD-File-Names
@@ -83,7 +83,7 @@ def select_by_extension(ctx) -> None:
 
 def fuzzy_selector(ctx) -> None:
     names = [e.name for e in ctx.pane.entries]
-    selected = fzf_fileter(ctx, names, multi=True)
+    selected = fzf_filter(ctx, names, multi=True)
     if 0 < len(selected):
         selected = set(selected)
         ctx.pane.select(lambda ent: ent.name in selected)

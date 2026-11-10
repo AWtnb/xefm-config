@@ -37,7 +37,7 @@ def is_nfd(entry):
     return not unicodedata.is_normalized("NFC", entry.path.name)
 
 
-def fzf_fileter(ctx, options: list[str], multi: bool) -> list[str]:
+def fzf_filter(ctx, options: list[str], multi: bool) -> list[str]:
     fzf = shutil.which("fzf")
     if fzf is None:
         ctx.message("fzf not found")

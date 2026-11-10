@@ -8,7 +8,7 @@ from pathlib import Path
 
 from xefm import favorites  # ty: ignore[unresolved-import]
 
-from ._utils import fzf_fileter
+from ._utils import fzf_filter
 
 
 def fuzzy_ghq(ctx) -> None:
@@ -27,7 +27,7 @@ def fuzzy_ghq(ctx) -> None:
         rel = path.relative_to(ghq_root)
         repo_paths[str(rel)] = str(path)
 
-    selected = fzf_fileter(ctx, list(repo_paths), multi=False)
+    selected = fzf_filter(ctx, list(repo_paths), multi=False)
     if len(selected) == 1:
         ctx.pane.cd(repo_paths[selected[0]])
 
@@ -43,7 +43,7 @@ def fuzzy_favorites(ctx) -> None:
         for f in favorites.get_favorites()  # list[FavoriteEntry]
     }
 
-    selected = fzf_fileter(ctx, list(favs), multi=False)
+    selected = fzf_filter(ctx, list(favs), multi=False)
     if len(selected) != 1:
         return
 
