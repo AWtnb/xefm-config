@@ -234,6 +234,11 @@ def validate_keys(ctx, _) -> None:
             ctx.message(f"[WARNING] Key duplicates: {key} ({count} times)")
 
 
+def reset_layout(ctx, _) -> None:
+    ctx.invoke("reset_pane_boundary")
+    ctx.invoke("reset_log_height")
+
+
 def on_enter(ctx, event) -> bool:
     if event.path.suffix.lower() in [".pdf", ".tbx", ".cmx"]:
         ctx.invoke("open_with_os")
@@ -263,7 +268,7 @@ def backup_favorites_on_quit(ctx, _) -> bool:
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 _EVENT_HOOKS = {
-    "startup": [validate_keys],
+    "startup": [validate_keys, reset_layout],
     "quit": [backup_favorites_on_quit],
     "file_open": [on_enter],
 }
