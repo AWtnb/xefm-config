@@ -20,7 +20,13 @@ def smart_mtime(_, entry):
     dt = datetime.fromtimestamp(mtime)
 
     now = datetime.now()
-    fmt = "%m-%d %H:%M:%S" if dt.year == now.year else "%Y-%m-%d %H:%M:%S"
+    fmt = "%Y-%m-%d %H:%M:%S"
+    if dt.year == now.year:
+        fmt = (
+            "%H:%M:%S"
+            if dt.month == now.month and dt.day == now.day
+            else "%m-%d %H:%M:%S"
+        )
     return dt.strftime(fmt)
 
 
