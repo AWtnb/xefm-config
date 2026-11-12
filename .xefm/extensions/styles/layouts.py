@@ -114,10 +114,6 @@ def _is_junction(p: Path):
         return False
 
 
-def _is_link(path: Path) -> bool:
-    return path.is_symlink() or _is_junction(path)
-
-
 LINK_SYMBOL = "\u2197"
 
 
@@ -125,11 +121,10 @@ def read_link_dummy(_, entries) -> list:
     values = []
     for entry in entries:
         path = Path(entry.path)
-        if _is_link(path):
+        if path.is_symlink() or _is_junction(path):
             values.append(LINK_SYMBOL)
         else:
             values.append(None)
-
     return values
 
 
@@ -144,7 +139,22 @@ def read_favorites(_, entries) -> list:
             values.append(FAV_SYMBOL)
         else:
             values.append(None)
+    return values
 
+
+EMPTY_SYMBOL = "\u2205"
+
+
+def read_dirs(_, entries) -> list:
+    values = []
+    for entry in entries:
+        if not entry.is_dir:
+            values.append(None)
+            continue
+        try:
+            values.append(None if any(Path(entry.path).iterdir()) else EMPTY_SYMBOL)
+        except OSError:
+            values.append(None)
     return values
 
 
@@ -173,6 +183,12 @@ ATTRIBUTES = {
         "read": read_favorites,
         "where": ["local", "archive", "ssh", "s3"],
     },
+    "empty_dir": {
+        "label": "Empty directories",
+        "type": "text",
+        "read": read_dirs,
+        "where": ["local", "archive", "ssh", "s3"],
+    },
 }
 
 
@@ -194,6 +210,10 @@ def link_dummy_marker(value, _):
 
 def fav_marker(value, _):
     return _paint(value, "purple")
+
+
+def empty_dir_marker(value, _):
+    return _paint(value, "gray")
 
 
 LAYOUT_EXTRAS = {
@@ -236,6 +256,17 @@ LAYOUT_EXTRAS = {
             {
                 "attr": "favorites",
                 "format": fav_marker,
+                "on": "name",
+                "side": "after",
+            },
+        ],
+    },
+    "empty_dir": {
+        "label": "Empty directories",
+        "markers": [
+            {
+                "attr": "empty_dir",
+                "format": empty_dir_marker,
                 "on": "name",
                 "side": "after",
             },
