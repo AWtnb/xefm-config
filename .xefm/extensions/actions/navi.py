@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-DESKTOP_PATH = Path(os.path.expanduser(r"~/Desktop"))
+DESKTOP_PATH = Path.home() / "Desktop"
 
 
 def open_desktop(ctx) -> None:

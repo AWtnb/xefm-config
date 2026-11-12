@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 
 from xefm import favorites as xefm_favorites  # ty: ignore[unresolved-import]
 
@@ -249,17 +250,16 @@ def on_enter(ctx, event) -> bool:
     return False
 
 
-def backup_favorites_on_quit(ctx, _) -> bool:
-
+def backup_favorites(ctx, _) -> bool:
     favs = xefm_favorites.get_favorites()  # list[FavoriteEntry]
     rows = [
         {"name": f.name, "path": f.path, "is_file": f.is_file, "origin": f.origin}
         for f in favs
     ]
 
-    path = os.path.expanduser("~/xefm-favs-backup.json")
+    path = Path.home() / "xefm-favs-backup.json"
     try:
-        os.makedirs(os.path.dirname(path), exist_ok=True)
+        path.parent.mkdir(parents=True, exist_ok=True)
         with open(path, "w", encoding="utf-8") as fh:
             json.dump(rows, fh, ensure_ascii=False, indent=2)
     except Exception as e:  # noqa: BLE001
@@ -272,7 +272,7 @@ def backup_favorites_on_quit(ctx, _) -> bool:
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 _EVENT_HOOKS = {
     "startup": [validate_keys, reset_layout],
-    "quit": [backup_favorites_on_quit],
+    "quit": [backup_favorites],
     "file_open": [on_enter],
 }
 

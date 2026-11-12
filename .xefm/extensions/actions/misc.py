@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 import webbrowser
+from pathlib import Path
 
 from ._utils import get_selected_or_focused
 from .item_selector import select_under_cursor
@@ -71,14 +72,14 @@ def quick_move(ctx) -> None:
 
 
 def launch_config_repo(ctx) -> None:
-    config_path = os.path.expanduser(r"~\.xefm")
-    if not os.path.exists(config_path):
+    config_path = Path.home() / ".xefm"
+    if not config_path.exists():
         print(f"config not found: {config_path}")
         return
 
     dir_path = config_path
-    if (real_path := os.path.realpath(config_path)) != dir_path:
-        dir_path = os.path.dirname(real_path)
+    if (real_path := config_path.resolve()) != dir_path:
+        dir_path = real_path.parent
 
     cmd = ["explorer.exe", dir_path]
     if (vscode_path := shutil.which("code")) is not None:

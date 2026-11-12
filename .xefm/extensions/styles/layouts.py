@@ -72,19 +72,13 @@ def _git_output(path, *args):
         return None
 
 
-def _is_under_git(path: str | Path) -> bool:
-    current = Path(path).resolve()
-    for p in (current, *current.parents):
-        if (p / ".git").exists():
-            return True
-    return False
-
-
 ATTENTION_SYMBOL = "!"
 
 
 def read_git_status(directory, entries) -> list:
-    if _is_under_git(directory):
+    is_ghq_base = Path(directory).parent.parent == Path.home() / "ghq"
+
+    if not is_ghq_base:
         return [None for _ in entries]
 
     values = []
@@ -182,20 +176,24 @@ ATTRIBUTES = {
 }
 
 
+def _paint(value, color: str):
+    return Cell(value, color) if value else ""
+
+
 def nfd_marker(value, _):
-    return Cell(value, color="orange") if value else ""
+    return _paint(value, "orange")
 
 
 def git_attention_marker(value, _):
-    return Cell(value, color="orange") if value else ""
+    return _paint(value, "orange")
 
 
 def link_dummy_marker(value, _):
-    return Cell(value, color="blue") if value else ""
+    return _paint(value, "blue")
 
 
 def fav_marker(value, _):
-    return Cell(value, color="purple") if value else ""
+    return _paint(value, "purple")
 
 
 LAYOUT_EXTRAS = {

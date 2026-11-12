@@ -2,7 +2,6 @@
 https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 """
 
-import os
 import shutil
 from pathlib import Path
 
@@ -12,14 +11,14 @@ from ._utils import fzf_filter
 
 
 def fuzzy_ghq(ctx) -> None:
-    ghq_root = Path(os.path.expanduser(r"~/ghq"))
+    ghq_root = Path.home() / "ghq"
     if not ghq_root.is_dir():
         ctx.message(f"ghq root not found: {ghq_root}")
         return
 
     repo_roots = [p for p in ghq_root.glob("*/*/*") if p.is_dir()]
     if not repo_roots:
-        ctx.message("No repositories found under ~/ghq.")
+        ctx.message(f"No repositories found under '{ghq_root}'")
         return
 
     repo_paths = {}

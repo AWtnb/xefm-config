@@ -1,6 +1,7 @@
 import os
 import platform  # noqa: F401
 import sys
+from pathlib import Path
 
 import actions  # ty: ignore[unresolved-import]
 import styles  # ty: ignore[unresolved-import]
@@ -95,9 +96,9 @@ class Config:
     # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
     # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
     FAVORITES = [  # noqa: RUF012
-        {"name": "Desktop", "path": os.path.expanduser(r"~/Desktop")},
-        {"name": "Dropbox", "path": os.path.expanduser(r"~/Dropbox")},
-        {"name": "AppData", "path": os.path.expanduser(r"~/AppData")},
+        {"name": "Desktop", "path": Path.home() / "Desktop"},
+        {"name": "Dropbox", "path": Path.home() / "Dropbox"},
+        {"name": "AppData", "path": Path.home() / "AppData"},
     ]
 
     # https://github.com/crftwr/xefm/blob/main/doc/FILE_ASSOCIATIONS_FEATURE.ja.md
@@ -136,9 +137,7 @@ class Config:
             "open_with": [
                 {
                     "name": "Mery",
-                    "command": [
-                        os.path.expanduser("~/AppData/Local/Programs/Mery/Mery.exe")
-                    ],
+                    "command": [Path.home() / "AppData/Local/Programs/Mery/Mery.exe"],
                 },
                 {
                     "name": "Notepad",
