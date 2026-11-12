@@ -9,6 +9,7 @@ import unicodedata
 from datetime import datetime
 from pathlib import Path
 
+from xefm import favorites  # ty: ignore[unresolved-import]
 from xefm.user_api import Cell  # ty: ignore[unresolved-import]
 
 
@@ -50,15 +51,11 @@ LAYOUTS = {
 DEFAULT_LAYOUT = "smart-mtime"
 
 
-def name_form(_, entries):
+def read_name_form(_, entries):
     return [
         "NFD" if not unicodedata.is_normalized("NFC", e.path.name) else None
         for e in entries
     ]
-
-
-def nfd_mark(value, _):
-    return Cell("NFD", color="orange") if value else ""
 
 
 def _git_output(path, *args):
@@ -86,7 +83,7 @@ def _is_under_git(path: str | Path) -> bool:
 ATTENTION_SYMBOL = "!"
 
 
-def git_attention(directory, entries) -> list:
+def read_git_status(directory, entries) -> list:
     if _is_under_git(directory):
         return [None for _ in entries]
 
@@ -114,10 +111,6 @@ def git_attention(directory, entries) -> list:
     return values
 
 
-def git_attention_marker(value, _):
-    return Cell(ATTENTION_SYMBOL, color="orange") if value == ATTENTION_SYMBOL else ""
-
-
 def _is_junction(p: Path):
     try:
         return bool(
@@ -134,8 +127,7 @@ def _is_link(path: Path) -> bool:
 LINK_SYMBOL = "\u2197"
 
 
-def link_dummy(_, entries) -> list:
-
+def read_link_dummy(_, entries) -> list:
     values = []
     for entry in entries:
         path = Path(entry.path)
@@ -147,47 +139,75 @@ def link_dummy(_, entries) -> list:
     return values
 
 
-def link_dummy_marker(value, _):
-    return Cell(LINK_SYMBOL, color="blue") if value == LINK_SYMBOL else ""
+FAV_SYMBOL = "\u2605"
+
+
+def read_favorites(_, entries) -> list:
+    fav_paths = {f.path for f in favorites.get_favorites()}
+    values = []
+    for entry in entries:
+        if str(entry.path) in fav_paths:
+            values.append(FAV_SYMBOL)
+        else:
+            values.append(None)
+
+    return values
 
 
 ATTRIBUTES = {
     "name_form": {
         "label": "Name form",
-        "type": "enum",
-        "read": name_form,
+        "type": "text",
+        "read": read_name_form,
         "where": ["local", "archive", "ssh", "s3"],
-        "values": {"NFD": {"label": "Name stored decomposed (NFD)", "color": "orange"}},
     },
     "git_attention": {
         "label": "Git changes",
-        "type": "enum",
-        "read": git_attention,
+        "type": "text",
+        "read": read_git_status,
         "where": "local",
-        "values": {
-            ATTENTION_SYMBOL: {
-                "label": "Uncommitted or unpushed changes",
-                "color": "orange",
-            },
-        },
     },
     "link_dummy": {
         "label": "Link dummies",
-        "type": "enum",
-        "read": link_dummy,
+        "type": "text",
+        "read": read_link_dummy,
         "where": "local",
-        "values": {
-            LINK_SYMBOL: {"label": "Link to other directory", "color": "blue"},
-        },
+    },
+    "favorites": {
+        "label": "Favorites",
+        "type": "text",
+        "read": read_favorites,
+        "where": ["local", "archive", "ssh", "s3"],
     },
 }
+
+
+def nfd_marker(value, _):
+    return Cell(value, color="orange") if value else ""
+
+
+def git_attention_marker(value, _):
+    return Cell(value, color="orange") if value else ""
+
+
+def link_dummy_marker(value, _):
+    return Cell(value, color="blue") if value else ""
+
+
+def fav_marker(value, _):
+    return Cell(value, color="purple") if value else ""
 
 
 LAYOUT_EXTRAS = {
     "nfd": {
         "label": "NFD names",
         "markers": [
-            {"attr": "name_form", "format": nfd_mark, "on": "name", "side": "after"}
+            {
+                "attr": "name_form",
+                "format": nfd_marker,
+                "on": "name",
+                "side": "after",
+            }
         ],
     },
     "git_attention": {
@@ -207,6 +227,17 @@ LAYOUT_EXTRAS = {
             {
                 "attr": "link_dummy",
                 "format": link_dummy_marker,
+                "on": "name",
+                "side": "after",
+            },
+        ],
+    },
+    "favorites": {
+        "label": "Favorites",
+        "markers": [
+            {
+                "attr": "favorites",
+                "format": fav_marker,
                 "on": "name",
                 "side": "after",
             },
