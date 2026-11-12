@@ -80,19 +80,27 @@ def focus_older_item(ctx):
     ctx.pane.cursor = best.item_index
 
 
-def _jump_cursor(ctx, down: bool) -> None:
+def _get_jump_candidates(ctx) -> set[int]:
     pane_info = ctx.pane._pane
+    candidates = set()
+
     items = pane_info.get("files")
     if not items:
-        return
+        return candidates
 
     file_info = pane_info.get("file_info")
     if not file_info:
-        return
+        return candidates
 
-    current = pane_info.get("focused_index", 0)
-
-    candidates = set()
+    #  if selected, edge of selections
+    selection_info = pane_info.get("selected_files")
+    if selection_info:
+        indices = [i for i, item in enumerate(items) if str(item) in selection_info]
+        for _, group in groupby(enumerate(indices), key=lambda p: p[1] - p[0]):
+            run = [idx for _, idx in group]
+            candidates.add(run[0])
+            candidates.add(run[-1])
+        return candidates
 
     # 1) top / end
     candidates.add(0)
@@ -116,25 +124,21 @@ def _jump_cursor(ctx, down: bool) -> None:
     if first_file is not None:
         candidates.add(first_file)
 
-    # 3) edge of selection
-    selected_indices = [
-        i
-        for i, item in enumerate(items)
-        if str(item) in ctx.pane._pane["selected_files"]
-    ]
-    for _, group in groupby(enumerate(selected_indices), key=lambda p: p[1] - p[0]):
-        run = [idx for _, idx in group]
-        candidates.add(run[0])
-        candidates.add(run[-1])
-
-    # 4) favorites
+    # 3) favorites
     fav_paths = {f.path for f in favorites.get_favorites()}
     for i, item in enumerate(items):
-        if i in selected_indices:
-            continue
         if str(item) in fav_paths:
             candidates.add(i)
 
+    return candidates
+
+
+def _jump_cursor(ctx, down: bool) -> None:
+    candidates = _get_jump_candidates(ctx)
+    if not candidates:
+        return
+
+    current = ctx.pane.cursor
     ordered = sorted(candidates)
     if down:
         target = next((idx for idx in ordered if current < idx), ordered[-1])
