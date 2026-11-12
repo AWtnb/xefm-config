@@ -1,4 +1,4 @@
-from ._utils import fzf_filter, is_nfd
+from ._utils import focus_by_name, fzf_filter, is_nfd
 
 
 # https://github.com/crftwr/xefm/wiki/Spot-NFD-File-Names
@@ -85,5 +85,6 @@ def fuzzy_selector(ctx) -> None:
     names = [e.name for e in ctx.pane.entries]
     selected = fzf_filter(ctx, names, multi=True)
     if 0 < len(selected):
+        focus_by_name(ctx, selected[0])
         selected = set(selected)
         ctx.pane.select(lambda ent: ent.name in selected)

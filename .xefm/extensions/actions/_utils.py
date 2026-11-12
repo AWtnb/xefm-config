@@ -69,3 +69,10 @@ def fzf_filter(ctx, options: list[str], multi: bool) -> list[str]:
         return []
 
     return r.stdout.strip().splitlines()
+
+
+def focus_by_name(ctx, name: str) -> None:
+    for i, ent in enumerate(ctx.pane.entries):
+        if ent.name == name:
+            ctx.pane.cursor = i
+            return
