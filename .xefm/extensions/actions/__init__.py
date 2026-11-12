@@ -1,5 +1,4 @@
 import json
-import os
 from pathlib import Path
 
 from xefm import favorites as xefm_favorites  # ty: ignore[unresolved-import]

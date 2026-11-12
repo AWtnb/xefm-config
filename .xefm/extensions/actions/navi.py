@@ -14,6 +14,7 @@ def open_desktop_both(ctx) -> None:
         if pane.path != DESKTOP_PATH:
             pane.cd(DESKTOP_PATH)
     ctx.invoke("reset_pane_boundary")
+    ctx.invoke("focus_left")
 
 
 def open_desktop_to_other(ctx) -> None:
