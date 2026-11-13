@@ -217,7 +217,7 @@ _KEY_BINDINGS = {
     "toggle_wrap": ["Alt-Z"],
     "unselect_all": ["U"],
     "unselect_by_pattern": [],
-    "view_file": ["V"],
+    "view_file": [],
 }
 
 
