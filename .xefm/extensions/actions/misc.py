@@ -27,6 +27,18 @@ def smart_mkdir(ctx) -> None:
     ctx.input("Directory name", default=today, on_accept=_mkdir)
 
 
+def lazygit(ctx) -> None:
+    lazygit_path = shutil.which("lazygit")
+    if lazygit_path is None:
+        ctx.message("lazygit not found.")
+        return
+    ctx.run_program(
+        [lazygit_path],
+        terminal=True,
+        cwd=str(ctx.pane.path),
+    )
+
+
 def diffinity(ctx) -> None:
     diffinity_exe = shutil.which("diffinity")
     if diffinity_exe is None:

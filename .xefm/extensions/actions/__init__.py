@@ -29,6 +29,7 @@ _ACTIONS = {
     "fuzzy_selector": item_selector.fuzzy_selector,
     "jump_down": cursor_jumper.jump_down,
     "jump_up": cursor_jumper.jump_up,
+    "lazygit": misc.lazygit,
     "make_tree": tree.make_tree,
     "open_desktop_both": navi.open_desktop_both,
     "open_desktop_to_other": navi.open_desktop_to_other,
@@ -43,13 +44,13 @@ _ACTIONS = {
     "recycle_bin": misc.launch_recycle_bin,
     "rename_photo_by_exif_timestamp": photo_renamer.rename_photo_by_exif_timestamp,
     "rename_rightloom_photo": photo_renamer.rename_lightroom_photo,
+    "save_image_on_clipboard": clipboard.save_image_on_clipboard,
     "select_by_extension": item_selector.select_by_extension,
     "select_nfd_names": item_selector.select_nfd_names,
     "smart_copy": clipboard.smart_copy,
     "smart_mkdir": misc.smart_mkdir,
     "smart_select_all": item_selector.smart_select_all,
     "summarize_by": tree.summarize_by,
-    "save_image_on_clipboard": clipboard.save_image_on_clipboard,
 }
 
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
