@@ -77,8 +77,11 @@ ATTENTION_SYMBOL = "!"
 
 def read_git_status(directory, entries) -> list:
     is_ghq_base = Path(directory).parent.parent == Path.home() / "ghq"
-
     if not is_ghq_base:
+        return [None for _ in entries]
+
+    is_workspace = Path(directory) == Path.home() / "Desktop" / "workspace"
+    if not is_workspace:
         return [None for _ in entries]
 
     values = []
