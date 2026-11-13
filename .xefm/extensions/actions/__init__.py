@@ -49,6 +49,7 @@ _ACTIONS = {
     "smart_mkdir": misc.smart_mkdir,
     "smart_select_all": item_selector.smart_select_all,
     "summarize_by": tree.summarize_by,
+    "save_image_on_clipboard": clipboard.save_image_on_clipboard,
 }
 
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
@@ -182,6 +183,7 @@ _KEY_BINDINGS = {
     "reset_log_height": ["_"],
     "reset_pane_boundary": ["MINUS", "|"],
     "reveal_in_os": ["Ctrl-Shift-E"],
+    "save_image_on_clipboard": ["Shift-I"],
     "scroll_log_down": ["Shift-J", "Shift-DOWN"],
     "scroll_log_page_down": [],
     "scroll_log_page_up": [],
@@ -221,24 +223,6 @@ _KEY_BINDINGS = {
 }
 
 
-def validate_keys(ctx, _) -> None:
-    counts = {}
-    for k, v in _KEY_BINDINGS.items():
-        if "." in k:
-            continue
-        keys = (
-            v
-            if isinstance(v, list)
-            else [f"{s}(selection: {v['selection']})" for s in v["keys"]]
-        )
-        for key in keys:
-            counts[key] = counts.get(key, 0) + 1
-
-    for key, count in sorted(counts.items()):
-        if 1 < count:
-            ctx.message(f"[WARNING] Key duplicates: {key} ({count} times)")
-
-
 def reset_layout(ctx, _) -> None:
     ctx.invoke("reset_pane_boundary")
     ctx.invoke("reset_log_height")
@@ -272,7 +256,7 @@ def backup_favorites(ctx, _) -> bool:
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 _EVENT_HOOKS = {
-    "startup": [validate_keys, reset_layout],
+    "startup": [reset_layout],
     "quit": [backup_favorites],
     "file_open": [on_enter],
 }

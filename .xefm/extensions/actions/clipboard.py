@@ -1,4 +1,7 @@
+from datetime import datetime
 from pathlib import Path
+
+from PIL import ImageGrab  # ty: ignore[import-not-found]
 
 from ._utils import get_git_root, get_selected_or_focused
 
@@ -55,3 +58,18 @@ def smart_copy(ctx) -> None:
         ctx.invoke("clipboard_copy")
 
     ctx.choose(title="Copy:", items=options, on_result=_copy)
+
+
+def save_image_on_clipboard(ctx) -> None:
+    pane = ctx.pane
+    base = pane.path
+
+    img = ImageGrab.grabclipboard()
+    if not img or isinstance(img, list):
+        ctx.message("No image data on clipboard")
+        return
+
+    save_name = datetime.now().strftime("%Y%m%d-%H%M%S") + ".png"
+    save_path = Path(base) / save_name
+    img.save(save_path)
+    ctx.pane.cd(base, focus_name=save_name)
