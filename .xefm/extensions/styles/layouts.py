@@ -72,7 +72,7 @@ def _git_output(path, *args):
         return None
 
 
-ATTENTION_SYMBOL = "!"
+ATTENTION_SYMBOL = "\u25cf"
 
 
 def read_git_status(directory, entries) -> list:
@@ -201,7 +201,7 @@ def nfd_marker(value, _):
 
 
 def git_attention_marker(value, _):
-    return _paint(value, "orange")
+    return _paint(value, "white")
 
 
 def link_dummy_marker(value, _):
