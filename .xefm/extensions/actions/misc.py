@@ -3,10 +3,28 @@ import os
 import shutil
 import subprocess
 import webbrowser
+from datetime import datetime
 from pathlib import Path
 
-from ._utils import get_selected_or_focused
+from ._utils import focus_by_name, get_selected_or_focused
 from .item_selector import select_under_cursor
+
+
+def smart_mkdir(ctx) -> None:
+    base = Path(ctx.pane.path)
+    today = datetime.now().strftime("%Y%m%d")
+
+    def _mkdir(name: str) -> None:
+        new_path = base / name
+        if new_path.exists():
+            ctx.message(f"Path already exists: '{new_path}'")
+            return
+        new_path.mkdir()
+        ctx.other.cd(new_path)
+        ctx.other.activate()
+        focus_by_name(ctx, name)
+
+    ctx.input("Directory name", default=today, on_accept=_mkdir)
 
 
 def diffinity(ctx) -> None:
