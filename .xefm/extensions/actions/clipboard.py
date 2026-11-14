@@ -65,7 +65,7 @@ def save_image_on_clipboard(ctx) -> None:
     base = pane.path
 
     img = ImageGrab.grabclipboard()
-    if not img or isinstance(img, list):
+    if not img:
         ctx.message("No image data on clipboard")
         return
 
