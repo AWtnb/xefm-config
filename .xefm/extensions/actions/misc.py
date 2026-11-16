@@ -10,6 +10,27 @@ from ._utils import get_selected_or_focused
 from .item_selector import select_under_cursor
 
 
+def smart_enter(ctx) -> None:
+    if not ctx.pane.focused:
+        return
+
+    focus_path = ctx.pane.focused.path
+    if focus_path.is_dir():
+        ctx.invoke("open_item")
+        return
+
+    if focus_path.suffix.lower() in [".pdf", ".tbx", ".cmx"]:
+        ctx.invoke("open_with_os")
+        return
+
+    if ctx._app._quick_view:
+        ctx._app._close_quick_view()
+        ctx.invoke("open_item")
+        return
+
+    ctx.invoke("quick_view")
+
+
 def smart_mkdir(ctx) -> None:
     pane = ctx.pane
     base = pane.path

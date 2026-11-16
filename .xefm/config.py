@@ -101,56 +101,6 @@ class Config:
         {"name": "AppData", "path": Path.home() / "AppData"},
     ]
 
-    # https://github.com/crftwr/xefm/blob/main/doc/FILE_ASSOCIATIONS_FEATURE.ja.md
-    # https://github.com/crftwr/xefm/blob/main/doc/FILE_ASSOCIATIONS_FEATURE.md
-    # https://github.com/crftwr/xefm/blob/main/doc/OPEN_WITH_FEATURE.ja.md
-    # https://github.com/crftwr/xefm/blob/main/doc/OPEN_WITH_FEATURE.md
-    FILE_ASSOCIATIONS = [  # noqa: RUF012
-        {
-            "pattern": [
-                "*.doc",
-                "*.docx",
-                "*.xls",
-                "*.xlsx",
-                "*.ppt",
-                "*.pptx",
-            ],
-            "edit": ["cmd", "/c", "start"],
-        },
-        {
-            "pattern": ["*.md", "*.txt"],
-            "edit": ["vim"],
-            "open_with": [
-                {
-                    "name": "Smooth CSV",
-                    "command": ["C:/Program Files/SmoothCSV/smoothcsv-cli.exe"],
-                },
-                {
-                    "name": "Notepad",
-                    "command": ["C:/Windows/System32/notepad.exe"],
-                },
-            ],
-        },
-        {
-            "pattern": ["*.csv"],
-            "edit": ["cmd", "/c", "start"],
-            "open_with": [
-                {
-                    "name": "Mery",
-                    "command": [Path.home() / "AppData/Local/Programs/Mery/Mery.exe"],
-                },
-                {
-                    "name": "Notepad",
-                    "command": ["C:/Windows/System32/notepad.exe"],
-                },
-            ],
-        },
-        {
-            "pattern": ["*.jar", "*.whl", "*.egg"],
-            "enter": "navigate",
-        },
-    ]
-
     # https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_PROGRAMS_FEATURE.ja.md
     # https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_PROGRAMS_FEATURE.md
     PROGRAMS = [  # noqa: RUF012
@@ -160,7 +110,7 @@ class Config:
     KEY_PRESET = None
     KEY_SEQUENCE_TIMEOUT = 1.0
 
-    ACTIONS, EVENT_HOOKS, KEY_BINDINGS = actions.setup()
+    ACTIONS, EVENT_HOOKS, KEY_BINDINGS, FILE_ASSOCIATIONS = actions.setup()
 
     def underscore_based_sortkey(entry) -> tuple:
         name = entry.name  # ty: ignore[unresolved-attribute]

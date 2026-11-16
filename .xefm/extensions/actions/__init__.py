@@ -48,6 +48,7 @@ _ACTIONS = {
     "select_by_extension": item_selector.select_by_extension,
     "select_nfd_names": item_selector.select_nfd_names,
     "smart_copy": clipboard.smart_copy,
+    "smart_enter": misc.smart_enter,
     "smart_mkdir": misc.smart_mkdir,
     "smart_select_all": item_selector.smart_select_all,
     "summarize_by": tree.summarize_by,
@@ -159,7 +160,7 @@ _KEY_BINDINGS = {
     "open_in_vscode": ["Shift-V"],
     "open_list_from_command": ["Ctrl-Shift-K"],
     "open_list_from_clipboard": [],
-    "open_item": ["ENTER", "L", "RIGHT"],
+    "open_item": [],
     "open_with_smoothcsv": [","],
     "open_parent_to_other": ["Shift-U"],
     "open_with_os": ["Ctrl-ENTER", "Ctrl-O"],
@@ -195,6 +196,7 @@ _KEY_BINDINGS = {
     "select_by_extension": ["Shift-X"],
     "settings_menu": ["Shift-Z"],
     "smart_copy": ["Ctrl-C"],
+    "smart_enter": ["L", "RIGHT", "ENTER"],
     "smart_mkdir": ["N D"],
     "smart_select_all": ["Ctrl-A"],
     "sort": ["S"],
@@ -229,13 +231,6 @@ def reset_layout(ctx, _) -> None:
     ctx.invoke("reset_log_height")
 
 
-def on_enter(ctx, event) -> bool:
-    if event.path.suffix.lower() in [".pdf", ".tbx", ".cmx"]:
-        ctx.invoke("open_with_os")
-        return True
-    return False
-
-
 def backup_favorites(ctx, _) -> bool:
     favs = xefm_favorites.get_favorites()  # list[FavoriteEntry]
     rows = [
@@ -259,9 +254,62 @@ def backup_favorites(ctx, _) -> bool:
 _EVENT_HOOKS = {
     "startup": [reset_layout],
     "quit": [backup_favorites],
-    "file_open": [on_enter],
 }
 
+# https://github.com/crftwr/xefm/blob/main/doc/FILE_ASSOCIATIONS_FEATURE.ja.md
+# https://github.com/crftwr/xefm/blob/main/doc/FILE_ASSOCIATIONS_FEATURE.md
+# https://github.com/crftwr/xefm/blob/main/doc/OPEN_WITH_FEATURE.ja.md
+# https://github.com/crftwr/xefm/blob/main/doc/OPEN_WITH_FEATURE.md
+_FILE_ASSOCIATIONS = [
+    {
+        "pattern": [
+            "*.doc",
+            "*.docx",
+            "*.xls",
+            "*.xlsx",
+            "*.ppt",
+            "*.pptx",
+        ],
+        "edit": ["cmd", "/c", "start"],
+    },
+    {
+        "pattern": ["*.md", "*.txt"],
+        "edit": ["vim"],
+        "open_with": [
+            {
+                "name": "Smooth CSV",
+                "command": ["C:/Program Files/SmoothCSV/smoothcsv-cli.exe"],
+            },
+            {
+                "name": "Notepad",
+                "command": ["C:/Windows/System32/notepad.exe"],
+            },
+        ],
+    },
+    {
+        "pattern": ["*.csv"],
+        "edit": ["cmd", "/c", "start"],
+        "open_with": [
+            {
+                "name": "Mery",
+                "command": [Path.home() / "AppData/Local/Programs/Mery/Mery.exe"],
+            },
+            {
+                "name": "Notepad",
+                "command": ["C:/Windows/System32/notepad.exe"],
+            },
+        ],
+    },
+    {
+        "pattern": ["*.zip"],
+        "open": {"action": "extract_archive"},
+    },
+    {
+        "pattern": ["*.jar", "*.whl", "*.egg"],
+        "enter": "navigate",
+    },
+]
 
-def setup() -> tuple[dict, dict, dict]:
-    return (_ACTIONS, _EVENT_HOOKS, _KEY_BINDINGS)
+
+def setup() -> tuple[dict | list, ...]:
+    return (_ACTIONS, _EVENT_HOOKS, _KEY_BINDINGS, _FILE_ASSOCIATIONS)
