@@ -8,6 +8,10 @@ from pathlib import Path
 from xefm.user_api import is_desktop_mode  # ty: ignore[unresolved-import]
 
 
+def pad2(s: str) -> str:
+    return s.rjust(2, "0")
+
+
 def smart_check_path(path: str | Path, timeout_sec: float | None = None) -> bool:
     """CASE-INSENSITIVE path check with timeout"""
     p = path if isinstance(path, Path) else Path(path)

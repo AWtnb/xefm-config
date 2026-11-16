@@ -5,31 +5,7 @@ from pathlib import Path
 from PIL import Image as PILImage  # ty: ignore[unresolved-import]
 from PIL.ExifTags import TAGS  # ty: ignore[unresolved-import]
 
-_REG_LR_PHOTO = re.compile(
-    r"写真 ([0-9]+)-([0-9]+)-([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)( \([0-9]+\))?.jpg"
-)
-
-
-def _is_lightroom_photo(path: Path) -> bool:
-    return _REG_LR_PHOTO.fullmatch(path.name) is not None
-
-
-def _pad2(s: str) -> str:
-    return s.rjust(2, "0")
-
-
-def _get_new_name(path: Path) -> str:
-    m = _REG_LR_PHOTO.fullmatch(path.name)
-    assert m is not None
-    yyyy = m.group(1)
-    mm = _pad2(m.group(2))
-    dd = _pad2(m.group(3))
-    hh = _pad2(m.group(4))
-    mi = _pad2(m.group(5))
-    ss = _pad2(m.group(6))
-    tail = m.group(7)
-    suffix = "" if tail is None else f"-{tail.strip(' ()')}"
-    return f"{yyyy}{mm}{dd}-IMG_{hh}{mi}{ss}{suffix}.jpg"
+from ._utils import pad2
 
 
 def _as_preview_message(mapping: dict[Path, str]) -> str:
@@ -40,9 +16,9 @@ def _as_preview_message(mapping: dict[Path, str]) -> str:
         return str(i).rjust(width)
 
     total = _pad(count)
-    arrow = "=" * (width * 2) + "> "
+    arrow = "=" * (width * 3) + "> "
     lines = [
-        f"{_pad(i)}/{total}: {p.name}\n {arrow}{n}"
+        f"{_pad(i)}/{total}: {p.name}\n{arrow}{n}"
         for i, (p, n) in enumerate(mapping.items(), start=1)
     ]
     assert 0 < len(lines)
@@ -53,13 +29,31 @@ def _as_preview_message(mapping: dict[Path, str]) -> str:
     return f"Rename {len(lines)} items?\n{lines[0]}\n︙\n{lines[-1]}"
 
 
+REG_LR_PHOTO = re.compile(
+    r"写真 ([0-9]+)-([0-9]+)-([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)( \([0-9]+\))?.jpg"
+)
+
+
 def rename_lightroom_photo(ctx) -> None:
     """
     Rename lightroom-processed photo file downloeded through dropbox
     """
-    targets = [e for e in ctx.pane.selected() if _is_lightroom_photo(e.path)]
+    targets = [e for e in ctx.pane.selected() if REG_LR_PHOTO.fullmatch(e.path.name)]
     if not targets:
         return
+
+    def _get_new_name(path: Path) -> str:
+        m = REG_LR_PHOTO.fullmatch(path.name)
+        assert m is not None
+        yyyy = m.group(1)
+        mm = pad2(m.group(2))
+        dd = pad2(m.group(3))
+        hh = pad2(m.group(4))
+        mi = pad2(m.group(5))
+        ss = pad2(m.group(6))
+        tail = m.group(7)
+        suffix = "" if tail is None else f"-{tail.strip(' ()')}"
+        return f"{yyyy}{mm}{dd}-IMG_{hh}{mi}{ss}{suffix}.jpg"
 
     mapping = {ent.path: _get_new_name(ent.path) for ent in targets}
 

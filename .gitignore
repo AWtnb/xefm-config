@@ -5,4 +5,5 @@ __pycache__
 .xefm/extensions/*
 !.xefm/extensions/actions/
 !.xefm/extensions/styles/
+.xefm/scans/*
 site-packages
