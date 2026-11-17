@@ -44,7 +44,9 @@ def smart_copy(ctx) -> None:
             ctx.copy_text("\n".join(e.path.stem for e in target))
             return
         if sel == "Relative path":
-            ctx.copy_text("\n".join(str(e.path.relative_to(git_root)) for e in target))
+            ctx.copy_text(
+                "\n".join(str(e.path.relative_to(git_root).as_posix()) for e in target)
+            )
             return
 
         if sel == "Codeblock":

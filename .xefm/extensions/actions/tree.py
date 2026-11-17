@@ -22,7 +22,7 @@ def make_tree(ctx) -> None:
     selected = {str(ent.path) for ent in ctx.pane.selected()}
     if selected:
         lines = [l for l in lines if any(l.startswith(s) for s in selected)]
-    lines = [str(Path(l).relative_to(root)) for l in lines]
+    lines = [str(Path(l).relative_to(root).as_posix()) for l in lines]
     out_name = f"{Path(root).stem}.tree.txt"
     out_path = Path(ctx.other.path) / out_name
     out_path.write_text("\n".join(lines), encoding="utf-8")
