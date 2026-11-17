@@ -60,30 +60,46 @@ def lazygit(ctx) -> None:
     )
 
 
+def _diff_targets_of(ctx) -> tuple[str, str] | None:
+    l_sels = ctx.left.selected()
+    r_sels = ctx.right.selected()
+    if len(l_sels) == 1 and len(r_sels) == 1:
+        l = l_sels[0]
+        r = r_sels[0]
+        if not l.is_dir and not r.is_dir:
+            return str(l.path), str(r.path)
+
+    sels = ctx.pane.selected()
+    if len(sels) == 2:
+        l, r = sels
+        if not l.is_dir and not r.is_dir:
+            return str(l.path), str(r.path)
+
+    return None
+
+
+def diff_with_vscode(ctx) -> None:
+    vscode_cmd = shutil.which("code")
+    if vscode_cmd is None:
+        ctx.message("VSCode not found")
+        return
+
+    paths = _diff_targets_of(ctx)
+    if paths is None:
+        ctx.message("Select just 2 files")
+        return
+
+    l_path, r_path = paths
+    ctx.run_program([vscode_cmd, "--new-window", "--diff", l_path, r_path])
+
+
 def diffinity(ctx) -> None:
     diffinity_exe = shutil.which("diffinity")
     if diffinity_exe is None:
         ctx.message("diffinity not found")
         return
 
-    def _get_paths() -> tuple[str, str] | None:
-        l_sels = ctx.left.selected()
-        r_sels = ctx.right.selected()
-        if len(l_sels) == 1 and len(r_sels) == 1:
-            l = l_sels[0]
-            r = r_sels[0]
-            if not l.is_dir and not r.is_dir:
-                return str(l.path), str(r.path)
-
-        sels = ctx.pane.selected()
-        if len(sels) == 2:
-            l, r = sels
-            if not l.is_dir and not r.is_dir:
-                return str(l.path), str(r.path)
-
-        return None
-
-    paths = _get_paths()
+    paths = _diff_targets_of(ctx)
     if paths is None:
         ctx.message("Select just 2 files")
         return

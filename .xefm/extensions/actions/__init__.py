@@ -21,6 +21,7 @@ _ACTIONS = {
     "compose_nfd_names": nfd_renamer.compose_nfd_names,
     "conc_pdf": misc.conc_pdf,
     "diffinity": misc.diffinity,
+    "diff_with_vscode": misc.diff_with_vscode,
     "edit_config": {"func": misc.launch_config_repo, "override": True},
     "focus_newest_item": cursor_jumper.focus_newest_item,
     "focus_older_item": cursor_jumper.focus_older_item,
