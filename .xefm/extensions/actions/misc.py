@@ -71,6 +71,7 @@ def _diff_targets_of(ctx) -> tuple[str, str] | None:
 
     sels = ctx.pane.selected()
     if len(sels) == 2:
+        sels.sort(key=lambda e: e.mtime)
         l, r = sels
         if not l.is_dir and not r.is_dir:
             return str(l.path), str(r.path)
