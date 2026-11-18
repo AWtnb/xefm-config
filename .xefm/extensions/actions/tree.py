@@ -53,16 +53,11 @@ def summarize(ctx, editor: str | list[str]) -> None:
         )
         rel_paths = tree_path.read_text(encoding="utf-8").splitlines()
 
-    if not _write_context(ctx, root, ctx.other.path, rel_paths):
-        ctx.message("No files to summarize.")
+    if (out_name := _write_context(ctx, root, rel_paths)) is not None:
+        ctx.other.cd(ctx.other.path, out_name)
 
 
-def _write_context(
-    ctx,
-    root: str | Path,
-    output_dir: str | Path,
-    rel_paths: list[str],
-) -> bool:
+def _write_context(ctx, root: str | Path, rel_paths: list[str]) -> str | None:
     root_path = Path(root).resolve()
     targets = []
     for rel in rel_paths:
@@ -82,7 +77,7 @@ def _write_context(
             targets.append((rel, path))
 
     if not targets:
-        return False
+        return None
 
     _, root_name = os.path.split(root_path)
     if not root_name:
@@ -114,10 +109,9 @@ def _write_context(
         lines.append(f"{border}\n")
 
     out_name = f"{root_name}.context.md"
-    out_path = Path(output_dir) / out_name
+    out_path = Path(ctx.other.path) / out_name
     out_path.write_text("\n".join(lines), encoding="utf-8")
-    ctx.pane.cd(output_dir, out_name)
-    return True
+    return out_name
 
 
 def summarize_by(ctx) -> None:
@@ -130,7 +124,9 @@ def summarize_by(ctx) -> None:
         if root is None:
             return
 
-        _write_context(ctx, root, ctx.pane.path, rel_paths)
+        out_name = _write_context(ctx, root, rel_paths)
+        if out_name is not None:
+            ctx.other.cd(ctx.other.path, out_name)
 
     ctx.input(
         prompt="root of summary",
