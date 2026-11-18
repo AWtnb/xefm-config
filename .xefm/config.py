@@ -110,7 +110,7 @@ class Config:
     KEY_PRESET = None
     KEY_SEQUENCE_TIMEOUT = 1.0
 
-    ACTIONS, EVENT_HOOKS, KEY_BINDINGS, FILE_ASSOCIATIONS = actions.setup()
+    ACTIONS, EVENT_HOOKS, KEY_BINDINGS, FILE_ASSOCIATIONS = actions.setup(TEXT_EDITOR)
 
     def underscore_based_sortkey(entry) -> tuple:
         name = entry.name  # ty: ignore[unresolved-attribute]

@@ -1,4 +1,5 @@
 import json
+from functools import partial
 from pathlib import Path
 
 from xefm import favorites as xefm_favorites  # ty: ignore[unresolved-import]
@@ -316,5 +317,8 @@ _FILE_ASSOCIATIONS = [
 ]
 
 
-def setup() -> tuple[dict | list, ...]:
-    return (_ACTIONS, _EVENT_HOOKS, _KEY_BINDINGS, _FILE_ASSOCIATIONS)
+def setup(text_editor: str | list[str]) -> tuple[dict | list, ...]:
+    actions = _ACTIONS | {
+        "summarize": partial(tree.summarize, editor=text_editor),
+    }
+    return (actions, _EVENT_HOOKS, _KEY_BINDINGS, _FILE_ASSOCIATIONS)
