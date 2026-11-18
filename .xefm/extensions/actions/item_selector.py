@@ -29,6 +29,9 @@ def _select_by_focus(ctx) -> None:
 
 
 def smart_select_all(ctx) -> None:
+    if not ctx.pane.entries:
+        return
+
     selected = ctx.pane.selected()
 
     if not selected:
