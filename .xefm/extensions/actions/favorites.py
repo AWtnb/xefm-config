@@ -51,5 +51,3 @@ def fuzzy_favorites(ctx) -> None:
         ctx.pane.cd(path, focus_name=None)
     else:
         ctx.pane.cd(path.parent, focus_name=path.name)
-
-    ctx.pane.refresh()
