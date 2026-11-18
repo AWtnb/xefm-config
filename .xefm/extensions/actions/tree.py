@@ -7,7 +7,13 @@ from ._utils import get_git_root
 
 
 def _is_skippable(dir_name: str) -> bool:
-    return dir_name in ("node_modules", ".git") or dir_name.startswith("__")
+    return dir_name in {
+        "node_modules",
+        ".git",
+        ".venv",
+        ".cache",
+        ".ruff_cache",
+    } or dir_name.startswith("__")
 
 
 def traverse_file(root: str | Path) -> Iterator[str]:
@@ -17,26 +23,25 @@ def traverse_file(root: str | Path) -> Iterator[str]:
             yield os.path.join(dir_path, f)
 
 
-def make_tree(ctx) -> None:
+def _rel_paths_of(ctx) -> tuple[Path, list[str]]:
     root = get_git_root(str(ctx.pane.path))
     lines = [p for p in traverse_file(root)]
     selected = {str(ent.path) for ent in ctx.pane.selected()}
     if selected:
         lines = [l for l in lines if any(l.startswith(s) for s in selected)]
-    lines = [str(Path(l).relative_to(root).as_posix()) for l in lines]
+    return root, [str(Path(l).relative_to(root).as_posix()) for l in lines]
+
+
+def make_tree(ctx) -> None:
+    root, rel_paths = _rel_paths_of(ctx)
     out_name = f"{Path(root).stem}.tree.txt"
     out_path = Path(ctx.other.path) / out_name
-    out_path.write_text("\n".join(lines), encoding="utf-8")
+    out_path.write_text("\n".join(rel_paths), encoding="utf-8")
     ctx.other.cd(ctx.other.path, out_name)
 
 
 def summarize(ctx, editor: str | list[str]) -> None:
-    pane_path = Path(ctx.pane.path)
-    root = get_git_root(str(pane_path))
-    rel_paths = [
-        Path(path).relative_to(root).as_posix() for path in traverse_file(root)
-    ]
-
+    root, rel_paths = _rel_paths_of(ctx)
     with tempfile.TemporaryDirectory(prefix="xefm-summarize-") as temp_dir:
         tree_path = Path(temp_dir) / f"{root.name}.tree.txt"
         tree_path.write_text("\n".join(rel_paths), encoding="utf-8")
