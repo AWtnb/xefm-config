@@ -25,10 +25,21 @@ def open_desktop_to_other(ctx) -> None:
     ctx.other.activate()
 
 
+def open_desktop_to_new_tab(ctx) -> None:
+    ctx.invoke("new_tab")
+    ctx.pane.cd(DESKTOP_PATH)
+
+
 def open_parent_to_other(ctx) -> None:
     parent, current_name = os.path.split(ctx.pane.path)
     ctx.other.cd(parent, current_name)
     ctx.other.activate()
+
+
+def open_parent_to_new_tab(ctx) -> None:
+    parent, current_name = os.path.split(ctx.pane.path)
+    ctx.invoke("new_tab")
+    ctx.pane.cd(parent, current_name)
 
 
 def open_to_other(ctx) -> None:
