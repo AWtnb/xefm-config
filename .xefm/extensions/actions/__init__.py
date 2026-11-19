@@ -32,7 +32,6 @@ _ACTIONS = {
     "jump_down": cursor_jumper.jump_down,
     "jump_up": cursor_jumper.jump_up,
     "lazygit": misc.lazygit,
-    "make_tree": tree.make_tree,
     "open_desktop_both": navi.open_desktop_both,
     "open_desktop_to_new_tab": navi.open_desktop_to_new_tab,
     "open_desktop_to_other": navi.open_desktop_to_other,
@@ -55,7 +54,7 @@ _ACTIONS = {
     "smart_enter": misc.smart_enter,
     "smart_mkdir": misc.smart_mkdir,
     "smart_select_all": item_selector.smart_select_all,
-    "summarize_by": tree.summarize_by,
+    "write_dir_tree": tree.write_dir_tree,
 }
 
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
