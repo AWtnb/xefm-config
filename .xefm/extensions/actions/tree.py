@@ -133,6 +133,10 @@ def _summarize_from_src(ctx, src_path: Path) -> None:
 
 def summarize(ctx, editor: str | list[str]) -> None:
     sels = ctx.pane.selected()
+    if not sels:
+        ctx.message("Select at least 1 file.")
+        return
+
     if len(sels) == 1:
         p = Path(sels[0].path)
         if p.name.endswith(TREE_FILE_SUFFIX) and p.is_file():
