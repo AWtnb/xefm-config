@@ -53,6 +53,7 @@ _ACTIONS = {
     "smart_enter": misc.smart_enter,
     "smart_mkdir": misc.smart_mkdir,
     "smart_select_all": item_selector.smart_select_all,
+    "view_with_tinta": misc.view_with_tinta,
     "write_dir_tree": tree.write_dir_tree,
 }
 
@@ -292,7 +293,7 @@ _FILE_ASSOCIATIONS = [
     },
     {
         "pattern": ["*.md"],
-        "view": ["tinta"],
+        "view": {"action": "view_with_tinta"},
     },
     {
         "pattern": ["*.csv"],
