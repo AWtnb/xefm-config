@@ -68,7 +68,7 @@ def _write_context(ctx, root: Path, rel_paths: list[str]) -> str | None:
     _, root_name = os.path.split(root_path)
     if not root_name:
         root_name = root_path.anchor
-    border = "```"
+    border = "````"  # for nested codeblock
 
     lines: list[str] = [f"# CONTEXT of `{root_name}`\n"]
     lines.append("## DIRECTORIES (excerpt)\n")
@@ -89,7 +89,8 @@ def _write_context(ctx, root: Path, rel_paths: list[str]) -> str | None:
             ctx.message(f"Could not read {rel}: {exc}")
             continue
 
-        lines.append(f"{border}:{Path(rel).suffix.strip('.')}:{rel}")
+        lines.append(f"### `{rel}`:\n")
+        lines.append(f"{border}")
         lines.append(content)
         lines.append(f"{border}\n")
 
