@@ -226,7 +226,7 @@ _KEY_BINDINGS = {
     "toggle_wrap": ["Alt-Z"],
     "unselect_all": ["U"],
     "unselect_by_pattern": [],
-    "view_file": [],
+    "view_file": ["Shift-ENTER"],
 }
 
 
@@ -289,6 +289,10 @@ _FILE_ASSOCIATIONS = [
                 "command": ["C:/Windows/System32/notepad.exe"],
             },
         ],
+    },
+    {
+        "pattern": ["*.md"],
+        "view": ["tinta"],
     },
     {
         "pattern": ["*.csv"],
