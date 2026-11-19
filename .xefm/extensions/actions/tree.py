@@ -112,16 +112,23 @@ def _summarize(ctx, editor: str | list[str]) -> None:
         )
         rel_paths = tree_path.read_text(encoding="utf-8").splitlines()
 
-    if (out_name := _write_context(ctx, root, rel_paths)) is not None:
-        ctx.other.cd(ctx.other.path, out_name)
+    out_name = _write_context(ctx, root, rel_paths)
+    if out_name is None:
+        ctx.message("No files to summarize.")
+        return
+
+    ctx.other.cd(ctx.other.path, out_name)
 
 
 def _summarize_from_src(ctx, src_path: Path) -> None:
     rel_paths = src_path.read_text(encoding="utf-8").splitlines()
     root = get_git_root(str(ctx.other.path))
     out_name = _write_context(ctx, root, rel_paths)
-    if out_name is not None:
-        ctx.other.cd(ctx.other.path, out_name)
+    if out_name is None:
+        ctx.message("No files to summarize.")
+        return
+
+    ctx.other.cd(ctx.other.path, out_name)
 
 
 def summarize(ctx, editor: str | list[str]) -> None:
