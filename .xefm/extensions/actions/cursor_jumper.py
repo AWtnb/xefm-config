@@ -80,61 +80,101 @@ def focus_older_item(ctx):
     ctx.pane.cursor = best.item_index
 
 
-def _get_jump_candidates(ctx) -> set[int]:
-    pane_info = ctx.pane._pane
-    candidates = set()
+class JumpCandidates:
+    """
+    Compute cursor jump candidates for the current pane.
+    """
 
-    items = pane_info.get("files")
-    if not items:
-        return candidates
+    def __init__(self, ctx) -> None:
+        self.pane_info = ctx.pane._pane
+        self.items = self.pane_info.get("files") or []
+        self.cursor = ctx.pane.cursor
 
-    file_info = pane_info.get("file_info")
-    if not file_info:
-        return candidates
+    def get(self) -> set[int]:
+        """
+        Return jump candidate indices, taking selection and cursor into account.
+        """
+        if not self.items:
+            return set()
 
-    #  if selected, edge of selections
-    selection_info = pane_info.get("selected_files")
-    if selection_info:
-        indices = [i for i, item in enumerate(items) if str(item) in selection_info]
+        base = self._base_candidates()
+
+        runs = self._selection_runs()
+        if not runs:
+            return base
+
+        sel_top = runs[0][0]
+        sel_bottom = runs[-1][1]
+
+        if self.cursor < sel_top:
+            return {i for i in base if i <= sel_top} | {sel_top}
+
+        if sel_bottom < self.cursor:
+            return {i for i in base if sel_bottom <= i} | {sel_bottom}
+
+        edges = set()
+        for start, end in runs:
+            edges.add(start)
+            edges.add(end)
+        return edges
+
+    def _selection_runs(self) -> list[tuple[int, int]]:
+        """
+        Return (start, end) index pairs of contiguous selected runs.
+        """
+        selection_info = self.pane_info.get("selected_files")
+        if not selection_info:
+            return []
+
+        indices = [
+            i for i, item in enumerate(self.items) if str(item) in selection_info
+        ]
+        runs = []
         for _, group in groupby(enumerate(indices), key=lambda p: p[1] - p[0]):
             run = [idx for _, idx in group]
-            candidates.add(run[0])
-            candidates.add(run[-1])
+            runs.append((run[0], run[-1]))
+        return runs
+
+    def _base_candidates(self) -> set[int]:
+        """
+        Return default jump candidates: both ends, dir/file boundary, favorites.
+        """
+        file_info = self.pane_info.get("file_info")
+        if not file_info:
+            return set()
+
+        # 1) top / end
+        candidates = {0, len(self.items) - 1}
+
+        # 2) end of dirs / top of files
+        last_dir = None
+        first_file = None
+        for i, item in enumerate(self.items):
+            meta = file_info.get(str(item))
+            if not meta:
+                continue
+            if meta.get("is_dir"):
+                last_dir = i
+                continue
+            if first_file is None:
+                first_file = i
+
+        if last_dir is not None:
+            candidates.add(last_dir)
+        if first_file is not None:
+            candidates.add(first_file)
+
+        # 3) favorites
+        fav_paths = {f.path for f in favorites.get_favorites()}
+        for i, item in enumerate(self.items):
+            if str(item) in fav_paths:
+                candidates.add(i)
+
         return candidates
-
-    # 1) top / end
-    candidates.add(0)
-    candidates.add(len(items) - 1)
-
-    # 2) end of dirs / top of files
-    last_dir = None
-    first_file = None
-    for i, item in enumerate(items):
-        meta = file_info.get(str(item))
-        if not meta:
-            continue
-        if meta.get("is_dir"):
-            last_dir = i
-            continue
-        if first_file is None:
-            first_file = i
-
-    if last_dir is not None:
-        candidates.add(last_dir)
-    if first_file is not None:
-        candidates.add(first_file)
-
-    # 3) favorites
-    fav_paths = {f.path for f in favorites.get_favorites()}
-    for i, item in enumerate(items):
-        if str(item) in fav_paths:
-            candidates.add(i)
-
-    return candidates
 
 
 def _jump_cursor(ctx, down: bool) -> None:
-    candidates = _get_jump_candidates(ctx)
+    candidates = JumpCandidates(ctx).get()
     if not candidates:
         return
 
