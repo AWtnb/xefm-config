@@ -46,3 +46,16 @@ def open_to_other(ctx) -> None:
     if ctx.pane.focused.is_dir:
         ctx.other.cd(ctx.pane.focused)
         ctx.other.activate()
+
+
+def eject_current_drive(ctx) -> None:
+    path = Path(ctx.pane.path)
+    if not path.drive or path.drive.casefold() == "c:":
+        return
+
+    def _eject(ok: bool) -> None:
+        if ok:
+            ctx.pane.cd(DESKTOP_PATH)
+            ctx._app._drive_remove({"path": str(path.anchor)})
+
+    ctx.confirm(f"Eject current drive({path.drive})?", on_result=_eject)

@@ -31,6 +31,7 @@ _ACTIONS = {
     "jump_down": cursor_jumper.jump_down,
     "jump_up": cursor_jumper.jump_up,
     "lazygit": misc.lazygit,
+    "eject_current_drive": navi.eject_current_drive,
     "open_desktop_both": navi.open_desktop_both,
     "open_desktop_to_new_tab": navi.open_desktop_to_new_tab,
     "open_desktop_to_other": navi.open_desktop_to_other,
