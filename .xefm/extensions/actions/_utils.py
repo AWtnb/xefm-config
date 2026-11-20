@@ -55,7 +55,7 @@ def fzf_filter(ctx, options: list[str], multi: bool) -> list[str]:
 
     cmd = [fzf]
     if multi:
-        cmd.append("--multi")
+        cmd.extend(["--multi", "--bind", "ctrl-a:toggle-all"])
 
     # https://github.com/crftwr/xefm/issues/755
     with terminal_context:
