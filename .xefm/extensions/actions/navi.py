@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+from xefm import netmount  # ty: ignore[unresolved-import]
+
 DESKTOP_PATH = Path.home() / "Desktop"
 
 
@@ -50,12 +52,14 @@ def open_to_other(ctx) -> None:
 
 def eject_current_drive(ctx) -> None:
     path = Path(ctx.pane.path)
-    if not path.drive or path.drive.casefold() == "c:":
+    anchor = str(path.anchor)
+    mount = netmount.classify(anchor)
+    if mount is None or mount.kind != netmount.REMOVABLE:
         return
 
     def _eject(ok: bool) -> None:
         if ok:
             ctx.pane.cd(DESKTOP_PATH)
-            ctx._app._drive_remove({"path": str(path.anchor)})
+            ctx._app._drive_remove({"path": anchor})
 
     ctx.confirm(f"Eject current drive({path.drive})?", on_result=_eject)
