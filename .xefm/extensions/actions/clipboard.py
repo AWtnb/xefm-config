@@ -4,6 +4,7 @@ from pathlib import Path
 from PIL import ImageGrab  # ty: ignore[import-not-found]
 
 from ._utils import get_git_root, get_selected_or_focused
+from .tree import tree_info_of
 
 
 def _as_codeblock(root: Path, path: Path) -> str:
@@ -25,6 +26,7 @@ def smart_copy(ctx) -> None:
         options.append("Relative path")
 
     options.append("Codeblock")
+    options.append("Tree")
     options.append("Entry")
 
     def _copy(i: int | None) -> None:
@@ -43,6 +45,7 @@ def smart_copy(ctx) -> None:
         if sel == "Basename":
             ctx.copy_text("\n".join(e.path.stem for e in target))
             return
+
         if sel == "Relative path":
             ctx.copy_text(
                 "\n".join(str(e.path.relative_to(git_root).as_posix()) for e in target)
@@ -55,6 +58,11 @@ def smart_copy(ctx) -> None:
                     _as_codeblock(git_root, e.path) for e in target if not e.is_dir
                 )
             )
+            return
+
+        if sel == "Tree":
+            rel_paths = tree_info_of(ctx, git_root)
+            ctx.copy_text("\n".join(rel_paths))
             return
 
         ctx.invoke("clipboard_copy")

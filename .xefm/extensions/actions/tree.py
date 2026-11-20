@@ -23,20 +23,20 @@ def traverse_file(root: str | Path) -> Iterator[str]:
             yield os.path.join(dir_path, f)
 
 
-def _rel_paths_of(ctx) -> tuple[Path, list[str]]:
-    root = get_git_root(str(ctx.pane.path))
+def tree_info_of(ctx, root) -> list[str]:
     lines = [p for p in traverse_file(root)]
     selected = {str(ent.path) for ent in ctx.pane.selected()}
     if selected:
         lines = [l for l in lines if any(l.startswith(s) for s in selected)]
-    return root, [str(Path(l).relative_to(root).as_posix()) for l in lines]
+    return [str(Path(l).relative_to(root).as_posix()) for l in lines]
 
 
 TREE_FILE_SUFFIX = ".tree.txt"
 
 
 def write_dir_tree(ctx) -> None:
-    root, rel_paths = _rel_paths_of(ctx)
+    root = get_git_root(str(ctx.pane.path))
+    rel_paths = tree_info_of(ctx, root)
     out_name = f"{Path(root).stem}{TREE_FILE_SUFFIX}"
     out_path = Path(ctx.other.path) / out_name
     out_path.write_text("\n".join(rel_paths), encoding="utf-8")
@@ -101,7 +101,8 @@ def _write_context(ctx, root: Path, rel_paths: list[str]) -> str | None:
 
 
 def _summarize(ctx, editor: str | list[str]) -> None:
-    root, rel_paths = _rel_paths_of(ctx)
+    root = get_git_root(str(ctx.pane.path))
+    rel_paths = tree_info_of(ctx, root)
     with tempfile.TemporaryDirectory(prefix="xefm-summarize-") as temp_dir:
         tree_path = Path(temp_dir) / f"{root.name}.tree.txt"
         tree_path.write_text("\n".join(rel_paths), encoding="utf-8")
