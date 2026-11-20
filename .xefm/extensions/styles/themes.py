@@ -159,10 +159,72 @@ cobalt2 = {
     },
 }
 
+base16_darkmoss = {
+    "opacity": 1.0,
+    "background": _color("#171e1f"),  # base00
+    "foreground": _color("#c7c7a5"),  # base05
+    "muted": _color("#555e5f"),  # base03
+    "accent": _color("#498091"),  # base0D
+    "accent2": _color("#fdb11f"),  # base0A
+    "surface": _color("#252c2d"),  # base01
+    "selection": _color("#373c3d"),  # base02
+    "status": _color("#252c2d"),  # base01
+    "footer": _color("#373c3d"),  # base02
+    "file_types": {
+        "directory": _color("#498091"),  # base0D
+        "link": _color("#66d9ef"),  # base0C
+    },
+    "cursor": {
+        "active": _color("#498091"),  # base0D
+        "inactive": _color("#555e5f"),  # base03
+    },
+    "syntax": {
+        "keyword": _color("#9bc0c8"),  # base0E
+        "string": _color("#499180"),  # base0B
+        "comment": _color("#555e5f"),  # base03
+        "number": _color("#e6db74"),  # base09
+        "operator": _color("#66d9ef"),  # base0C
+        "builtin": _color("#fdb11f"),  # base0A
+        "name": _color("#ff4658"),  # base08
+    },
+}
+
+base16_0x96f = {
+    "opacity": 1.0,
+    "background": _color("#262427"),  # base00
+    "foreground": _color("#fcfcfc"),  # base05
+    "muted": _color("#676567"),  # base03
+    "accent": _color("#49cae4"),  # base0D
+    "accent2": _color("#ffca58"),  # base0A
+    "surface": _color("#3b393c"),  # base01
+    "selection": _color("#514f52"),  # base02
+    "status": _color("#3b393c"),  # base01
+    "footer": _color("#514f52"),  # base02
+    "file_types": {
+        "directory": _color("#49cae4"),  # base0D
+        "link": _color("#aee8f4"),  # base0C
+    },
+    "cursor": {
+        "active": _color("#49cae4"),  # base0D
+        "inactive": _color("#676567"),  # base03
+    },
+    "syntax": {
+        "keyword": _color("#a093e2"),  # base0E
+        "string": _color("#bcdf59"),  # base0B
+        "comment": _color("#676567"),  # base03
+        "number": _color("#fc9d6f"),  # base09
+        "operator": _color("#aee8f4"),  # base0C
+        "builtin": _color("#ffca58"),  # base0A
+        "name": _color("#ff7272"),  # base08
+    },
+}
+
 THEMES = {
-    "One Dark": one_dark,
-    "Tokyo Night": tokyo_night,
     "Ayu Dark": ayu_dark,
     "Ayu Mirage": ayu_mirage,
+    "Base16 0x96f": base16_0x96f,
+    "Base16 Darkmoss": base16_darkmoss,
     "Cobalt2": cobalt2,
+    "One Dark": one_dark,
+    "Tokyo Night": tokyo_night,
 }
