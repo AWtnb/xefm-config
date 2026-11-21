@@ -205,7 +205,7 @@ base16_0x96f = {
         "link": _color("#aee8f4"),  # base0C
     },
     "cursor": {
-        "active": _color("#49cae4"),  # base0D
+        "active": _color("#bcdf59"),  # base0B
         "inactive": _color("#676567"),  # base03
     },
     "syntax": {
