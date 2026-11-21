@@ -23,8 +23,7 @@ class Config:
     DEFAULT_LEFT_PANE_RATIO = 0.5
     DEFAULT_LOG_HEIGHT_RATIO = 0.25
     DATE_FORMAT = "full"
-    DEFAULT_SORT_MODE = "name"
-    DEFAULT_SORT_REVERSE = False
+
     THEMES, DEFAULT_LAYOUT, ATTRIBUTES, LAYOUTS, LAYOUT_EXTRAS = styles.setup()
 
     # https://github.com/crftwr/xefm/blob/main/doc/TRASH_FEATURE.ja.md
@@ -132,6 +131,9 @@ class Config:
     SORT_KEYS = {  # noqa: RUF012
         "filename": {"key": underscore_based_sortkey, "override": True}
     }
+    DEFAULT_SORT_MODE = "filename"
+    DEFAULT_SORT_REVERSE = False
+
     FILTERS = {}  # noqa: RUF012
     IMAGE_DECODERS = {}  # noqa: RUF012
     PATH_SCHEMES = {}  # noqa: RUF012
