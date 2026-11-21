@@ -19,7 +19,7 @@ class Config:
     MONO_FONT_NAME = "HackGen" if sys.platform == "win32" else None
     FONT_SIZE = 16
 
-    SHOW_HIDDEN_FILES = False
+    SHOW_HIDDEN_FILES = True
     DEFAULT_LEFT_PANE_RATIO = 0.5
     DEFAULT_LOG_HEIGHT_RATIO = 0.25
     DATE_FORMAT = "full"
