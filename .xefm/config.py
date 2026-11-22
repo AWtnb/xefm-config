@@ -78,6 +78,10 @@ class Config:
     SUBSHELL = None
     TERMINAL = ["wezterm", "start", "--"]  # noqa: RUF012
 
+    AGENTS = []  # noqa: RUF012
+    AGENT_RULES = ""
+    AGENT_PROMPTS = {}  # noqa: RUF012
+
     S3_CACHE_TTL = 60
     SSH_CACHE_TTL = 30
     SSH_CACHE_ERROR_TTL = 300
