@@ -157,8 +157,8 @@ def launch_config_repo(ctx) -> None:
         dir_path = real_path.parent
 
     cmd = ["explorer.exe", dir_path]
-    if (vscode_path := shutil.which("code")) is not None:
-        cmd[0] = vscode_path
+    if shutil.which("code") is not None:
+        cmd[0] = "code"
 
     ctx.run_program(cmd)
 
