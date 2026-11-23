@@ -7,26 +7,29 @@ from PIL.ExifTags import TAGS  # ty: ignore[unresolved-import]
 
 from ._utils import pad2
 
+_PREVIEW_EDGE_COUNT = 4
+
 
 def _as_preview_message(mapping: dict[Path, str]) -> str:
     count = len(mapping)
+    assert 0 < count
+
     width = len(str(count))
-
-    def _pad(i: int) -> str:
-        return str(i).rjust(width)
-
-    total = _pad(count)
+    total = str(count).rjust(width)
     arrow = "=" * (width * 3) + "> "
-    lines = [
-        f"{_pad(i)}/{total}: {p.name}\n{arrow}{n}"
-        for i, (p, n) in enumerate(mapping.items(), start=1)
-    ]
-    assert 0 < len(lines)
 
-    if len(lines) == 1:
-        return f"Rename 1 item?\n{lines[0]}"
+    def _format(i: int, p: Path, n: str) -> str:
+        return f"{str(i).rjust(width)}/{total}: {p.name}\n{arrow}{n}"
 
-    return f"Rename {len(lines)} items?\n{lines[0]}\n︙\n{lines[-1]}"
+    entries = [_format(i, p, n) for i, (p, n) in enumerate(mapping.items(), start=1)]
+    header = f"Rename {count} item{'' if count == 1 else 's'}?"
+
+    if count <= _PREVIEW_EDGE_COUNT * 2:
+        return "\n".join([header, *entries])
+
+    head = entries[:_PREVIEW_EDGE_COUNT]
+    tail = entries[-_PREVIEW_EDGE_COUNT:]
+    return "\n".join([header, *head, "︙", *tail])
 
 
 REG_LR_PHOTO = re.compile(
