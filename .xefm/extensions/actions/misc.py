@@ -16,6 +16,11 @@ def smart_enter(ctx) -> None:
     if not ctx.pane.focused:
         return
 
+    sels = ctx.pane.selected()
+    if sels and all(s.is_file for s in sels):
+        ctx.invoke("open_items_with_os")
+        return
+
     focus_path = ctx.pane.focused.path
     if focus_path.is_dir():
         ctx.invoke("open_item")
