@@ -73,10 +73,10 @@ class Config:
     TEXT_ENCODINGS = ["utf-8", "cp932", "euc-jp", "iso-2022-jp", "latin-1"]  # noqa: RUF012
     TEXT_DIFF = ["code", "--diff"] if is_desktop_mode() else "vimdiff"
 
-    # https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.ja.md
-    # https://github.com/crftwr/xefm/blob/main/doc/EXTERNAL_TERMINAL_FEATURE.md
+    # https://github.com/crftwr/xefm/blob/main/doc/TERMINAL_FEATURE.ja.md
+    # https://github.com/crftwr/xefm/blob/main/doc/TERMINAL_FEATURE.md
     SUBSHELL = None
-    TERMINAL = ["wezterm", "start", "--"]  # noqa: RUF012
+    TERMINAL_CTRL_CLIPBOARD = True
 
     AGENTS = []  # noqa: RUF012
     AGENT_RULES = ""
