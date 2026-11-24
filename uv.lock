@@ -3,6 +3,6 @@ revision = 5
 requires-python = ">=3.11"
 
 [[package]]
-name = "zefm-config"
+name = "xefm-config"
 version = "0.1.0"
 source = { virtual = "." }
