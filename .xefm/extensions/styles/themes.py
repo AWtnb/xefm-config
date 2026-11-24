@@ -159,63 +159,101 @@ cobalt2 = {
     },
 }
 
+palette_base16_darkmoss = {
+    "base00": _color("#171e1f"),
+    "base01": _color("#252c2d"),
+    "base02": _color("#373c3d"),
+    "base03": _color("#555e5f"),
+    "base04": _color("#818f80"),
+    "base05": _color("#c7c7a5"),
+    "base06": _color("#e3e3c8"),
+    "base07": _color("#e1eaef"),
+    "base08": _color("#ff4658"),
+    "base09": _color("#e6db74"),
+    "base0A": _color("#fdb11f"),
+    "base0B": _color("#499180"),
+    "base0C": _color("#66d9ef"),
+    "base0D": _color("#498091"),
+    "base0E": _color("#9bc0c8"),
+    "base0F": _color("#d27b53"),
+}
+
 base16_darkmoss = {
     "opacity": 1.0,
-    "background": _color("#171e1f"),  # base00
-    "foreground": _color("#c7c7a5"),  # base05
-    "muted": _color("#555e5f"),  # base03
-    "accent": _color("#498091"),  # base0D
-    "accent2": _color("#fdb11f"),  # base0A
-    "surface": _color("#252c2d"),  # base01
-    "selection": _color("#373c3d"),  # base02
-    "status": _color("#252c2d"),  # base01
-    "footer": _color("#373c3d"),  # base02
+    "background": palette_base16_darkmoss["base00"],
+    "foreground": palette_base16_darkmoss["base05"],
+    "muted": palette_base16_darkmoss["base03"],
+    "accent": palette_base16_darkmoss["base0D"],
+    "accent2": palette_base16_darkmoss["base0A"],
+    "surface": palette_base16_darkmoss["base01"],
+    "selection": palette_base16_darkmoss["base02"],
+    "status": palette_base16_darkmoss["base01"],
+    "footer": palette_base16_darkmoss["base02"],
     "file_types": {
-        "directory": _color("#498091"),  # base0D
-        "link": _color("#66d9ef"),  # base0C
+        "directory": palette_base16_darkmoss["base09"],
+        "link": palette_base16_darkmoss["base0C"],
     },
     "cursor": {
-        "active": _color("#498091"),  # base0D
-        "inactive": _color("#555e5f"),  # base03
+        "active": palette_base16_darkmoss["base08"],
+        "inactive": palette_base16_darkmoss["base03"],
     },
     "syntax": {
-        "keyword": _color("#9bc0c8"),  # base0E
-        "string": _color("#499180"),  # base0B
-        "comment": _color("#555e5f"),  # base03
-        "number": _color("#e6db74"),  # base09
-        "operator": _color("#66d9ef"),  # base0C
-        "builtin": _color("#fdb11f"),  # base0A
-        "name": _color("#ff4658"),  # base08
+        "keyword": palette_base16_darkmoss["base0E"],
+        "string": palette_base16_darkmoss["base0B"],
+        "comment": palette_base16_darkmoss["base03"],
+        "number": palette_base16_darkmoss["base09"],
+        "operator": palette_base16_darkmoss["base0C"],
+        "builtin": palette_base16_darkmoss["base0A"],
+        "name": palette_base16_darkmoss["base08"],
     },
+}
+
+palette_base16_0x96f = {
+    "base00": _color("#262427"),
+    "base01": _color("#3b393c"),
+    "base02": _color("#514f52"),
+    "base03": _color("#676567"),
+    "base04": _color("#7c7b7d"),
+    "base05": _color("#fcfcfc"),
+    "base06": _color("#eae9eb"),
+    "base07": _color("#fcfcfc"),
+    "base08": _color("#ff7272"),
+    "base09": _color("#fc9d6f"),
+    "base0A": _color("#ffca58"),
+    "base0B": _color("#bcdf59"),
+    "base0C": _color("#aee8f4"),
+    "base0D": _color("#49cae4"),
+    "base0E": _color("#a093e2"),
+    "base0F": _color("#ff8787"),
 }
 
 base16_0x96f = {
     "opacity": 1.0,
-    "background": _color("#262427"),  # base00
-    "foreground": _color("#fcfcfc"),  # base05
-    "muted": _color("#676567"),  # base03
-    "accent": _color("#49cae4"),  # base0D
-    "accent2": _color("#ffca58"),  # base0A
-    "surface": _color("#3b393c"),  # base01
-    "selection": _color("#514f52"),  # base02
-    "status": _color("#3b393c"),  # base01
-    "footer": _color("#514f52"),  # base02
+    "background": palette_base16_0x96f["base00"],
+    "foreground": palette_base16_0x96f["base05"],
+    "muted": palette_base16_0x96f["base03"],
+    "accent": palette_base16_0x96f["base0D"],
+    "accent2": palette_base16_0x96f["base0A"],
+    "surface": palette_base16_0x96f["base00"],
+    "selection": palette_base16_0x96f["base02"],
+    "status": palette_base16_0x96f["base01"],
+    "footer": palette_base16_0x96f["base02"],
     "file_types": {
-        "directory": _color("#49cae4"),  # base0D
-        "link": _color("#aee8f4"),  # base0C
+        "directory": palette_base16_0x96f["base0B"],
+        "link": palette_base16_0x96f["base0C"],
     },
     "cursor": {
-        "active": _color("#bcdf59"),  # base0B
-        "inactive": _color("#676567"),  # base03
+        "active": palette_base16_0x96f["base08"],
+        "inactive": palette_base16_0x96f["base03"],
     },
     "syntax": {
-        "keyword": _color("#a093e2"),  # base0E
-        "string": _color("#bcdf59"),  # base0B
-        "comment": _color("#676567"),  # base03
-        "number": _color("#fc9d6f"),  # base09
-        "operator": _color("#aee8f4"),  # base0C
-        "builtin": _color("#ffca58"),  # base0A
-        "name": _color("#ff7272"),  # base08
+        "keyword": palette_base16_0x96f["base0E"],
+        "string": palette_base16_0x96f["base0B"],
+        "comment": palette_base16_0x96f["base03"],
+        "number": palette_base16_0x96f["base09"],
+        "operator": palette_base16_0x96f["base0C"],
+        "builtin": palette_base16_0x96f["base0A"],
+        "name": palette_base16_0x96f["base08"],
     },
 }
 
