@@ -90,7 +90,7 @@ _KEY_BINDINGS = {
     "copy_log_selection": [],
     "copy_names": [],
     "copy_paths": [],
-    "create_archive": {"keys": ["Shift-P", "Shift-Z"], "selection": "required"},
+    "create_archive": {"keys": ["Shift-Z"], "selection": "required"},
     "create_directory": [],
     "create_file": ["N F"],
     "cursor_bottom": ["END", "E"],
@@ -111,7 +111,7 @@ _KEY_BINDINGS = {
     "edit_config": [],
     "edit_file": ["Ctrl-E"],
     "extensions": [],
-    "extract_archive": ["P", "Z"],
+    "extract_archive": ["Z"],
     "favorites": [],
     "fuzzy_favorites": ["B"],
     "fuzzy_ghq": ["G"],
@@ -183,7 +183,7 @@ _KEY_BINDINGS = {
     "quick_sort_ext": ["2"],
     "quick_sort_name": ["1"],
     "quick_sort_size": ["3"],
-    "quick_view": ["V"],
+    "quick_view": ["P"],
     "quit": ["Q"],
     "quit_app": [],
     "redraw": ["F5"],
@@ -230,7 +230,7 @@ _KEY_BINDINGS = {
     "toggle_wrap": ["Alt-Z"],
     "unselect_all": ["U"],
     "unselect_by_pattern": [],
-    "view_file": ["Shift-ENTER"],
+    "view_file": ["Shift-ENTER", "V"],
 }
 
 
@@ -278,29 +278,10 @@ _FILE_ASSOCIATIONS = [
             "*.ppt",
             "*.pptx",
         ],
-        "edit": ["cmd", "/c", "start"],
+        "edit": {"action": "open_with_os"},
     },
     {
-        "pattern": ["*.md", "*.txt"],
-        "edit": ["vim"],
-        "open_with": [
-            {
-                "name": "Smooth CSV",
-                "command": ["C:/Program Files/SmoothCSV/smoothcsv-cli.exe"],
-            },
-            {
-                "name": "Notepad",
-                "command": ["C:/Windows/System32/notepad.exe"],
-            },
-        ],
-    },
-    {
-        "pattern": ["*.md"],
-        "view": {"action": "view_with_tinta"},
-    },
-    {
-        "pattern": ["*.csv"],
-        "edit": ["cmd", "/c", "start"],
+        "pattern": ["*"],
         "open_with": [
             {
                 "name": "Mery",
@@ -311,6 +292,23 @@ _FILE_ASSOCIATIONS = [
                 "command": ["C:/Windows/System32/notepad.exe"],
             },
         ],
+    },
+    {
+        "pattern": ["*.txt"],
+        "open_with": [
+            {
+                "name": "Smooth CSV",
+                "command": ["C:/Program Files/SmoothCSV/smoothcsv-cli.exe"],
+            },
+        ],
+    },
+    {
+        "pattern": ["*.md"],
+        "view": {"action": "view_with_tinta"},
+    },
+    {
+        "pattern": ["*.csv"],
+        "edit": {"action": "open_with_os"},
     },
     {
         "pattern": ["*.zip"],
