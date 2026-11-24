@@ -302,6 +302,10 @@ _FILE_ASSOCIATIONS = [
         ],
     },
     {
+        "pattern": ["*.jpg", "*.jpeg", "*.png", "*.PNG"],
+        "edit": None,
+    },
+    {
         "pattern": ["*.md"],
         "view": ["cmd", "/c", "start", "", "tinta"],  # https://tinta.cc/
     },
