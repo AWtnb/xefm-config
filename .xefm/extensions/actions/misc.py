@@ -6,8 +6,6 @@ import webbrowser
 from datetime import datetime
 from pathlib import Path
 
-from xefm.backend_detector import is_desktop_mode  # ty: ignore[unresolved-import]
-
 from ._utils import get_selected_or_focused
 from .item_selector import select_under_cursor
 
@@ -249,23 +247,3 @@ def open_git_remote(ctx) -> None:
 
         if remote_url:
             webbrowser.open(remote_url)
-
-
-def view_with_tinta(ctx) -> None:
-    """
-    preview markdown file with https://tinta.cc/
-    """
-    tinta_path = shutil.which("tinta")
-    if tinta_path is None:
-        ctx.message("tinta not found in this PC.")
-        return
-
-    f = ctx.pane.focused
-    if f.path.suffix != ".md":
-        return
-
-    if is_desktop_mode():
-        ctx.run_program([tinta_path, f.path])
-        return
-
-    ctx.run_program(["cmd", "/c", "start", "", tinta_path, f.path])
