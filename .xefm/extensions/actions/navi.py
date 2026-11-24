@@ -3,6 +3,8 @@ from pathlib import Path
 
 from xefm import netmount  # ty: ignore[unresolved-import]
 
+from ._utils import get_git_root
+
 DESKTOP_PATH = Path.home() / "Desktop"
 
 
@@ -63,3 +65,9 @@ def eject_current_drive(ctx) -> None:
             ctx._app._drive_remove({"path": anchor})
 
     ctx.confirm(f"Eject current drive({path.drive})?", on_result=_eject)
+
+
+def go_git_root(ctx) -> None:
+    path = ctx.pane.path
+    if (git_root := get_git_root(path)) != path:
+        ctx.pane.cd(git_root)
