@@ -7,6 +7,12 @@ from pathlib import Path
 
 from xefm.user_api import is_desktop_mode  # ty: ignore[unresolved-import]
 
+IMAGE_FILE_PATTERNS = ["*.jpg", "*.jpeg", "*.png", "*.webp"]
+
+
+def is_image_file(name: str) -> bool:
+    return any(name.lower().endswith(p[1:]) for p in IMAGE_FILE_PATTERNS)
+
 
 def pad2(s: str) -> str:
     return s.rjust(2, "0")

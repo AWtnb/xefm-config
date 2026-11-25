@@ -14,6 +14,7 @@ from . import (
     photo_renamer,
     tree,
 )
+from ._utils import IMAGE_FILE_PATTERNS
 
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
@@ -302,8 +303,9 @@ _FILE_ASSOCIATIONS = [
         ],
     },
     {
-        "pattern": ["*.jpg", "*.jpeg", "*.png", "*.PNG"],
+        "pattern": IMAGE_FILE_PATTERNS,
         "edit": None,
+        "view": ["qimgv"],  # https://github.com/easymodo/qimgv
     },
     {
         "pattern": ["*.md"],

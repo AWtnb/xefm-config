@@ -6,7 +6,7 @@ import webbrowser
 from datetime import datetime
 from pathlib import Path
 
-from ._utils import get_selected_or_focused
+from ._utils import get_selected_or_focused, is_image_file
 from .item_selector import select_under_cursor
 
 
@@ -29,7 +29,7 @@ def smart_enter(ctx) -> None:
         ctx.invoke("open_with_os")
         return
 
-    if ext in [".docx", ".xlsx"]:
+    if ext in [".docx", ".xlsx"] or is_image_file(focus_path.name):
         ctx.invoke("view_file")
         return
 
