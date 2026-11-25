@@ -47,7 +47,13 @@ def is_nfd(entry):
     return not unicodedata.is_normalized("NFC", entry.path.name)
 
 
-def fzf_filter(ctx, options: list[str], multi: bool) -> list[str]:
+def fzf_filter(
+    ctx,
+    options: list[str],
+    multi: bool,
+    extra_args: list[str] | None = None,
+) -> list[str]:
+    """Run fzf with the given options and return the selected lines."""
     fzf = shutil.which("fzf")
     if fzf is None:
         ctx.message("fzf not found")
@@ -62,6 +68,8 @@ def fzf_filter(ctx, options: list[str], multi: bool) -> list[str]:
     cmd = [fzf]
     if multi:
         cmd.extend(["--multi", "--bind", "ctrl-a:toggle-all"])
+    if extra_args:
+        cmd.extend(extra_args)
 
     # https://github.com/crftwr/xefm/issues/755
     with terminal_context:
