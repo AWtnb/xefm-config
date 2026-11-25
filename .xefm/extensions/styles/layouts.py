@@ -41,19 +41,19 @@ LAYOUTS = {
         "columns": [
             {"attr": "name"},
             {"attr": "ext"},
-            {"attr": "size", "priority": 2},
+            {"attr": "size", "priority": 1},
             {
                 "attr": "mtime",
                 "format": smart_mtime,
                 "align": "right",
                 "width": len("yyyy-mm-dd hh:MM:ss"),
-                "priority": 1,
+                "priority": 2,
             },
         ],
         "override": True,
     },
 }
-DEFAULT_LAYOUT = "default"
+DEFAULT_LAYOUT = "name-only"
 
 
 def read_name_form(_, entries):
