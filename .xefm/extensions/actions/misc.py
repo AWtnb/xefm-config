@@ -25,7 +25,7 @@ def smart_enter(ctx) -> None:
         return
 
     ext = focus_path.suffix.lower()
-    if ext in [".pdf", ".tbx", ".cmx"]:
+    if ext in [".pdf", ".tbx", ".cmx", ".pptx"]:
         ctx.invoke("open_with_os")
         return
 

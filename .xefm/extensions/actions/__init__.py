@@ -278,7 +278,7 @@ _FILE_ASSOCIATIONS = [
             "*.ppt",
             "*.pptx",
         ],
-        "edit": {"action": "open_with_os"},
+        "edit": None,
     },
     {
         "pattern": ["*"],
