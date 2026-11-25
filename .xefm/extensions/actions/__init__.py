@@ -53,7 +53,7 @@ _ACTIONS = {
     "select_by_extension": item_selector.select_by_extension,
     "select_nfd_names": item_selector.select_nfd_names,
     "smart_copy": clipboard.smart_copy,
-    "smart_enter": misc.smart_enter,
+    "smart_enter": navi.smart_enter,
     "smart_mkdir": misc.smart_mkdir,
     "smart_select_all": item_selector.smart_select_all,
     "write_dir_tree": tree.write_dir_tree,

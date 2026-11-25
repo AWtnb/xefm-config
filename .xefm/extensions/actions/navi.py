@@ -3,7 +3,39 @@ from pathlib import Path
 
 from xefm import netmount  # ty: ignore[unresolved-import]
 
-from ._utils import get_git_root
+from ._utils import get_git_root, is_image_file
+
+
+def smart_enter(ctx) -> None:
+    if not ctx.pane.focused:
+        return
+
+    sels = ctx.pane.selected()
+    if sels and all(s.is_file for s in sels):
+        ctx.invoke("open_items_with_os")
+        return
+
+    focus_path = ctx.pane.focused.path
+    ext = focus_path.suffix.lower()
+    if focus_path.is_dir() or ext == ".zip":
+        ctx.invoke("open_item")
+        return
+
+    if ext in [".pdf", ".tbx", ".cmx", ".pptx"]:
+        ctx.invoke("open_with_os")
+        return
+
+    if ext in [".docx", ".xlsx"] or is_image_file(focus_path.name):
+        ctx.invoke("view_file")
+        return
+
+    if ctx._app._quick_view:
+        ctx._app._close_quick_view()
+        ctx.invoke("open_item")
+        return
+
+    ctx.invoke("quick_view")
+
 
 DESKTOP_PATH = Path.home() / "Desktop"
 

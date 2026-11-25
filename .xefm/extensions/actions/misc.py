@@ -6,39 +6,8 @@ import webbrowser
 from datetime import datetime
 from pathlib import Path
 
-from ._utils import get_selected_or_focused, is_image_file
+from ._utils import get_selected_or_focused
 from .item_selector import select_under_cursor
-
-
-def smart_enter(ctx) -> None:
-    if not ctx.pane.focused:
-        return
-
-    sels = ctx.pane.selected()
-    if sels and all(s.is_file for s in sels):
-        ctx.invoke("open_items_with_os")
-        return
-
-    focus_path = ctx.pane.focused.path
-    if focus_path.is_dir():
-        ctx.invoke("open_item")
-        return
-
-    ext = focus_path.suffix.lower()
-    if ext in [".pdf", ".tbx", ".cmx", ".pptx"]:
-        ctx.invoke("open_with_os")
-        return
-
-    if ext in [".docx", ".xlsx"] or is_image_file(focus_path.name):
-        ctx.invoke("view_file")
-        return
-
-    if ctx._app._quick_view:
-        ctx._app._close_quick_view()
-        ctx.invoke("open_item")
-        return
-
-    ctx.invoke("quick_view")
 
 
 def smart_mkdir(ctx) -> None:
