@@ -35,15 +35,15 @@ LAYOUTS = {
     "smart-mtime": {
         "label": "Smart mtime",
         "columns": [
-            {"attr": "name", "priority": 4},
+            {"attr": "name"},
             {"attr": "ext"},
-            {"attr": "size", "priority": 1},
+            {"attr": "size", "priority": 2},
             {
                 "attr": "mtime",
                 "format": smart_mtime,
                 "align": "right",
                 "width": len("yyyy-mm-dd hh:MM:ss"),
-                "priority": 2,
+                "priority": 1,
             },
         ],
     },
