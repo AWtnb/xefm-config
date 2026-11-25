@@ -32,8 +32,8 @@ def smart_mtime(_, entry):
 
 
 LAYOUTS = {
-    "name-only": {
-        "label": "Name only",
+    "minimal": {
+        "label": "Minimal",
         "columns": ["name"],
     },
     "default": {
@@ -53,7 +53,7 @@ LAYOUTS = {
         "override": True,
     },
 }
-DEFAULT_LAYOUT = "name-only"
+DEFAULT_LAYOUT = "minimal"
 
 
 def read_name_form(_, entries):
