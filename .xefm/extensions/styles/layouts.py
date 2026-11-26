@@ -37,7 +37,7 @@ LAYOUTS = {
         "columns": ["name"],
     },
     "default": {
-        "label": "Default (customized)",
+        "label": "Default",
         "columns": [
             {"attr": "name"},
             {"attr": "ext"},
