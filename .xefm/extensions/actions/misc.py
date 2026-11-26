@@ -39,6 +39,13 @@ def lazygit(ctx) -> None:
     )
 
 
+GITIGNORE_DEFAULTS = [
+    "node_modules",
+    "*.env",
+    ".venv",
+]
+
+
 def git_init(ctx) -> None:
     path = Path(ctx.pane.path)
     if (path / ".git").exists():
@@ -51,6 +58,14 @@ def git_init(ctx) -> None:
         for i, args in enumerate(commands):
             job.checkpoint()
             job.progress(i, len(commands), detail=f"git {' '.join(args)}")
+            if args == ["add", "."]:
+                gitignore = path / ".gitignore"
+                if not gitignore.exists():
+                    gitignore.write_text(
+                        "\n".join(GITIGNORE_DEFAULTS) + "\n",
+                        encoding="utf-8",
+                    )
+
             result = subprocess.run(
                 ["git", *args],
                 cwd=path,
