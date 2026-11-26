@@ -95,17 +95,12 @@ def read_git_status(directory, entries) -> list:
             values.append(None)
             continue
 
-        status = _git_output(
-            path, "status", "--porcelain", "--untracked-files=all", "--", "."
-        )
+        status = _git_output(path, "status", "--porcelain", "--", ".")
         if status is None:
             values.append(None)
             continue
 
-        ahead = _git_output(path, "rev-list", "--count", "@{upstream}..HEAD")
-        has_unpushed = ahead is not None and ahead.strip().isdigit() and 0 < int(ahead)
-
-        values.append(ATTENTION_SYMBOL if status.strip() or has_unpushed else None)
+        values.append(ATTENTION_SYMBOL if status.strip() else None)
 
     return values
 
