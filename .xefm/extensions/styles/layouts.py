@@ -6,6 +6,7 @@
 import os
 import subprocess
 import unicodedata
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
 
@@ -80,27 +81,35 @@ def _git_output(path, *args):
 ATTENTION_SYMBOL = "\u25cf"
 
 
+def _git_attention(path) -> str | None:
+    status = _git_output(path, "status", "--porcelain", "--", ".")
+    return ATTENTION_SYMBOL if status and status.strip() else None
+
+
 def read_git_status(directory, entries) -> list:
     is_ghq_base = Path(directory).parent.parent == Path.home() / "ghq"
     is_workspace = Path(directory) == Path.home() / "Desktop" / "workspace"
     if not (is_ghq_base or is_workspace):
         return [None for _ in entries]
 
-    values = []
+    repo_paths = []
+    repo_indexes = []
 
-    for entry in entries:
+    for index, entry in enumerate(entries):
         path = entry.path
-
         if not path.is_dir() or not (path / ".git").exists():
-            values.append(None)
             continue
 
-        status = _git_output(path, "status", "--porcelain", "--", ".")
-        if status is None:
-            values.append(None)
-            continue
+        repo_indexes.append(index)
+        repo_paths.append(path)
 
-        values.append(ATTENTION_SYMBOL if status.strip() else None)
+    values = [None] * len(entries)
+    if repo_paths:
+        with ThreadPoolExecutor(max_workers=min(4, len(repo_paths))) as executor:
+            for index, attention in zip(
+                repo_indexes, executor.map(_git_attention, repo_paths)
+            ):
+                values[index] = attention
 
     return values
 
