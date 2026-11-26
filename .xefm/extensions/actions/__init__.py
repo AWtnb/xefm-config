@@ -30,6 +30,7 @@ _ACTIONS = {
     "fuzzy_ghq": favorites.fuzzy_ghq,
     "fuzzy_selector": item_selector.fuzzy_selector,
     "go_git_root": navi.go_git_root,
+    "git_init": misc.git_init,
     "jump_down": cursor_jumper.jump_down,
     "jump_up": cursor_jumper.jump_up,
     "lazygit": misc.lazygit,

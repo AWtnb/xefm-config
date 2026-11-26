@@ -39,6 +39,43 @@ def lazygit(ctx) -> None:
     )
 
 
+def git_init(ctx) -> None:
+    path = Path(ctx.pane.path)
+    if (path / ".git").exists():
+        ctx.message("Already git managed")
+        return
+
+    commands = (["init"], ["add", "."], ["commit", "-m", "initial commit"])
+
+    def _work(job) -> None:
+        for i, args in enumerate(commands):
+            job.checkpoint()
+            job.progress(i, len(commands), detail=f"git {' '.join(args)}")
+            result = subprocess.run(
+                ["git", *args],
+                cwd=path,
+                capture_output=True,
+                encoding="utf-8",
+                check=False,
+            )
+            if result.returncode:
+                details = (result.stderr or result.stdout).strip()
+                raise RuntimeError(
+                    f"git {' '.join(args)} failed: "
+                    f"{details or f'exit code {result.returncode}'}"
+                )
+
+    def _done(c, outcome) -> None:
+        if outcome.ok:
+            c.message("Git repository initialized and initial commit created.")
+        elif outcome.status == "cancelled":
+            c.message("Git initialization cancelled.")
+        else:
+            c.message(f"Git initialization failed: {outcome.error}")
+
+    ctx.run_task("Initialize Git repository", _work, on_done=_done)
+
+
 def _diff_targets_of(ctx) -> tuple[str, str] | None:
     l_sels = ctx.left.selected()
     r_sels = ctx.right.selected()
