@@ -258,10 +258,16 @@ def backup_favorites(ctx, _) -> bool:
     return False
 
 
+def close_quick_view(ctx, _) -> None:
+    if ctx._app._quick_view:
+        ctx._app._close_quick_view()
+
+
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.ja.md
 # https://github.com/crftwr/xefm/blob/main/doc/CUSTOMIZATION_FEATURE.md
 _EVENT_HOOKS = {
     "startup": [reset_layout],
+    "directory_changed": [close_quick_view],
     "quit": [backup_favorites],
 }
 
