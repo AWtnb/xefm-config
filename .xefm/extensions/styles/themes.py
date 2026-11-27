@@ -194,7 +194,7 @@ base16_darkmoss = {
         "link": palette_base16_darkmoss["base0C"],
     },
     "cursor": {
-        "active": palette_base16_darkmoss["base08"],
+        "active": palette_base16_darkmoss["base0D"],
         "inactive": palette_base16_darkmoss["base03"],
     },
     "syntax": {
@@ -243,7 +243,7 @@ base16_0x96f = {
         "link": palette_base16_0x96f["base0C"],
     },
     "cursor": {
-        "active": palette_base16_0x96f["base08"],
+        "active": palette_base16_0x96f["base0D"],
         "inactive": palette_base16_0x96f["base03"],
     },
     "syntax": {
