@@ -86,11 +86,7 @@ def _git_attention(path) -> str | None:
     return ATTENTION_SYMBOL if status and status.strip() else None
 
 
-def read_git_status(directory, entries) -> list:
-    is_ghq_base = Path(directory).parent.parent == Path.home() / "ghq"
-    is_workspace = Path(directory) == Path.home() / "Desktop" / "workspace"
-    if not (is_ghq_base or is_workspace):
-        return [None for _ in entries]
+def read_git_status(_, entries) -> list:
 
     repo_paths = []
     repo_indexes = []
